@@ -1,7 +1,12 @@
 export default function Home() {
   return (
-    <div>
-      Hello World
-    </div>
+    <section>
+      <div>
+        Overview
+      </div>
+      <div>
+        Table
+      </div>
+    </section>
   )
 }
