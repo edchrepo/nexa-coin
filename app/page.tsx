@@ -1,12 +1,14 @@
 export default function Home() {
   return (
-    <section>
-      <div>
-        Overview
+    <div className="bg-[#1f2128] flex justify-center">
+      <div className="w-[80%]">
+        <div>
+          Overview
+        </div>
+        <div>
+          Table
+        </div>
       </div>
-      <div>
-        Table
-      </div>
-    </section>
+    </div>
   )
 }

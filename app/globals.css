@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 body {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
   background-color: #191b1f;
+  font-family: "Roboto";
+  font-weight: 400;
   color: white;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
 }
