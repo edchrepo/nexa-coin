@@ -40,43 +40,44 @@ const CoinsTable = () => {
   }, []);
 
   return (
-    <table>
+    <table className="table-fixed w-full">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Current Price</th>
-          <th>1h</th>
-          <th>24h</th>
-          <th>7d</th>
-          <th>24h Vol / Market Cap</th>
-          <th>Circulating / Total Sup</th>
-          <th>Last 7d</th>
+          <th className="w-1/8">#</th>
+          <th className="w-1/8">Name</th>
+          <th className="w-1/8">Current Price</th>
+          <th className="w-1/8">1h</th>
+          <th className="w-1/8">24h</th>
+          <th className="w-1/8">7d</th>
+          <th className="w-1/5">24h Vol / Market Cap</th>
+          <th className="w-1/5">Circulating / Total Sup</th>
+          <th className="w-1/8">Last 7d</th>
         </tr>
       </thead>
       <tbody>
         {coins.map((coin, index) => (
           <tr key={coin.id}>
-            <td>{index + 1}</td>
-            <td>
+            <td className="w-1/8">{index + 1}</td>
+            <td className="w-1/8">
               {coin.name} ({coin.symbol.toUpperCase()})
             </td>
-            <td>${coin.current_price}</td>
-            <td>
+            <td className="w-1/8">${coin.current_price}</td>
+            <td className="w-1/8">
               {Math.round(100 * coin.price_change_percentage_1h_in_currency) /
                 100}
             </td>
-            <td>
+            <td className="w-1/8">
               {Math.round(100 * coin.price_change_percentage_24h_in_currency) /
                 100}
             </td>
-            <td>
+            <td className="w-1/8">
               {Math.round(100 * coin.price_change_percentage_7d_in_currency) /
                 100}
             </td>
-            <td>
+            <td className="w-1/5">
               {coin.total_volume} / {coin.market_cap}
             </td>
-            <td>
+            <td className="w-1/5">
               {coin.circulating_supply} / {coin.total_supply}
             </td>
           </tr>
