@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import ProgressBar from "./ProgressBar";
 
 interface CoinData {
   id: string;
@@ -76,9 +77,13 @@ const CoinsTable = () => {
             </td>
             <td className="w-1/5">
               {coin.total_volume} / {coin.market_cap}
+              <ProgressBar progress={coin.total_volume / coin.market_cap} />
             </td>
             <td className="w-1/5">
               {coin.circulating_supply} / {coin.total_supply}
+              <ProgressBar
+                progress={coin.circulating_supply / coin.total_supply}
+              />
             </td>
           </tr>
         ))}
