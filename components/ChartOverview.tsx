@@ -31,7 +31,7 @@ const options = {
       },
     },
   },
-}
+};
 
 const ChartOverview = () => {
   const [chartData, setChartData] = useState({
@@ -47,7 +47,7 @@ const ChartOverview = () => {
       );
       const data = await response.json();
       console.log(data);
-      console.log(data.prices[data.prices.length-1][1]/1000)
+      console.log(data.prices[data.prices.length - 1][1] / 1000);
       setChartData(data);
     };
     fetchData();
@@ -60,8 +60,21 @@ const ChartOverview = () => {
         <div className="w-[50%] bg-[#191b1f] p-7 rounded-[20px]">
           <div className="absolute text-sm">
             <p>Price</p>
-            <p className="text-2xl">{`$${Math.ceil(chartData.prices[chartData.prices.length-1][1])/1000} ths`}</p>
-            <p>{new Date(chartData.prices[chartData.prices.length-1][0]).toDateString()}</p>
+            {chartData.prices.length > 0 ? (
+              <>
+                <p className="text-2xl">{`$${
+                  Math.ceil(chartData.prices[chartData.prices.length - 1][1]) /
+                  1000
+                } ths`}</p>
+                <p>
+                  {new Date(
+                    chartData.prices[chartData.prices.length - 1][0]
+                  ).toDateString()}
+                </p>
+              </>
+            ) : (
+              <p>No price data available</p>
+            )}
           </div>
           <Line
             data={{
@@ -83,8 +96,26 @@ const ChartOverview = () => {
         <div className="w-[50%] bg-[#191b1f] p-7 rounded-[20px]">
           <div className="absolute text-sm">
             <p>Volume</p>
-            <p className="text-2xl">{`$${Math.ceil(chartData.total_volumes[chartData.total_volumes.length-1][1])/1000000000} bln`}</p>
-            <p>{new Date(chartData.total_volumes[chartData.total_volumes.length-1][0]).toDateString()}</p>
+            {chartData.total_volumes.length > 0 ? (
+              <>
+                <p className="text-2xl">{`$${
+                  Math.ceil(
+                    chartData.total_volumes[
+                      chartData.total_volumes.length - 1
+                    ][1]
+                  ) / 1000000000
+                } bln`}</p>
+                <p>
+                  {new Date(
+                    chartData.total_volumes[
+                      chartData.total_volumes.length - 1
+                    ][0]
+                  ).toDateString()}
+                </p>
+              </>
+            ) : (
+              <p>No volume data available</p>
+            )}
           </div>
           <Bar
             data={{
