@@ -6,7 +6,7 @@ const Navbar = () => {
       <div className="w-[80%] flex items-center space-x-2">
         <button className="bg-[#2c2f36] px-10 py-3.5 rounded-lg">Coins</button>
         <button className="px-7 py-3.5 rounded-lg">Portfolio</button>
-        <div className="grow" />
+        <div className="grow"/>
         <input
           type="text"
           className="bg-[#2c2f36] p-3.5 rounded-lg"
