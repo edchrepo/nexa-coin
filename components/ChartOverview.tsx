@@ -50,7 +50,7 @@ const ChartOverview = () => {
       console.log(data.prices[data.prices.length - 1][1] / 1000);
       setChartData(data);
     };
-    fetchData();
+    // fetchData();
   }, []);
 
   return (
