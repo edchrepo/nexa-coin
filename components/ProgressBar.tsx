@@ -9,26 +9,23 @@ interface ProgressBarProps {
 const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
   const Parentdiv: CSSProperties = {
     width: "100%",
-    backgroundColor: "whitesmoke",
-    borderRadius: 40,
+    height: 10,
+    backgroundColor: "#E5E4E2",
+    borderRadius: 30,
   };
 
   const Childdiv: CSSProperties = {
     width: `${progress}%`,
-    backgroundColor: "#636363",
-    borderRadius: 40,
+    height: 10,
+    backgroundColor: "#71797E",
+    borderRadius: 30,
     textAlign: "right",
-  };
-
-  const progresstext: CSSProperties = {
-    color: "black",
-    fontWeight: "bold",
   };
 
   return (
     <div style={Parentdiv}>
       <div style={Childdiv}>
-        <span style={progresstext}>{`${progress}%`}</span>
+        <span>&#8203;</span>
       </div>
     </div>
   );
