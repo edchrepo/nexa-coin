@@ -54,7 +54,7 @@ const ChartOverview = () => {
   return (
     <div>
       Overview
-      <div className="md:flex justify-between my-3 md:space-x-5 sm:space-y-5">
+      <div className="md:flex justify-between my-3 md:space-x-5">
         <div className="md:w-[50%] sm:w-[100%] bg-[#191b1f] p-7 rounded-[20px]">
           <div className="absolute text-sm">
             <p>Price</p>
