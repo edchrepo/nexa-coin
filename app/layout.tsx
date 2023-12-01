@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="w-[80%]">
+        <div className="xl:w-[60%] lg:w-[80%] sm:w-[90%]">
           <Navbar />
           <MarketData />
           {children}

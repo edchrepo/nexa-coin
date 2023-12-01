@@ -46,18 +46,16 @@ const ChartOverview = () => {
         "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7&interval=daily"
       );
       const data = await response.json();
-      console.log(data);
-      console.log(data.prices[data.prices.length - 1][1] / 1000);
       setChartData(data);
     };
-    // fetchData();
+    fetchData();
   }, []);
 
   return (
     <div>
       Overview
-      <div className="flex justify-between my-3 space-x-5">
-        <div className="w-[50%] bg-[#191b1f] p-7 rounded-[20px]">
+      <div className="md:flex justify-between my-3 md:space-x-5 sm:space-y-5">
+        <div className="md:w-[50%] sm:w-[100%] bg-[#191b1f] p-7 rounded-[20px]">
           <div className="absolute text-sm">
             <p>Price</p>
             {chartData.prices.length > 0 ? (
@@ -93,7 +91,7 @@ const ChartOverview = () => {
             options={options}
           />
         </div>
-        <div className="w-[50%] bg-[#191b1f] p-7 rounded-[20px]">
+        <div className="md:w-[50%] sm:w-[100%] bg-[#191b1f] p-7 rounded-[20px]">
           <div className="absolute text-sm">
             <p>Volume</p>
             {chartData.total_volumes.length > 0 ? (
