@@ -109,6 +109,7 @@ const CoinsTable = () => {
               >
                 {Math.round(100 * coin.price_change_percentage_1h_in_currency) /
                   100}
+                %
               </td>
               <td
                 className={`w-1/12 ${
@@ -120,6 +121,7 @@ const CoinsTable = () => {
                 {Math.round(
                   100 * coin.price_change_percentage_24h_in_currency
                 ) / 100}
+                %
               </td>
               <td
                 className={`w-1/12 ${
@@ -130,6 +132,7 @@ const CoinsTable = () => {
               >
                 {Math.round(100 * coin.price_change_percentage_7d_in_currency) /
                   100}
+                %
               </td>
               <td className="w-1/6">
                 {formatCurrency(coin.total_volume)} /{" "}
