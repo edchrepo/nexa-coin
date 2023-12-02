@@ -35,7 +35,7 @@ const CoinsTable = () => {
     } else if (value >= 1e6) {
       formattedValue = `$${(value / 1e6).toFixed(2)}M`;
     } else {
-      formattedValue = `$${value}`;
+      formattedValue = `$${value && value.toFixed(0)}`;
     }
 
     return formattedValue;
@@ -58,7 +58,7 @@ const CoinsTable = () => {
   }, []);
 
   return (
-    <div className="w-full font-sans">
+    <div className="w-full">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">TOP 50 by Market Cap</h1>
         <div>
@@ -94,9 +94,10 @@ const CoinsTable = () => {
         </thead>
         <tbody>
           {coins.map((coin, index) => (
-            <tr key={coin.id}>
+            <tr key={coin.id} className="border-b border-gray-500">
               <td className="w-1/12">{index + 1}</td>
               <td className="w-1/12">
+                <img src={coin.image} className="w-8 h-8 inline-block" />{" "}
                 {coin.name} ({coin.symbol.toUpperCase()})
               </td>
               <td className="w-1/12">${coin.current_price}</td>
@@ -138,8 +139,9 @@ const CoinsTable = () => {
                 {formatCurrency(coin.total_volume)} /{" "}
                 {formatCurrency(coin.market_cap)}
                 <ProgressBar
-                  progress={Math.round(
-                    (coin.total_volume / coin.market_cap) * 100
+                  progress={Math.min(
+                    Math.round((coin.total_volume / coin.market_cap) * 100),
+                    100
                   )}
                 />
               </td>
