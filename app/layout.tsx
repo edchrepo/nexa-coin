@@ -17,8 +17,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className="lg:w-[80%] sm:w-[90%]">
-          <Navbar />
           <MarketData />
+          <Navbar />
           {children}
         </div>
       </body>
