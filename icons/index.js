@@ -4,6 +4,7 @@ import UpArrow from "./uparrow.svg"
 import ExchangeIcon from "./exchange.svg"
 import BitcoinIcon from "./Bitcoin.svg"
 import EthereumIcon from "./Ethereum.svg"
+import logo from "./logo.png"
 
 export {
     BoltCircle,
@@ -11,5 +12,6 @@ export {
     UpArrow,
     ExchangeIcon,
     BitcoinIcon,
-    EthereumIcon
+    EthereumIcon,
+    logo
 }

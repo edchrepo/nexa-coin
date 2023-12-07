@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import logo from "../icons/logo.png";
+import { logo } from "../icons"
 
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("home");
@@ -12,7 +12,7 @@ const Navbar = () => {
     <nav className="flex items-center justify-between p-4 w-[90%]">
       {/* Logo Section */}
       <div className="flex items-center">
-        <Image src={logo} alt="NexaVenture" className="w-[50%]" />
+        <Image className="w-[150px]" src={logo} alt="NexaCoin" />
       </div>
 
       {/* Page Section */}
