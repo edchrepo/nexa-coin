@@ -57,7 +57,7 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search..."
-            className="bg-[#181825] border border-border rounded-md mr-4 p-2 pl-10 w-64 h-10"
+            className="bg-[#181825] border border-border rounded-md mr-4 p-2 pl-10 w-96 h-10"
           />
         </div>
         <div className="relative">

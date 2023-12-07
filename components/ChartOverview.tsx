@@ -53,7 +53,7 @@ const ChartOverview = () => {
 
   return (
     <div className="md:flex justify-between my-3 md:space-x-5">
-      <div className="md:w-[50%] sm:w-[100%] bg-[#191b1f] p-7 rounded-[20px]">
+      <div className="md:w-[50%] sm:w-[100%] bg-[#191932] p-7 rounded-[20px]">
         <div className="absolute text-sm">
           <p>Price</p>
           {chartData.prices.length > 0 ? (
@@ -81,15 +81,14 @@ const ChartOverview = () => {
               {
                 data: chartData.prices.map((price) => new Date(price[1])),
                 tension: 0.4,
-                borderColor: "rgba(0,255,95,255)",
-                backgroundColor: "rgba(0,255,95,255)",
+                borderColor: "#7272ed",
               },
             ],
           }}
           options={options}
         />
       </div>
-      <div className="md:w-[50%] sm:w-[100%] bg-[#191b1f] p-7 rounded-[20px]">
+      <div className="md:w-[50%] sm:w-[100%] bg-[#1e1932] p-7 rounded-[20px]">
         <div className="absolute text-sm">
           <p>Volume</p>
           {chartData.total_volumes.length > 0 ? (
@@ -117,8 +116,8 @@ const ChartOverview = () => {
             datasets: [
               {
                 data: chartData.total_volumes.map((vol) => new Date(vol[1])),
-                backgroundColor: "rgba(33,114,229,255)",
-                borderRadius: 3,
+                backgroundColor: "#975ed1",
+                borderRadius: 15,
               },
             ],
           }}
