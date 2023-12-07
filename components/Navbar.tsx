@@ -1,26 +1,59 @@
-import React from "react";
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import logo from "../icons/logo.png";
 
 const Navbar = () => {
+  const [activeLink, setActiveLink] = useState("home");
+  const [darkMode, setDarkMode] = useState(false);
+
   return (
-    <div className="mt-5 flex justify-center">
-      <div className="w-[80%] flex items-center justify-center space-x-2">
-        <Link className="bg-[#2c2f36] px-10 py-3.5 rounded-lg" href="/">
-          Coins
-        </Link>
-        <Link className="px-7 py-3.5 rounded-lg" href="/portfolio">
+    <nav className="flex items-center justify-between p-4">
+      {/* Logo Section */}
+      <div className="flex items-center">
+        <Image src={logo} alt="NexaVenture" className="w-[40%]" />
+      </div>
+
+      {/* Page Section */}
+      <div className="flex items-center">
+        <div
+          className={`mr-4 p-2 rounded cursor-pointer ${
+            activeLink === "home" ? "gradient-active" : "text-[#8e8e8e]"
+          }`}
+          onClick={() => setActiveLink("home")}
+        >
+          Home
+        </div>
+        <div
+          className={`mr-4 p-2 rounded cursor-pointer ${
+            activeLink === "portfolio" ? "gradient-active" : "text-[#8e8e8e]"
+          }`}
+          onClick={() => setActiveLink("portfolio")}
+        >
           Portfolio
-        </Link>
-        <div className="grow" />
+        </div>
+      </div>
+
+      {/* Search and Settings Section */}
+      <div className="flex items-center">
         <input
           type="text"
-          className="bg-[#2c2f36] p-3.5 rounded-lg"
           placeholder="Search..."
+          className="bg-[#181825] rounded-md mr-4 p-2 w-64 h-10"
         />
-        <button className="bg-[#2c2f36] p-3.5 rounded-lg">USD</button>
-        <button className="bg-[#2c2f36] p-3.5 rounded-lg">LD</button>
+        <select className="bg-[#181825] rounded-md mr-4 p-2 h-10">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <button
+          className="bg-[#181825] rounded-md p-2 h-10"
+          onClick={() => setDarkMode(!darkMode)}
+        >
+          {darkMode ? "L" : "D"}
+        </button>
       </div>
-    </div>
+    </nav>
   );
 };
 

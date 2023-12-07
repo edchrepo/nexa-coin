@@ -1,16 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap");
 
 body {
   display: flex;
   justify-content: center;
   height: 100vh;
   margin: 0;
-  background-color: #191b1f;
+  background-color: #13121a;
   font-weight: 400;
   color: white;
-  font-size: 1.25rem; /* 20px */
-  line-height: 1.75rem; /* 28px */
-  @apply font-sans;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.gradient-active {
+  background: radial-gradient(
+    circle closest-side,
+    white,
+    rgba(255, 255, 255, 0) 100%
+  );
 }

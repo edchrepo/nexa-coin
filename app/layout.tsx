@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="lg:w-[80%] sm:w-[90%]">
+        <div className="font-mono lg:w-[80%] sm:w-[90%]">
           <Navbar />
           <MarketData />
           {children}
