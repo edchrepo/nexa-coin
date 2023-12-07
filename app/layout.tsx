@@ -18,8 +18,10 @@ export default function RootLayout({
       <body>
         <div className="font-mono w-[100%]">
           <MarketData />
-          <Navbar />
-          {children}
+          <div className="flex flex-col items-center justify-center">
+            <Navbar />
+            {children}
+          </div>
         </div>
       </body>
     </html>

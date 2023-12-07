@@ -42,7 +42,7 @@ const CoinsTable = () => {
   }, []);
 
   return (
-    <div className="w-full">
+    <div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">TOP 50 BY MARKET CAP</h1>
         <div>

@@ -9,10 +9,10 @@ const Navbar = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
-    <nav className="flex items-center justify-between p-4">
+    <nav className="flex items-center justify-between p-4 w-[90%]">
       {/* Logo Section */}
       <div className="flex items-center">
-        <Image src={logo} alt="NexaVenture" className="w-[40%]" />
+        <Image src={logo} alt="NexaVenture" className="w-[50%]" />
       </div>
 
       {/* Page Section */}
