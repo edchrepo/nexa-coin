@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState("coins");
   return (
-    <div className="flex bg-[#181825] w-[25%] py-2 px-5 rounded-[15px]">
+    <div className="flex bg-[#181825] w-[25%] py-2 px-5 rounded-[15px] mt-5">
       <div
         className={`flex justify-center items-center 
             ${
