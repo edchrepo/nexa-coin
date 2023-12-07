@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="font-mono w-[100%]">
+        <div className="w-[100%]">
           <MarketData />
           <div className="flex flex-col items-center justify-center">
             <Navbar />
