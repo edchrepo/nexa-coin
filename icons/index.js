@@ -4,7 +4,16 @@ import UpArrow from "./uparrow.svg"
 import ExchangeIcon from "./exchange.svg"
 import BitcoinIcon from "./Bitcoin.svg"
 import EthereumIcon from "./Ethereum.svg"
+import Home from "./home.svg"
+import HomeStatic from "./homestatic.svg"
+import Stack from "./stack.svg"
+import StackStatic from "./stackstatic.svg"
+import Search from "./search.svg"
+import Light from "./light.svg"
+import Dark from "./dark.svg"
+import Currency from "./currency.svg"
 import logo from "./logo.png"
+import logolight from "./logolight.png"
 
 export {
     BoltCircle,
@@ -13,5 +22,14 @@ export {
     ExchangeIcon,
     BitcoinIcon,
     EthereumIcon,
-    logo
+    Home,
+    HomeStatic,
+    Stack,
+    StackStatic,
+    Search,
+    Light,
+    Dark,
+    Currency,
+    logo,
+    logolight
 }
