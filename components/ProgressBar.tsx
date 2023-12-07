@@ -4,9 +4,10 @@ import { CSSProperties } from "react";
 
 interface ProgressBarProps {
   progress: number;
+  color?: string;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ progress, color="#71797E"}) => {
   const Parentdiv: CSSProperties = {
     width: "100%",
     height: 10,
@@ -17,7 +18,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
   const Childdiv: CSSProperties = {
     width: `${progress}%`,
     height: 10,
-    backgroundColor: "#71797E",
+    backgroundColor: color,
     borderRadius: 30,
     textAlign: "right",
   };
