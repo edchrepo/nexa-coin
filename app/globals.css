@@ -15,11 +15,3 @@ body {
   font-size: 1rem;
   line-height: 1.5rem;
 }
-
-.gradient-active {
-  background: radial-gradient(
-    circle closest-side,
-    white,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
