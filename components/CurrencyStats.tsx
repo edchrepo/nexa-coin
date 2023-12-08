@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import * as Icons from "../icons";
+import Currency from "./Currency";
 
 const CurrencyStats = () => {
   const [compare, setCompare] = useState(false);
@@ -30,7 +31,7 @@ const CurrencyStats = () => {
               alt="Light"
             />
           )}
-          {compare ? "Compare" : "Exit comparison"}
+          {compare ? "Exit comparison" : "Compare"}
         </button>
 
         {/* Map each coin and set activeCoin. Carousel effect here */}
