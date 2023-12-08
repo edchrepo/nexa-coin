@@ -41,8 +41,8 @@ const MarketData = () => {
   }, []);
 
   return (
-    <div className="bg-[#1e1932] flex justify-center p-6 border-b-2 border-[#3f3f4a]">
-      <div className="w-[60%] text-base flex justify-between items-center">
+    <div className="bg-[#1e1932] flex justify-center p-5 border-b-2 border-[#3f3f4a]">
+      <div className="w-[60%] text-sm flex justify-between items-center">
       {marketData ? 
         <>
           <div className="flex items-center">
@@ -59,16 +59,17 @@ const MarketData = () => {
             <Image className="h-3 w-3 mr-1" src={marketData.market_cap_change_percentage_24h_usd > 0 ? Icons.UpArrow : Icons.DownArrow} alt="Arrow"/>
             <p>{formatCurrency(marketData.total_market_cap.usd)}</p>
           </div>
-          <div className="flex items-center w-[12%]">
+          <div className="flex items-center w-[13.5%]">
             <span className="mr-2">{formatCurrency(marketData.total_volume.usd)}</span>
             <ProgressBar
                     progress={Math.min(
                       Math.round((marketData.total_volume.usd / marketData.total_market_cap.usd) * 100),
                       100
                     )}
+                    height={6}
             />
           </div>
-          <div className="flex items-center w-[12%]">
+          <div className="flex items-center w-[13.5%]">
               <Image className="h-7 w-7 mr-1" src={Icons.BitcoinIcon} alt="BitcoinIcon"/>
               <span className="mr-2">{`${Math.floor(marketData.market_cap_percentage.btc)}%`}</span>
               <ProgressBar
@@ -77,9 +78,10 @@ const MarketData = () => {
                         100
                       )}
                       color="#f7931a"
+                      height={6}
               />
           </div>
-          <div className="flex items-center w-[12%]">
+          <div className="flex items-center w-[13.5%]">
             <Image className="h-7 w-7 mr-1" src={Icons.EthereumIcon} alt="EthereumIcon"/>
             <span className="mr-2">{`${Math.floor(marketData.market_cap_percentage.eth)}%`}</span>
             <ProgressBar
@@ -88,6 +90,7 @@ const MarketData = () => {
                       100
                     )}
                     color="#849dff"
+                    height={5}
             />
           </div>
         </>
