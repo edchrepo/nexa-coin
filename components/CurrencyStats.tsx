@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
 
 const CurrencyStats = () => {
   return (
-    <div>CurrencyStats</div>
-  )
-}
+    <div>
+      <div className="text-secondary">
+        Select the currency to view statistics
+      </div>
+      <button className="rounded-md">Compare</button>
+    </div>
+  );
+};
 
-export default CurrencyStats
+export default CurrencyStats;

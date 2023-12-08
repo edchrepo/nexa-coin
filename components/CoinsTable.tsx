@@ -43,26 +43,6 @@ const CoinsTable = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold">TOP 50 BY MARKET CAP</h1>
-        <div>
-          <div className="inline-block mr-4">
-            Show:
-            <select className="bg-[#1f2128]">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-          </div>
-          <div className="inline-block">
-            Page:
-            <button className="ml-2">←</button>
-            <span className="mx-1">1</span>
-            <button className="mr-2">→</button>
-          </div>
-        </div>
-      </div>
       <table className="table-fixed">
         <thead>
           <tr className="text-left border-b border-gray-500">
