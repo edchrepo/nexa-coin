@@ -4,9 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 import * as Icons from "../icons";
 import Currency from "./Currency";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/autoplay";
 
 const CurrencyStats = () => {
   const [compare, setCompare] = useState(false);
+  const coins = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
     <div>
@@ -33,9 +39,21 @@ const CurrencyStats = () => {
           )}
           {compare ? "Exit comparison" : "Compare"}
         </button>
-
-        {/* Map each coin and set activeCoin. Carousel effect here */}
       </div>
+      <Swiper
+        modules={[Navigation, Autoplay]}
+        spaceBetween={7}
+        slidesPerView={5}
+        navigation
+        autoplay
+        className="mt-4 mb-8"
+      >
+        {coins.map((index) => (
+          <SwiperSlide key={index}>
+            <Currency />
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };
