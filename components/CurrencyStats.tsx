@@ -3,16 +3,24 @@
 import { useState } from "react";
 import Image from "next/image";
 import * as Icons from "../icons";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Currency from "./Currency";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/autoplay";
+import PrevArrow from "./PrevArrow";
+import NextArrow from "./NextArrow";
 
 const CurrencyStats = () => {
   const [compare, setCompare] = useState(false);
   const coins = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+  const settings = {
+    speed: 1000,
+    slidesToShow: 5,
+    autoplay: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+  };
 
   return (
     <div>
@@ -40,20 +48,13 @@ const CurrencyStats = () => {
           {compare ? "Exit comparison" : "Compare"}
         </button>
       </div>
-      <Swiper
-        modules={[Navigation, Autoplay]}
-        spaceBetween={7}
-        slidesPerView={5}
-        navigation
-        autoplay
-        className="mt-4 mb-8"
-      >
+      <Slider {...settings}>
         {coins.map((index) => (
-          <SwiperSlide key={index}>
+          <div key={index}>
             <Currency />
-          </SwiperSlide>
+          </div>
         ))}
-      </Swiper>
+      </Slider>
     </div>
   );
 };
