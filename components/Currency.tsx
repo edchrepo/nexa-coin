@@ -2,9 +2,19 @@ import React from "react";
 import Image from "next/image";
 import * as Icons from "../icons";
 
-const Currency = () => {
+interface CurrencyProps {
+  isSelected: boolean;
+}
+
+const Currency: React.FC<CurrencyProps> = ({ isSelected }) => {
+  const currencyClass = isSelected
+    ? "bg-[#3c3c7e] border-2 border-[#6161cb]"
+    : "bg-[#181825] border-2 border-[#181825]";
+
   return (
-    <div className="flex items-center bg-[#181825] border border-border rounded-md mx-1 p-2 h-20 w-50">
+    <div
+      className={`flex items-center ${currencyClass} rounded-md mx-1 p-2 h-20 w-50`}
+    >
       <Image
         className="h-7 w-7 mx-2"
         src={Icons.BitcoinIcon}

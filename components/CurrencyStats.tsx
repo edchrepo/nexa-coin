@@ -14,6 +14,7 @@ const CurrencyStats = () => {
   const slider = useRef<any>(null);
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(true);
+  const [selectedCurrencies, setSelectedCurrencies] = useState<number[]>([]);
 
   const settings = {
     speed: 1000,
@@ -29,6 +30,14 @@ const CurrencyStats = () => {
       setShowPrev(currentSlide > 0);
       setShowNext(currentSlide < coins.length - 5);
     },
+  };
+
+  const handleSelectedCurrency = (index: number) => {
+    setSelectedCurrencies((prevSelected) =>
+      prevSelected.includes(index)
+        ? prevSelected.filter((i) => i !== index)
+        : [...prevSelected, index]
+    );
   };
 
   return (
@@ -60,8 +69,8 @@ const CurrencyStats = () => {
       <div className="relative">
         <Slider ref={slider} {...settings} className="mt-4 mb-8">
           {coins.map((index) => (
-            <div key={index}>
-              <Currency />
+            <div key={index} onClick={() => handleSelectedCurrency(index)}>
+              <Currency isSelected={selectedCurrencies.includes(index)} />
             </div>
           ))}
         </Slider>
