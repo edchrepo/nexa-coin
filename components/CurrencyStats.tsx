@@ -1,29 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import * as Icons from "../icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Currency from "./Currency";
-import PrevArrow from "./PrevArrow";
-import NextArrow from "./NextArrow";
 
 const CurrencyStats = () => {
   const [compare, setCompare] = useState(false);
   const coins = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const slider = useRef<any>(null);
+  const [showPrev, setShowPrev] = useState(false);
+  const [showNext, setShowNext] = useState(true);
 
   const settings = {
     speed: 1000,
     slidesToShow: 5,
     autoplay: true,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    arrows: false,
+    beforeChange: (_: number, newIndex: number) => {
+      setShowPrev(newIndex > 0);
+      setShowNext(newIndex < coins.length - 5);
+    },
+    afterChange: (currentSlide: number) => {
+      setShowPrev(currentSlide > 0);
+      setShowNext(currentSlide < coins.length - 5);
+    },
   };
 
   return (
-    <div>
+    <div className="relative bg-[#13121a] flex-col justify-center mx-auto">
       <div className="flex justify-between text-secondary">
         <div className="flex items-end">
           Select the currency to view statistics
@@ -48,13 +56,31 @@ const CurrencyStats = () => {
           {compare ? "Exit comparison" : "Compare"}
         </button>
       </div>
-      <Slider {...settings}>
-        {coins.map((index) => (
-          <div key={index}>
-            <Currency />
-          </div>
-        ))}
-      </Slider>
+      <div className="relative">
+        <Slider ref={slider} {...settings} className="mt-4 mb-8">
+          {coins.map((index) => (
+            <div key={index}>
+              <Currency />
+            </div>
+          ))}
+        </Slider>
+        {showPrev && (
+          <button
+            onClick={() => slider.current?.slickPrev()}
+            className="absolute left-0 z-10 bg-blue-500 text-white p-2 rounded-full -translate-y-1/2 top-1/2"
+          >
+            Prev
+          </button>
+        )}
+        {showNext && (
+          <button
+            onClick={() => slider.current?.slickNext()}
+            className="absolute right-0 z-10 bg-blue-500 text-white p-2 rounded-full -translate-y-1/2 top-1/2"
+          >
+            Next
+          </button>
+        )}
+      </div>
     </div>
   );
 };
