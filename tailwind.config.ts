@@ -12,6 +12,9 @@ const config: Config = {
         secondary: "#89888c",
         border: "#201f2a",
       },
+      boxShadow: {
+        whiteShadow: "0 0 15px 1px rgba(97, 97, 203, 0.5)",
+      },
       screens: {
         sm: "550px",
         // => @media (min-width: 640px) { ... }

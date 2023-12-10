@@ -8,12 +8,12 @@ interface CurrencyProps {
 
 const Currency: React.FC<CurrencyProps> = ({ isSelected }) => {
   const currencyClass = isSelected
-    ? "bg-[#3c3c7e] border-2 border-[#6161cb]"
-    : "bg-[#181825] border-2 border-[#181825]";
+    ? "bg-[#3c3c7e] border-[#6161cb] shadow-whiteShadow"
+    : "bg-[#181825] border-[#181825]";
 
   return (
     <div
-      className={`flex items-center ${currencyClass} rounded-md mx-1 p-2 h-20 w-50`}
+      className={`flex items-center border-2 ${currencyClass} rounded-md mx-1 my-3 p-2 h-20 w-50`}
     >
       <Image
         className="h-7 w-7 mx-2"
@@ -21,7 +21,7 @@ const Currency: React.FC<CurrencyProps> = ({ isSelected }) => {
         alt="BitcoinIcon"
       />
       <div className="flex-col ml-2">
-        BitCoin (BTC)
+        Bitcoin (BTC)
         <div className="flex">
           <div className="text-secondary mr-2">27,445.55 USD</div>
           <div className="text-green-500">10.67%</div>
