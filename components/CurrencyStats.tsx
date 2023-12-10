@@ -43,14 +43,14 @@ const CurrencyStats = () => {
         >
           {compare ? (
             <Image
-              className="h-7 w-7 -ml-1.5 mr-2"
-              src={Icons.Dark}
+              className="h-5 w-5 -ml-1.5 mr-3"
+              src={Icons.Exit}
               alt="Dark"
             />
           ) : (
             <Image
-              className="h-7 w-7 -ml-1.5 mr-2"
-              src={Icons.Light}
+              className="h-6 w-6 -ml-1.5 mr-3"
+              src={Icons.Comparison}
               alt="Light"
             />
           )}

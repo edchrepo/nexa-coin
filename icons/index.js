@@ -14,6 +14,8 @@ import Search from "./search.svg";
 import Light from "./light.svg";
 import Dark from "./dark.svg";
 import Currency from "./currency.svg";
+import Comparison from "./comparison.svg";
+import Exit from "./exit.svg";
 import logo from "./logo.png";
 import logolight from "./logolight.png";
 
@@ -34,6 +36,8 @@ export {
   Light,
   Dark,
   Currency,
+  Comparison,
+  Exit,
   logo,
   logolight,
 };
