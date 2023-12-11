@@ -137,7 +137,7 @@ const ChartOverview = () => {
               datasets: [
                 {
                   data: chartData.total_volumes.map((vol) => new Date(vol[1])),
-                  borderRadius: 15,
+                  borderRadius: 7,
                   backgroundColor: (context) => {
                     const chart = context.chart;
                     const { ctx, chartArea } = chart;
