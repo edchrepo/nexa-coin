@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
 import TimeChart from "./TimeChart"
+import { useAppDispatch, useAppSelector } from '../app/store/hooks';
+import { fetchChartData } from '../app/store/slices/chartDataSlice';
 ChartJS.register(...registerables);
 
 const options = {
@@ -35,23 +37,13 @@ const options = {
 };
 
 const ChartOverview = () => {
-  const [chartData, setChartData] = useState({
-    prices: [],
-    market_caps: [],
-    total_volumes: [],
-  });
+  const dispatch = useAppDispatch();
+  const timeFrame = useAppSelector((state) => state.time.timeFrame);
+  const chartData = useAppSelector((state) => state.chartData);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7&interval=daily"
-      );
-      const data = await response.json();
-      console.log(data);
-      setChartData(data);
-    };
-    fetchData();
-  }, []);
+    dispatch(fetchChartData(timeFrame));
+}, [dispatch, timeFrame]);
 
   return (
     <div>
