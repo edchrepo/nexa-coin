@@ -1,44 +1,21 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { formatCurrency } from "@/utils/utils";
 import Image from 'next/image';
 import * as Icons from "../icons";
 import ProgressBar from "./ProgressBar";
-
-interface MarketData {
-    active_cryptocurrencies: number;
-    ended_icos: number
-    market_cap_change_percentage_24h_usd: number;
-    market_cap_percentage: { [key: string]: number };
-    markets: number;
-    ongoing_icos: number;
-    total_market_cap: { [key: string]: number };
-    total_volume: { [key: string]: number };
-    upcoming_icos: number;
-    updated_at: number;
-}
+import { useAppDispatch, useAppSelector } from '../app/store/hooks';
+import { fetchMarketData } from '../app/store/slices/marketDataSlice';
 
 
 const MarketData = () => {
-  const [marketData, setMarketData] = useState<MarketData>();
+  const dispatch = useAppDispatch();
+  const marketData = useAppSelector((state) => state.marketData);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://api.coingecko.com/api/v3/global"
-        );
-        const data = await response.json();
-        console.log(data);
-        setMarketData(data.data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    dispatch(fetchMarketData());
+  }, [dispatch]);
 
   return (
     <div className="bg-[#1e1932] flex justify-center p-5 border-b-2 border-[#3f3f4a]">

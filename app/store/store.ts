@@ -1,8 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
+import counterReducer from "./slices/slice"
+import marketDataReducer from './slices/marketDataSlice'
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {}
+    reducer: {
+        counter: counterReducer,
+        marketData: marketDataReducer
+    }
   })
 }
 
