@@ -74,25 +74,27 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
         )}
         %
       </div>
-      <div className="col-span-8">
+      <div className="col-span-8 text-[#7272ed]">
         {formatCurrency(coin.total_volume)} / {formatCurrency(coin.market_cap)}
         <ProgressBar
           progress={Math.min(
             Math.round((coin.total_volume / coin.market_cap) * 100),
             100
           )}
+          color="#985fd2"
         />
       </div>
-      <div className="col-span-8">
+      <div className="col-span-8 text-[#7272ed]">
         {formatCurrency(coin.circulating_supply)} /{" "}
         {formatCurrency(coin.total_supply)}
         <ProgressBar
           progress={Math.round(
             (coin.circulating_supply / coin.total_supply) * 100
           )}
+          color="#985fd2"
         />
       </div>
-      <div className="col-span-6">Spark chart for 7d</div>
+      <div className="col-span-6"></div>
     </div>
   );
 };
