@@ -1,9 +1,9 @@
-"use client";
+interface TabsProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}
 
-import React, { useState } from "react";
-
-const Tabs = () => {
-  const [activeTab, setActiveTab] = useState("coins");
+const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   return (
     <div className="flex bg-[#181825] w-[25%] py-2 px-5 rounded-[15px] mt-5">
       <div
