@@ -55,7 +55,6 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
     ],
   };
 
-
   return (
     <div className="grid grid-cols-48 gap-2 bg-[#181825] border-[#181825] rounded-xl my-2 py-4 items-center">
       <div className="col-span-2 text-center">{index + 1}</div>
@@ -119,22 +118,24 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
         )}
         %
       </div>
-      <div className="col-span-8">
+      <div className="col-span-8 text-[#7272ed]">
         {formatCurrency(coin.total_volume)} / {formatCurrency(coin.market_cap)}
         <ProgressBar
           progress={Math.min(
             Math.round((coin.total_volume / coin.market_cap) * 100),
             100
           )}
+          color="#985fd2"
         />
       </div>
-      <div className="col-span-8">
+      <div className="col-span-8 text-[#7272ed]">
         {formatCurrency(coin.circulating_supply)} /{" "}
         {formatCurrency(coin.total_supply)}
         <ProgressBar
           progress={Math.round(
             (coin.circulating_supply / coin.total_supply) * 100
           )}
+          color="#985fd2"
         />
       </div>
       <div className="col-span-6">

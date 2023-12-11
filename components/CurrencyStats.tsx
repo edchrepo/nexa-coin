@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useAppDispatch, useAppSelector } from "../app/store/hooks";
+import { fetchCoinsData } from "../app/store/slices/coinsDataSlice";
 import Image from "next/image";
 import * as Icons from "../icons";
 import Slider from "react-slick";
@@ -10,25 +12,26 @@ import Currency from "./Currency";
 
 const CurrencyStats = () => {
   const [compare, setCompare] = useState(false);
-  const coins = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const slider = useRef<any>(null);
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(true);
   const [selectedCurrencies, setSelectedCurrencies] = useState<number[]>([]);
+  const dispatch = useAppDispatch();
+  const coins = useAppSelector((state) => state.coinsData);
 
   const settings = {
     speed: 1000,
-    slidesToShow: 5,
+    slidesToShow: 6,
     autoplay: true,
     arrows: false,
     infinite: false,
     beforeChange: (_: number, newIndex: number) => {
       setShowPrev(newIndex > 0);
-      setShowNext(newIndex < coins.length - 5);
+      setShowNext(newIndex < coins.length - 6);
     },
     afterChange: (currentSlide: number) => {
       setShowPrev(currentSlide > 0);
-      setShowNext(currentSlide < coins.length - 5);
+      setShowNext(currentSlide < coins.length - 6);
     },
   };
 
@@ -39,6 +42,10 @@ const CurrencyStats = () => {
         : [...prevSelected, index]
     );
   };
+
+  useEffect(() => {
+    dispatch(fetchCoinsData());
+  }, [dispatch]);
 
   return (
     <div className="relative bg-[#13121a] flex-col justify-center mx-auto">
@@ -68,9 +75,12 @@ const CurrencyStats = () => {
       </div>
       <div className="relative">
         <Slider ref={slider} {...settings} className="mt-4 mb-8">
-          {coins.map((index) => (
+          {coins.map((coin, index) => (
             <div key={index} onClick={() => handleSelectedCurrency(index)}>
-              <Currency isSelected={selectedCurrencies.includes(index)} />
+              <Currency
+                coin={coin}
+                isSelected={selectedCurrencies.includes(index)}
+              />
             </div>
           ))}
         </Slider>
