@@ -15,6 +15,9 @@ const config: Config = {
       boxShadow: {
         whiteShadow: "0 0 15px 1px rgba(97, 97, 203, 0.5)",
       },
+      gridTemplateColumns: {
+        "48": "repeat(48, minmax(0, 1fr))",
+      },
       screens: {
         sm: "550px",
         // => @media (min-width: 640px) { ... }
