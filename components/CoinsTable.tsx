@@ -1,11 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import ProgressBar from "./ProgressBar";
-import { formatCurrency } from "@/utils/utils";
 import { useAppDispatch, useAppSelector } from "../app/store/hooks";
 import { fetchCoinsData } from "../app/store/slices/coinsDataSlice";
-import { useState, useEffect } from "react";
 import CoinRow from "./CoinRow";
 
 const CoinsTable = () => {

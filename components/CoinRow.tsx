@@ -3,7 +3,7 @@ import Image from "next/image";
 import * as Icons from "../icons";
 import ProgressBar from "./ProgressBar";
 import { formatCurrency } from "@/utils/utils";
-import { CoinData } from "./CoinsTable";
+import { CoinData } from "@/app/store/slices/coinsDataSlice";
 
 interface CoinProps {
   coin: CoinData;
