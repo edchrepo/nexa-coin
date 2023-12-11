@@ -10,7 +10,7 @@ const Tabs = () => {
         className={`flex justify-center items-center 
             ${
               activeTab === "coins"
-                ? "bg-[#3c3c7e] border-2 border-[#6161cb]"
+                ? "bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow"
                 : "bg-[#232336]"
             } p-4 rounded-lg w-[50%]`}
         onClick={() => setActiveTab("coins")}
@@ -21,7 +21,7 @@ const Tabs = () => {
         className={`flex justify-center items-center 
             ${
               activeTab === "converter"
-                ? "bg-[#3c3c7e] border-2 border-[#6161cb]"
+                ? "bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow"
                 : "bg-[#232336]"
             } p-4 rounded-lg w-[50%]`}
         onClick={() => setActiveTab("converter")}
