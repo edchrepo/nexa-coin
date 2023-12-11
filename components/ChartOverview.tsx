@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { Chart as ChartJS, registerables } from "chart.js";
+import { Chart as ChartJS, registerables, ChartArea } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
 import TimeChart from "./TimeChart";
 import { useAppDispatch, useAppSelector } from "../app/store/hooks";
@@ -45,6 +45,19 @@ const ChartOverview = () => {
     dispatch(fetchChartData(timeFrame));
   }, [dispatch, timeFrame]);
 
+  const getGradient = (ctx: CanvasRenderingContext2D, chartArea: ChartArea, type: string) => {
+    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+    if (type === "line") {
+      gradient.addColorStop(0, 'rgba(34, 34, 67, 1)');
+      gradient.addColorStop(1, 'rgba(63, 63, 131, 1)');
+    }
+    else {
+      gradient.addColorStop(0, 'rgba(51,38,78,255)');
+      gradient.addColorStop(1, 'rgba(152,95,210,255)');
+    }
+    return gradient;
+  };
+
   return (
     <div>
       <div className="md:flex justify-between my-3 md:space-x-5">
@@ -77,6 +90,15 @@ const ChartOverview = () => {
                   data: chartData.prices.map((price) => new Date(price[1])),
                   tension: 0.4,
                   borderColor: "#7272ed",
+                  fill: true,
+                  backgroundColor: (context) => {
+                    const chart = context.chart;
+                    const { ctx, chartArea } = chart;
+                    if (!chartArea) {
+                      return;
+                    }
+                    return getGradient(ctx, chartArea, "line");
+                  },
                 },
               ],
             }}
@@ -115,8 +137,15 @@ const ChartOverview = () => {
               datasets: [
                 {
                   data: chartData.total_volumes.map((vol) => new Date(vol[1])),
-                  backgroundColor: "#975ed1",
                   borderRadius: 15,
+                  backgroundColor: (context) => {
+                    const chart = context.chart;
+                    const { ctx, chartArea } = chart;
+                    if (!chartArea) {
+                      return;
+                    }
+                    return getGradient(ctx, chartArea, "bar");
+                  },
                 },
               ],
             }}
