@@ -3,9 +3,9 @@
 import { useEffect } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
-import TimeChart from "./TimeChart"
-import { useAppDispatch, useAppSelector } from '../app/store/hooks';
-import { fetchChartData } from '../app/store/slices/chartDataSlice';
+import TimeChart from "./TimeChart";
+import { useAppDispatch, useAppSelector } from "../app/store/hooks";
+import { fetchChartData } from "../app/store/slices/chartDataSlice";
 ChartJS.register(...registerables);
 
 const options = {
@@ -43,7 +43,7 @@ const ChartOverview = () => {
 
   useEffect(() => {
     dispatch(fetchChartData(timeFrame));
-}, [dispatch, timeFrame]);
+  }, [dispatch, timeFrame]);
 
   return (
     <div>

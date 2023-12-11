@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Define a type for the slice state
 interface ChartData {
     prices: number[][];
     market_caps: number[][];

@@ -7,7 +7,6 @@ const TimeChart = () => {
   const dispatch = useAppDispatch();
   const timeSelected = useAppSelector((state) => state.time);
 
-
   const handleTimeFrameChange = (timeFrame: number) => {
     dispatch(setTimeFrame(timeFrame));
   };

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-// Define a type for the slice state
 interface MarketData {
     active_cryptocurrencies: number;
     ended_icos: number
@@ -14,7 +13,6 @@ interface MarketData {
     updated_at: number;
 }
 
-// Define the initial state using that type
 const initialState: MarketData = {
     active_cryptocurrencies: 0,
     ended_icos: 0,
