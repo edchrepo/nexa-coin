@@ -49,14 +49,16 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
       {
         data: coin.sparkline_in_7d.price,
         tension: 0.4,
-        borderColor: "#7272ed",
-        // add 'fill' and 'backgroundColor' if needed
+        borderColor:
+          coin.price_change_percentage_24h_in_currency > 0
+            ? "#00ff00"
+            : "#ff0000",
       },
     ],
   };
 
   return (
-    <div className="grid grid-cols-48 gap-2 bg-[#181825] border-[#181825] rounded-xl my-2 py-4 items-center">
+    <div className="grid grid-cols-48 gap-2 bg-[#181825] border-[#181825] rounded-xl my-2 items-center">
       <div className="col-span-2 text-center">{index + 1}</div>
       <div className="col-span-6">
         <img
@@ -118,24 +120,53 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
         )}
         %
       </div>
-      <div className="col-span-8 text-[#7272ed]">
-        {formatCurrency(coin.total_volume)} / {formatCurrency(coin.market_cap)}
+      <div className="col-span-8 mr-4">
+        <div className="flex justify-between">
+          <div
+            className={`${
+              coin.price_change_percentage_24h_in_currency > 0
+                ? "text-green-500"
+                : "text-red-500"
+            }`}
+          >
+            {formatCurrency(coin.total_volume)}
+          </div>
+          {formatCurrency(coin.market_cap)}
+        </div>
         <ProgressBar
           progress={Math.min(
             Math.round((coin.total_volume / coin.market_cap) * 100),
             100
           )}
-          color="#985fd2"
+          color={`${
+            coin.price_change_percentage_24h_in_currency > 0
+              ? "#00ff00"
+              : "#ff0000"
+          }`}
         />
       </div>
-      <div className="col-span-8 text-[#7272ed]">
-        {formatCurrency(coin.circulating_supply)} /{" "}
-        {formatCurrency(coin.total_supply)}
+      <div className="col-span-8 mr-4">
+        <div className="flex justify-between">
+          <div
+            className={`${
+              coin.price_change_percentage_24h_in_currency > 0
+                ? "text-green-500"
+                : "text-red-500"
+            }`}
+          >
+            {formatCurrency(coin.circulating_supply)}
+          </div>
+          {formatCurrency(coin.total_supply)}
+        </div>
         <ProgressBar
           progress={Math.round(
             (coin.circulating_supply / coin.total_supply) * 100
           )}
-          color="#985fd2"
+          color={`${
+            coin.price_change_percentage_24h_in_currency > 0
+              ? "#00ff00"
+              : "#ff0000"
+          }`}
         />
       </div>
       <div className="col-span-6">

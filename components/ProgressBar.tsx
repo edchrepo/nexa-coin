@@ -8,7 +8,11 @@ interface ProgressBarProps {
   height?: number;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ progress, color="#71797E", height=10}) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({
+  progress,
+  color = "#71797E",
+  height = 10,
+}) => {
   const Parentdiv: CSSProperties = {
     width: "100%",
     height: height,
