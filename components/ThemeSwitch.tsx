@@ -10,7 +10,7 @@ export default function ThemeSwitch() {
 
   return (
     <button
-      className="flex items-center bg-[#181825] border border-border rounded-xl p-2 h-10"
+      className="flex items-center bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-xl p-2 h-10"
       onClick={toggleTheme}
     >
       {theme === "light" ? (

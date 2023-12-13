@@ -10,18 +10,30 @@ interface CurrencyProps {
 
 const Currency: React.FC<CurrencyProps> = ({ coin, isSelected }) => {
   const currencyClass = isSelected
-    ? "bg-[#3c3c7e] border-[#6161cb] shadow-whiteShadow"
-    : "bg-[#181825] border-[#181825]";
+    ? "bg-[#aaabe8] dark:bg-[#3c3c7e] border-[#6161cb] shadow-whiteShadow"
+    : "bg-white dark:bg-[#181825] border-white dark:border-[#181825]";
 
   return (
     <div
       className={`flex items-center border-2 ${currencyClass} rounded-md mx-1 my-3 p-2 h-20 w-50`}
     >
       <img src={coin.image} className="h-7 w-7 mx-2" alt={coin.name} />
-      <div className="flex-col ml-2">
+      <div
+        className={`flex-col ml-2 ${
+          isSelected ? "text-white" : "text-black dark:text-white"
+        }`}
+      >
         {coin.name} ({coin.symbol.toUpperCase()})
         <div className="flex">
-          <div className="text-secondary mr-2">{coin.current_price}</div>
+          <div
+            className={`mr-2 ${
+              isSelected
+                ? "text-secondary"
+                : "text-[#3c3c7e] dark:text-secondary"
+            }`}
+          >
+            {coin.current_price}
+          </div>
           <div
             className={`flex items-center ${
               coin.price_change_percentage_1h_in_currency > 0

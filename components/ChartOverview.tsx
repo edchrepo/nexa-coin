@@ -45,15 +45,23 @@ const ChartOverview = () => {
     dispatch(fetchChartData(timeFrame));
   }, [dispatch, timeFrame]);
 
-  const getGradient = (ctx: CanvasRenderingContext2D, chartArea: ChartArea, type: string) => {
-    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+  const getGradient = (
+    ctx: CanvasRenderingContext2D,
+    chartArea: ChartArea,
+    type: string
+  ) => {
+    const gradient = ctx.createLinearGradient(
+      0,
+      chartArea.bottom,
+      0,
+      chartArea.top
+    );
     if (type === "line") {
-      gradient.addColorStop(0, 'rgba(34, 34, 67, 1)');
-      gradient.addColorStop(1, 'rgba(63, 63, 131, 1)');
-    }
-    else {
-      gradient.addColorStop(0, 'rgba(51,38,78,255)');
-      gradient.addColorStop(1, 'rgba(152,95,210,255)');
+      gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
+      gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
+    } else {
+      gradient.addColorStop(0, "rgba(51,38,78,255)");
+      gradient.addColorStop(1, "rgba(152,95,210,255)");
     }
     return gradient;
   };
@@ -61,7 +69,7 @@ const ChartOverview = () => {
   return (
     <div>
       <div className="md:flex justify-between my-3 md:space-x-5">
-        <div className="md:w-[50%] sm:w-[100%] bg-[#191932] p-7 rounded-[20px]">
+        <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#191932] p-7 rounded-[20px] text-black dark:text-white">
           <div className="absolute text-sm">
             <p>Price</p>
             {chartData.prices.length > 0 ? (
@@ -105,7 +113,7 @@ const ChartOverview = () => {
             options={options}
           />
         </div>
-        <div className="md:w-[50%] sm:w-[100%] bg-[#1e1932] p-7 rounded-[20px]">
+        <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#1e1932] p-7 rounded-[20px] text-black dark:text-white">
           <div className="absolute text-sm">
             <p>Volume</p>
             {chartData.total_volumes.length > 0 ? (

@@ -26,7 +26,9 @@ const Navbar = () => {
       <div className="flex items-center">
         <Link
           className={`flex items-center mr-10 p-2 rounded cursor-pointer ${
-            activeLink !== "home" && "text-secondary"
+            activeLink !== "home"
+              ? "text-secondary"
+              : "text-[#3c3c7e] dark:text-white"
           }`}
           onClick={() => setActiveLink("home")}
           href="/"
@@ -40,7 +42,9 @@ const Navbar = () => {
         </Link>
         <Link
           className={`flex items-center p-2 rounded cursor-pointer ${
-            activeLink !== "portfolio" && "text-secondary"
+            activeLink !== "portfolio"
+              ? "text-secondary"
+              : "text-[#3c3c7e] dark:text-white"
           }`}
           onClick={() => setActiveLink("portfolio")}
           href="/portfolio"
@@ -55,7 +59,7 @@ const Navbar = () => {
       </div>
 
       {/* Search and Settings Section */}
-      <div className="flex items-center">
+      <div className="flex items-center text-[#3c3c7e] dark:text-white">
         <div className="relative">
           <div className="absolute inset-y-0 ml-3 flex items-center pointer-events-none">
             <Image className="h-5 w-5" src={Icons.Search} alt="search" />
@@ -63,14 +67,14 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="Search..."
-            className="bg-[#181825] border border-border rounded-md mr-4 p-2 pl-10 w-96 h-10"
+            className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 w-96 h-10"
           />
         </div>
         <div className="relative">
           <div className="absolute inset-y-0 ml-3 flex items-center pointer-events-none">
             <Image className="h-7 w-7" src={Icons.Currency} alt="currency" />
           </div>
-          <select className="bg-[#181825] border border-border rounded-md mr-4 p-2 pl-10 h-10">
+          <select className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 h-10">
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
             <option value="EUR">GBP</option>
