@@ -143,6 +143,11 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
               ? "#00b1a6"
               : "#fe2264"
           }`}
+          secondaryColor={`${
+            coin.price_change_percentage_24h_in_currency > 0
+              ? "#afe5e5"
+              : "#fbbad1"
+          }`}
         />
       </div>
       <div className="col-span-8 mr-4">
@@ -166,6 +171,11 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
             coin.price_change_percentage_24h_in_currency > 0
               ? "#00b1a6"
               : "#fe2264"
+          }`}
+          secondaryColor={`${
+            coin.price_change_percentage_24h_in_currency > 0
+              ? "#afe5e5"
+              : "#fbbad1"
           }`}
         />
       </div>
