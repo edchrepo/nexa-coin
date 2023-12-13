@@ -25,14 +25,14 @@ const Currency: React.FC<CurrencyProps> = ({ coin, isSelected }) => {
           <div
             className={`flex items-center ${
               coin.price_change_percentage_1h_in_currency > 0
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-[#00b1a6]"
+                : "text-[#fe2264]"
             }`}
           >
             {coin.price_change_percentage_1h_in_currency > 0 ? (
-              <Image className="h-5 w-5 mr-1" src={Icons.Positive} alt="+" />
+              <Image className="h-3 w-3 mr-1" src={Icons.UpArrow} alt="+" />
             ) : (
-              <Image className="h-5 w-5 mr-1" src={Icons.Negative} alt="-" />
+              <Image className="h-3 w-3 mr-1" src={Icons.DownArrow} alt="-" />
             )}
             {Math.abs(
               Math.round(100 * coin.price_change_percentage_1h_in_currency) /

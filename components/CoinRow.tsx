@@ -51,8 +51,8 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
         tension: 0.4,
         borderColor:
           coin.price_change_percentage_24h_in_currency > 0
-            ? "#00ff00"
-            : "#ff0000",
+            ? "#00b1a6"
+            : "#fe2264",
       },
     ],
   };
@@ -72,14 +72,14 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
       <div
         className={`col-span-4 flex items-center ${
           coin.price_change_percentage_1h_in_currency > 0
-            ? "text-green-500"
-            : "text-red-500"
+            ? "text-[#00b1a6]"
+            : "text-[#fe2264]"
         }`}
       >
         {coin.price_change_percentage_1h_in_currency > 0 ? (
-          <Image className="h-5 w-5 mr-1" src={Icons.Positive} alt="+" />
+          <Image className="h-3 w-3 mr-1" src={Icons.UpArrow} alt="+" />
         ) : (
-          <Image className="h-5 w-5 mr-1" src={Icons.Negative} alt="-" />
+          <Image className="h-3 w-3 mr-1" src={Icons.DownArrow} alt="-" />
         )}
         {Math.abs(
           Math.round(100 * coin.price_change_percentage_1h_in_currency) / 100
@@ -89,14 +89,14 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
       <div
         className={`col-span-4 flex items-center ${
           coin.price_change_percentage_24h_in_currency > 0
-            ? "text-green-500"
-            : "text-red-500"
+            ? "text-[#00b1a6]"
+            : "text-[#fe2264]"
         }`}
       >
         {coin.price_change_percentage_24h_in_currency > 0 ? (
-          <Image className="h-5 w-5 mr-1" src={Icons.Positive} alt="+" />
+          <Image className="h-3 w-3 mr-1" src={Icons.UpArrow} alt="+" />
         ) : (
-          <Image className="h-5 w-5 mr-1" src={Icons.Negative} alt="-" />
+          <Image className="h-3 w-3 mr-1" src={Icons.DownArrow} alt="-" />
         )}
         {Math.abs(
           Math.round(100 * coin.price_change_percentage_24h_in_currency) / 100
@@ -106,14 +106,14 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
       <div
         className={`col-span-4 flex items-center ${
           coin.price_change_percentage_7d_in_currency > 0
-            ? "text-green-500"
-            : "text-red-500"
+            ? "text-[#00b1a6]"
+            : "text-[#fe2264]"
         }`}
       >
         {coin.price_change_percentage_7d_in_currency > 0 ? (
-          <Image className="h-5 w-5 mr-1" src={Icons.Positive} alt="+" />
+          <Image className="h-3 w-3 mr-1" src={Icons.UpArrow} alt="+" />
         ) : (
-          <Image className="h-5 w-5 mr-1" src={Icons.Negative} alt="-" />
+          <Image className="h-3 w-3 mr-1" src={Icons.DownArrow} alt="-" />
         )}
         {Math.abs(
           Math.round(100 * coin.price_change_percentage_7d_in_currency) / 100
@@ -125,8 +125,8 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
           <div
             className={`${
               coin.price_change_percentage_24h_in_currency > 0
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-[#00b1a6]"
+                : "text-[#fe2264]"
             }`}
           >
             {formatCurrency(coin.total_volume)}
@@ -140,8 +140,8 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
           )}
           color={`${
             coin.price_change_percentage_24h_in_currency > 0
-              ? "#00ff00"
-              : "#ff0000"
+              ? "#00b1a6"
+              : "#fe2264"
           }`}
         />
       </div>
@@ -150,8 +150,8 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
           <div
             className={`${
               coin.price_change_percentage_24h_in_currency > 0
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-[#00b1a6]"
+                : "text-[#fe2264]"
             }`}
           >
             {formatCurrency(coin.circulating_supply)}
@@ -164,8 +164,8 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
           )}
           color={`${
             coin.price_change_percentage_24h_in_currency > 0
-              ? "#00ff00"
-              : "#ff0000"
+              ? "#00b1a6"
+              : "#fe2264"
           }`}
         />
       </div>
