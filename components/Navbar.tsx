@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTheme } from "@/context/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
 import * as Icons from "../icons";
@@ -8,12 +9,17 @@ import ThemeSwitch from "./ThemeSwitch";
 
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("home");
+  const { theme } = useTheme();
 
   return (
     <nav className="flex items-center justify-between p-4 w-[90%]">
       {/* Logo Section */}
       <div className="flex items-center">
-        <Image className="w-[150px]" src={Icons.logo} alt="NexaCoin" />
+        {theme === "light" ? (
+          <Image className="w-[150px]" src={Icons.logolight} alt="NexaCoin" />
+        ) : (
+          <Image className="w-[150px]" src={Icons.logo} alt="NexaCoin" />
+        )}
       </div>
 
       {/* Page Section */}

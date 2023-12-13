@@ -1,7 +1,7 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from '../app/store/hooks';
-import { setTimeFrame } from '../app/store/slices/timeSlice';
+import { useAppDispatch, useAppSelector } from "../app/store/hooks";
+import { setTimeFrame } from "../app/store/slices/timeSlice";
 
 const TimeChart = () => {
   const dispatch = useAppDispatch();

@@ -48,7 +48,7 @@ const CurrencyStats = () => {
   }, [dispatch]);
 
   return (
-    <div className="relative bg-[#13121a] flex-col justify-center mx-auto">
+    <div className="relative bg-[#f3f5f9] dark:bg-[#13121a] flex-col justify-center mx-auto">
       <div className="flex justify-between text-secondary">
         <div className="flex items-end">
           Select the currency to view statistics
