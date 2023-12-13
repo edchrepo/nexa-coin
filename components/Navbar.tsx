@@ -4,10 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import * as Icons from "../icons";
+import ThemeSwitch from "./ThemeSwitch";
 
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("home");
-  const [darkMode, setDarkMode] = useState(false);
 
   return (
     <nav className="flex items-center justify-between p-4 w-[90%]">
@@ -73,16 +73,7 @@ const Navbar = () => {
             <option value="EUR">KRW</option>
           </select>
         </div>
-        <button
-          className="flex items-center bg-[#181825] border border-border rounded-xl p-2 h-10"
-          onClick={() => setDarkMode(!darkMode)}
-        >
-          {darkMode ? (
-            <Image className="h-5 w-5" src={Icons.Dark} alt="Dark" />
-          ) : (
-            <Image className="h-5 w-5" src={Icons.Light} alt="Light" />
-          )}
-        </button>
+        <ThemeSwitch />
       </div>
     </nav>
   );
