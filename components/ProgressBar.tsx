@@ -5,18 +5,20 @@ import { CSSProperties } from "react";
 interface ProgressBarProps {
   progress: number;
   color?: string;
+  secondaryColor?: string;
   height?: number;
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
   progress,
   color = "#71797E",
+  secondaryColor = "#E5E4E2",
   height = 10,
 }) => {
   const Parentdiv: CSSProperties = {
     width: "100%",
     height: height,
-    backgroundColor: "#E5E4E2",
+    backgroundColor: secondaryColor,
     borderRadius: 30,
   };
 

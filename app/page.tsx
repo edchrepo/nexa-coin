@@ -11,7 +11,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("coins");
 
   return (
-    <div className="bg-[#13121a] flex-col justify-center w-[90%]">
+    <div className="bg-[#f3f5f9] dark:bg-[#13121a] flex-col justify-center w-[90%]">
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === "coins" ? (
         <>

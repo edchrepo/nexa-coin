@@ -51,16 +51,18 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
         tension: 0.4,
         borderColor:
           coin.price_change_percentage_24h_in_currency > 0
-            ? "#00ff00"
-            : "#ff0000",
+            ? "#00b1a6"
+            : "#fe2264",
       },
     ],
   };
 
   return (
-    <div className="grid grid-cols-48 gap-2 bg-[#181825] border-[#181825] rounded-xl my-2 items-center">
-      <div className="col-span-2 text-center">{index + 1}</div>
-      <div className="col-span-6">
+    <div className="grid grid-cols-48 gap-2 bg-white dark:bg-[#181825] border-[#181825] rounded-xl my-2 items-center">
+      <div className="col-span-2 text-center text-[#3c3c7e] dark:text-secondary">
+        {index + 1}
+      </div>
+      <div className="col-span-6 text-black dark:text-white">
         <img
           src={coin.image}
           className="w-8 h-8 inline-block"
@@ -68,18 +70,20 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
         />{" "}
         {coin.name} ({coin.symbol.toUpperCase()})
       </div>
-      <div className="col-span-4">${coin.current_price}</div>
+      <div className="col-span-4 text-black dark:text-white">
+        ${coin.current_price}
+      </div>
       <div
         className={`col-span-4 flex items-center ${
           coin.price_change_percentage_1h_in_currency > 0
-            ? "text-green-500"
-            : "text-red-500"
+            ? "text-[#00b1a6]"
+            : "text-[#fe2264]"
         }`}
       >
         {coin.price_change_percentage_1h_in_currency > 0 ? (
-          <Image className="h-5 w-5 mr-1" src={Icons.Positive} alt="+" />
+          <Image className="h-3 w-3 mr-1" src={Icons.UpArrow} alt="+" />
         ) : (
-          <Image className="h-5 w-5 mr-1" src={Icons.Negative} alt="-" />
+          <Image className="h-3 w-3 mr-1" src={Icons.DownArrow} alt="-" />
         )}
         {Math.abs(
           Math.round(100 * coin.price_change_percentage_1h_in_currency) / 100
@@ -89,14 +93,14 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
       <div
         className={`col-span-4 flex items-center ${
           coin.price_change_percentage_24h_in_currency > 0
-            ? "text-green-500"
-            : "text-red-500"
+            ? "text-[#00b1a6]"
+            : "text-[#fe2264]"
         }`}
       >
         {coin.price_change_percentage_24h_in_currency > 0 ? (
-          <Image className="h-5 w-5 mr-1" src={Icons.Positive} alt="+" />
+          <Image className="h-3 w-3 mr-1" src={Icons.UpArrow} alt="+" />
         ) : (
-          <Image className="h-5 w-5 mr-1" src={Icons.Negative} alt="-" />
+          <Image className="h-3 w-3 mr-1" src={Icons.DownArrow} alt="-" />
         )}
         {Math.abs(
           Math.round(100 * coin.price_change_percentage_24h_in_currency) / 100
@@ -106,14 +110,14 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
       <div
         className={`col-span-4 flex items-center ${
           coin.price_change_percentage_7d_in_currency > 0
-            ? "text-green-500"
-            : "text-red-500"
+            ? "text-[#00b1a6]"
+            : "text-[#fe2264]"
         }`}
       >
         {coin.price_change_percentage_7d_in_currency > 0 ? (
-          <Image className="h-5 w-5 mr-1" src={Icons.Positive} alt="+" />
+          <Image className="h-3 w-3 mr-1" src={Icons.UpArrow} alt="+" />
         ) : (
-          <Image className="h-5 w-5 mr-1" src={Icons.Negative} alt="-" />
+          <Image className="h-3 w-3 mr-1" src={Icons.DownArrow} alt="-" />
         )}
         {Math.abs(
           Math.round(100 * coin.price_change_percentage_7d_in_currency) / 100
@@ -125,13 +129,15 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
           <div
             className={`${
               coin.price_change_percentage_24h_in_currency > 0
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-[#00b1a6]"
+                : "text-[#fe2264]"
             }`}
           >
             {formatCurrency(coin.total_volume)}
           </div>
-          {formatCurrency(coin.market_cap)}
+          <div className="text-black dark:text-white">
+            {formatCurrency(coin.market_cap)}
+          </div>
         </div>
         <ProgressBar
           progress={Math.min(
@@ -140,8 +146,13 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
           )}
           color={`${
             coin.price_change_percentage_24h_in_currency > 0
-              ? "#00ff00"
-              : "#ff0000"
+              ? "#00b1a6"
+              : "#fe2264"
+          }`}
+          secondaryColor={`${
+            coin.price_change_percentage_24h_in_currency > 0
+              ? "#afe5e5"
+              : "#fbbad1"
           }`}
         />
       </div>
@@ -150,13 +161,15 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
           <div
             className={`${
               coin.price_change_percentage_24h_in_currency > 0
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-[#00b1a6]"
+                : "text-[#fe2264]"
             }`}
           >
             {formatCurrency(coin.circulating_supply)}
           </div>
-          {formatCurrency(coin.total_supply)}
+          <div className="text-black dark:text-white">
+            {formatCurrency(coin.total_supply)}
+          </div>
         </div>
         <ProgressBar
           progress={Math.round(
@@ -164,8 +177,13 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
           )}
           color={`${
             coin.price_change_percentage_24h_in_currency > 0
-              ? "#00ff00"
-              : "#ff0000"
+              ? "#00b1a6"
+              : "#fe2264"
+          }`}
+          secondaryColor={`${
+            coin.price_change_percentage_24h_in_currency > 0
+              ? "#afe5e5"
+              : "#fbbad1"
           }`}
         />
       </div>

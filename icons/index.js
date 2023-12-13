@@ -16,8 +16,6 @@ import Dark from "./dark.svg";
 import Currency from "./currency.svg";
 import Comparison from "./comparison.svg";
 import Exit from "./exit.svg";
-import Positive from "./positive.svg";
-import Negative from "./negative.svg";
 import logo from "./logo.png";
 import logolight from "./logolight.png";
 
@@ -40,8 +38,6 @@ export {
   Currency,
   Comparison,
   Exit,
-  Positive,
-  Negative,
   logo,
   logolight,
 };

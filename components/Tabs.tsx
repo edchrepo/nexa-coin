@@ -5,13 +5,13 @@ interface TabsProps {
 
 const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="flex bg-[#181825] w-[25%] py-2 px-5 rounded-[15px] mt-5">
+    <div className="flex bg-white dark:bg-[#181825] w-[25%] py-2 px-5 rounded-[15px] mt-5">
       <div
         className={`flex justify-center items-center 
             ${
               activeTab === "coins"
-                ? "bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow"
-                : "bg-[#232336]"
+                ? "bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow"
+                : "bg-white dark:bg-[#232336] text-[#6161cb] dark:text-white"
             } p-4 rounded-lg w-[50%]`}
         onClick={() => setActiveTab("coins")}
       >
@@ -21,8 +21,8 @@ const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
         className={`flex justify-center items-center 
             ${
               activeTab === "converter"
-                ? "bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow"
-                : "bg-[#232336]"
+                ? "bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow"
+                : "bg-white dark:bg-[#232336] text-[#6161cb] dark:text-white"
             } p-4 rounded-lg w-[50%]`}
         onClick={() => setActiveTab("converter")}
       >
