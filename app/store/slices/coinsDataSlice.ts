@@ -24,9 +24,10 @@ const initialState: CoinData[] = [];
 export const fetchCoinsData = createAsyncThunk(
   "coinsData/fetchCoinsData",
   async () => {
-    const response = await fetch(
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
-    );
+    if (!process.env.NEXT_PUBLIC_API_COINS_URL) {
+      throw new Error('API URL is not defined');
+    }
+    const response = await fetch(process.env.NEXT_PUBLIC_API_COINS_URL);
     const data = await response.json();
     return data;
   }

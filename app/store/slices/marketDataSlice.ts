@@ -29,7 +29,10 @@ const initialState: MarketData = {
 export const fetchMarketData = createAsyncThunk(
     'marketData/fetchMarketData',
     async () => {
-      const response = await fetch("https://api.coingecko.com/api/v3/global");
+      if (!process.env.NEXT_PUBLIC_API_MARKETDATA_URL) {
+        throw new Error('API URL is not defined');
+      }
+      const response = await fetch(process.env.NEXT_PUBLIC_API_MARKETDATA_URL);
       const data = await response.json();
       return data.data;
     }

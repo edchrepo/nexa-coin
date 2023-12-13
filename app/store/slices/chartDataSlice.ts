@@ -16,9 +16,10 @@ const initialState: ChartData = {
 export const fetchChartData = createAsyncThunk(
     'chartData/fetchChartData',
     async (timeFrame: number) => {
-        const response = await fetch(
-            `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${timeFrame}&interval=daily`
-        );
+        if (!process.env.NEXT_PUBLIC_API_CHART_URL) {
+            throw new Error('API URL is not defined');
+        }
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_CHART_URL}${timeFrame}&interval=daily`);
         const data = await response.json();
         return data;
     }
