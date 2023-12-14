@@ -20,15 +20,49 @@ export interface CoinData {
 
 const initialState: CoinData[] = [];
 
+function setCache(data: CoinData[]) {
+  const cacheEntry = {
+    timestamp: Date.now(),
+    data: data,
+  };
+  localStorage.setItem("coinDataCache", JSON.stringify(cacheEntry));
+}
+
+function getCache() {
+  const cacheEntry = localStorage.getItem("coinDataCache");
+  if (!cacheEntry) return null;
+
+  const { timestamp, data } = JSON.parse(cacheEntry);
+  const ageMinutes = (Date.now() - timestamp) / (1000 * 60);
+
+  if (ageMinutes < 15) {
+    return data;
+  }
+
+  localStorage.removeItem("coinDataCache");
+  return null;
+}
+
 // Async thunk for fetching chart data
 export const fetchCoinsData = createAsyncThunk(
   "coinsData/fetchCoinsData",
   async () => {
-    if (!process.env.NEXT_PUBLIC_API_COINS_URL) {
-      throw new Error('API URL is not defined');
+    // Check if cached data is available and valid
+    const cachedData = getCache();
+    if (cachedData) {
+      return cachedData;
     }
+
+    if (!process.env.NEXT_PUBLIC_API_COINS_URL) {
+      throw new Error("API URL is not defined");
+    }
+
     const response = await fetch(process.env.NEXT_PUBLIC_API_COINS_URL);
     const data = await response.json();
+
+    // Cache the new data
+    setCache(data);
+
     return data;
   }
 );
