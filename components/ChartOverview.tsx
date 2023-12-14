@@ -24,9 +24,15 @@ const options = {
       grid: {
         display: false,
       },
+      border: {
+        display: false,
+      },
     },
     y: {
       grid: {
+        display: false,
+      },
+      border: {
         display: false,
       },
       ticks: {

@@ -28,12 +28,18 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index }) => {
         grid: {
           display: false,
         },
+        border: {
+          display: false,
+        },
         ticks: {
           display: false,
         },
       },
       y: {
         grid: {
+          display: false,
+        },
+        border: {
           display: false,
         },
         ticks: {
