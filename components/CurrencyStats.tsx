@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../app/store/hooks";
 import { fetchCoinsData } from "../app/store/slices/coinsDataSlice";
+import { addCoin, removeCoin } from "../app/store/slices/selectedCoinSlice";
 import Image from "next/image";
 import * as Icons from "../icons";
 import Slider from "react-slick";
@@ -15,8 +16,10 @@ const CurrencyStats = () => {
   const slider = useRef<any>(null);
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(true);
-  const [selectedCurrencies, setSelectedCurrencies] = useState<number[]>([]);
   const dispatch = useAppDispatch();
+  const selectedCurrencies = useAppSelector(
+    (state) => state.selectedCoinData.coins
+  );
   const coins = useAppSelector((state) => state.coinsData);
 
   const settings = {
@@ -35,12 +38,12 @@ const CurrencyStats = () => {
     },
   };
 
-  const handleSelectedCurrency = (index: number) => {
-    setSelectedCurrencies((prevSelected) =>
-      prevSelected.includes(index)
-        ? prevSelected.filter((i) => i !== index)
-        : [...prevSelected, index]
-    );
+  const handleSelectedCurrency = (coinId: string) => {
+    if (selectedCurrencies.includes(coinId)) {
+      dispatch(removeCoin(coinId));
+    } else {
+      dispatch(addCoin(coinId));
+    }
   };
 
   useEffect(() => {
@@ -76,10 +79,10 @@ const CurrencyStats = () => {
       <div className="relative">
         <Slider ref={slider} {...settings} className="mt-4 mb-8">
           {coins.map((coin, index) => (
-            <div key={index} onClick={() => handleSelectedCurrency(index)}>
+            <div key={index} onClick={() => handleSelectedCurrency(coin.id)}>
               <Currency
                 coin={coin}
-                isSelected={selectedCurrencies.includes(index)}
+                isSelected={selectedCurrencies.includes(coin.id)}
               />
             </div>
           ))}
