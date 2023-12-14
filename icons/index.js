@@ -8,8 +8,10 @@ import BitcoinIcon from "./Bitcoin.svg";
 import EthereumIcon from "./Ethereum.svg";
 import Home from "./home.svg";
 import HomeStatic from "./homestatic.svg";
+import HomeLight from "./homelight.svg";
 import Stack from "./stack.svg";
 import StackStatic from "./stackstatic.svg";
+import StackLight from "./stacklight.svg";
 import Search from "./search.svg";
 import Light from "./light.svg";
 import Dark from "./dark.svg";
@@ -30,8 +32,10 @@ export {
   EthereumIcon,
   Home,
   HomeStatic,
+  HomeLight,
   Stack,
   StackStatic,
+  StackLight,
   Search,
   Light,
   Dark,

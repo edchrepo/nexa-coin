@@ -35,7 +35,13 @@ const Navbar = () => {
         >
           <Image
             className="h-7 w-7 mr-2"
-            src={activeLink === "home" ? Icons.Home : Icons.HomeStatic}
+            src={
+              activeLink === "home"
+                ? theme === "light"
+                  ? Icons.HomeLight
+                  : Icons.Home
+                : Icons.HomeStatic
+            }
             alt="home"
           />
           <p>Home</p>
@@ -51,7 +57,13 @@ const Navbar = () => {
         >
           <Image
             className="h-7 w-7 mr-2"
-            src={activeLink === "portfolio" ? Icons.Stack : Icons.StackStatic}
+            src={
+              activeLink === "portfolio"
+                ? theme === "light"
+                  ? Icons.StackLight
+                  : Icons.Stack
+                : Icons.StackStatic
+            }
             alt="portfolio"
           />
           <p>Portfolio</p>
