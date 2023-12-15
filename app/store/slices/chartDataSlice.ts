@@ -8,8 +8,8 @@ interface ChartData {
 }
 
 interface ChartDataArgs {
-    timeFrame: number;
-    selectedCoins: string[];
+  timeFrame: number;
+  selectedCoins: string[];
 }
 
 const initialState: ChartData = {
@@ -22,13 +22,14 @@ const initialState: ChartData = {
 export const fetchChartData = createAsyncThunk(
   "chartData/fetchChartData",
   async (args: ChartDataArgs) => {
-        const { timeFrame, selectedCoins } = args;
-        const coinToFetch = selectedCoins.length === 0 ? 'bitcoin' : selectedCoins[0];
+    const { timeFrame, selectedCoins } = args;
+    const coinToFetch =
+      selectedCoins.length === 0 ? "bitcoin" : selectedCoins[0];
     // Check if cached data is available and valid
-    const cachedData = getCache("chartDataCache");
-    if (cachedData) {
-      return cachedData;
-    }
+    // const cachedData = getCache("chartDataCache");
+    // if (cachedData) {
+    //   return cachedData;
+    // }
 
     if (!process.env.NEXT_PUBLIC_API_CHART_URL) {
       throw new Error("API URL is not defined");
@@ -40,7 +41,7 @@ export const fetchChartData = createAsyncThunk(
     const data = await response.json();
 
     // Cache the new data with a specific expiration time (in minutes)
-    setCache("chartDataCache", data, 15);
+    // setCache("chartDataCache", data, 15);
 
     return data;
   }
