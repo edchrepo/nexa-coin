@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getCache, setCache } from "@/utils/utils";
 
 export interface CoinData {
   id: string;
@@ -20,35 +21,12 @@ export interface CoinData {
 
 const initialState: CoinData[] = [];
 
-function setCache(data: CoinData[]) {
-  const cacheEntry = {
-    timestamp: Date.now(),
-    data: data,
-  };
-  localStorage.setItem("coinDataCache", JSON.stringify(cacheEntry));
-}
-
-function getCache() {
-  const cacheEntry = localStorage.getItem("coinDataCache");
-  if (!cacheEntry) return null;
-
-  const { timestamp, data } = JSON.parse(cacheEntry);
-  const ageMinutes = (Date.now() - timestamp) / (1000 * 60);
-
-  if (ageMinutes < 15) {
-    return data;
-  }
-
-  localStorage.removeItem("coinDataCache");
-  return null;
-}
-
 // Async thunk for fetching chart data
 export const fetchCoinsData = createAsyncThunk(
   "coinsData/fetchCoinsData",
   async () => {
     // Check if cached data is available and valid
-    const cachedData = getCache();
+    const cachedData = getCache("coinDataCache");
     if (cachedData) {
       return cachedData;
     }
@@ -60,8 +38,8 @@ export const fetchCoinsData = createAsyncThunk(
     const response = await fetch(process.env.NEXT_PUBLIC_API_COINS_URL);
     const data = await response.json();
 
-    // Cache the new data
-    setCache(data);
+    // Cache the new data with a specific expiration time (in minutes)
+    setCache("coinDataCache", data, 15);
 
     return data;
   }
