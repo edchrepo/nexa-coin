@@ -1,3 +1,32 @@
+export function setCache(
+  key: string,
+  data: any,
+  expirationMinutes: number = 15
+) {
+  const cacheEntry = {
+    timestamp: Date.now(),
+    data: data,
+    expiration: expirationMinutes,
+  };
+  localStorage.setItem(key, JSON.stringify(cacheEntry));
+}
+
+export function getCache(key: string) {
+  const cacheEntryString = localStorage.getItem(key);
+
+  if (!cacheEntryString) return null;
+
+  const { timestamp, data, expiration } = JSON.parse(cacheEntryString);
+  const ageMinutes = (Date.now() - timestamp) / (1000 * 60);
+
+  if (ageMinutes < expiration) {
+    return data;
+  }
+
+  localStorage.removeItem(key);
+  return null;
+}
+
 export function formatCurrency(value: number): string {
   let formattedValue: string;
 
