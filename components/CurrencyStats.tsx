@@ -17,7 +17,7 @@ const CurrencyStats = () => {
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(true);
   const dispatch = useAppDispatch();
-  const selectedCurrencies = useAppSelector(
+  const selectedCoins = useAppSelector(
     (state) => state.selectedCoinData.coins
   );
   const coins = useAppSelector((state) => state.coinsData);
@@ -39,7 +39,7 @@ const CurrencyStats = () => {
   };
 
   const handleSelectedCurrency = (coinId: string) => {
-    if (selectedCurrencies.includes(coinId)) {
+    if (selectedCoins.includes(coinId)) {
       dispatch(removeCoin(coinId));
     } else {
       dispatch(addCoin(coinId));
@@ -78,11 +78,11 @@ const CurrencyStats = () => {
       </div>
       <div className="relative">
         <Slider ref={slider} {...settings} className="mt-4 mb-8">
-          {coins.map((coin, index) => (
-            <div key={index} onClick={() => handleSelectedCurrency(coin.id)}>
+          {coins.map((coin) => (
+            <div key={coin.id} onClick={() => handleSelectedCurrency(coin.id)}>
               <Currency
                 coin={coin}
-                isSelected={selectedCurrencies.includes(coin.id)}
+                isSelected={selectedCoins.includes(coin.id)}
               />
             </div>
           ))}

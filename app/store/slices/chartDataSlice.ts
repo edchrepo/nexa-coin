@@ -6,6 +6,11 @@ interface ChartData {
     total_volumes: number[][];
 }
 
+interface ChartDataArgs {
+    timeFrame: number;
+    selectedCoins: string[];
+}
+
 const initialState: ChartData = {
     prices: [],
     market_caps: [],
@@ -15,11 +20,13 @@ const initialState: ChartData = {
 // Async thunk for fetching chart data
 export const fetchChartData = createAsyncThunk(
     'chartData/fetchChartData',
-    async (timeFrame: number) => {
+    async (args: ChartDataArgs) => {
+        const { timeFrame, selectedCoins } = args;
+        const coinToFetch = selectedCoins.length === 0 ? 'bitcoin' : selectedCoins[0];
         if (!process.env.NEXT_PUBLIC_API_CHART_URL) {
             throw new Error('API URL is not defined');
         }
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_CHART_URL}${timeFrame}&interval=daily`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_CHART_URL}${coinToFetch}/market_chart?vs_currency=usd&days=${timeFrame}&interval=daily`);
         const data = await response.json();
         return data;
     }

@@ -45,11 +45,13 @@ const options = {
 const ChartOverview = () => {
   const dispatch = useAppDispatch();
   const timeFrame = useAppSelector((state) => state.time.timeFrame);
+  const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins)
   const chartData = useAppSelector((state) => state.chartData);
 
   useEffect(() => {
-    dispatch(fetchChartData(timeFrame));
-  }, [dispatch, timeFrame]);
+    dispatch(fetchChartData({ timeFrame: timeFrame, selectedCoins: selectedCoins }));
+    console.log(chartData);
+  }, [dispatch, timeFrame, selectedCoins]);
 
   const getGradient = (
     ctx: CanvasRenderingContext2D,
