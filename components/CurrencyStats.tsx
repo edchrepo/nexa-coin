@@ -28,6 +28,7 @@ const CurrencyStats = () => {
     autoplay: true,
     arrows: false,
     infinite: false,
+    dots: true,
     beforeChange: (_: number, newIndex: number) => {
       setShowPrev(newIndex > 0);
       setShowNext(newIndex < coins.length - 6);
@@ -41,14 +42,22 @@ const CurrencyStats = () => {
   const handleSelectedCurrency = (coinId: string) => {
     if (selectedCoins.includes(coinId)) {
       dispatch(removeCoin(coinId));
-    } else {
-      dispatch(addCoin(coinId));
     }
+    // Don't allow users to select more than 1 coin in default mode
+    // Don't allow users to select more than 3 coins in compare mode     
+    if (!compare && selectedCoins.length >= 1) return
+    if (compare && selectedCoins.length >= 2) return
+    else dispatch(addCoin(coinId));
+    
   };
 
   useEffect(() => {
     dispatch(fetchCoinsData());
   }, [dispatch]);
+
+  useEffect(() => {
+    console.log(selectedCoins)
+  }, [selectedCoins])
 
   return (
     <div className="relative bg-[#f3f5f9] dark:bg-[#13121a] flex-col justify-center mx-auto">
