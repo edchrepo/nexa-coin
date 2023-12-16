@@ -13,29 +13,33 @@ const initialState: ChartData = {
   total_volumes: [],
 };
 
-// Async thunk for fetching chart data
+
 export const fetchChartData = createAsyncThunk(
   "chartData/fetchChartData",
   async (timeFrame: number) => {
-    // Check if cached data is available and valid
-    const cachedData = getCache("chartDataCache");
-    if (cachedData) {
-      return cachedData;
+    try {
+      // Check if cached data is available and valid
+      // const cachedData = getCache("chartDataCache");
+      // if (cachedData) {
+      //   return cachedData;
+      // }
+      const response = await fetch(`/api/data?timeFrame=${timeFrame}`)
+
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data)
+
+      // Cache the new data with a specific expiration time (in minutes)
+      // setCache("chartDataCache", data, 15);
+      return data.data;
+
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
-
-    if (!process.env.NEXT_PUBLIC_API_CHART_URL) {
-      throw new Error("API URL is not defined");
-    }
-
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_CHART_URL}${timeFrame}&interval=daily`
-    );
-    const data = await response.json();
-
-    // Cache the new data with a specific expiration time (in minutes)
-    setCache("chartDataCache", data, 15);
-
-    return data;
   }
 );
 
