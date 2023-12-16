@@ -24,7 +24,7 @@ const initialState: CoinData[] = [];
 // Async thunk for fetching chart data
 export const fetchCoinsData = createAsyncThunk(
   "coinsData/fetchCoinsData",
-  async () => {
+  async (page: number = 1) => {
     // Check if cached data is available and valid
     const cachedData = getCache("coinDataCache");
     if (cachedData) {
@@ -35,7 +35,8 @@ export const fetchCoinsData = createAsyncThunk(
       throw new Error("API URL is not defined");
     }
 
-    const response = await fetch(process.env.NEXT_PUBLIC_API_COINS_URL);
+    const url = `${process.env.NEXT_PUBLIC_API_COINS_URL}&page=${page}`;
+    const response = await fetch(url);
     const data = await response.json();
 
     // Cache the new data with a specific expiration time (in minutes)
@@ -51,7 +52,7 @@ export const coinsDataSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCoinsData.fulfilled, (state, action) => {
-      return action.payload;
+      return [...state, ...action.payload]; // Appending new data from API call
     });
   },
 });
