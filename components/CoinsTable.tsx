@@ -40,7 +40,7 @@ const CoinsTable = () => {
         loader={<p className="text-center mt-4">Loading more coins...</p>}
       >
         {coins.map((coin, index) => (
-          <CoinRow key={coin.id} coin={coin} index={index} />
+          <CoinRow key={index} coin={coin} index={index} />
         ))}
       </InfiniteScroll>
     </div>
