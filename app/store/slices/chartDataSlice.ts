@@ -49,7 +49,7 @@ const initialState: ChartData = {
 
 export const fetchChartData = createAsyncThunk(
   "chartData/fetchChartData",
-  async (args: ChartDataArgs, { rejectWithValue }) => {
+  async (args: ChartDataArgs) => {
     const { timeFrame, selectedCoins } = args;
 
     // Default to 'bitcoin' if selectedCoins is empty
@@ -57,7 +57,7 @@ export const fetchChartData = createAsyncThunk(
       selectedCoins.length === 0 ? ["bitcoin"] : selectedCoins;
 
     if (!process.env.NEXT_PUBLIC_API_CHART_URL) {
-      return rejectWithValue("API URL is not defined");
+      throw new Error("Missing API call")
     }
 
     try {
@@ -89,7 +89,8 @@ export const fetchChartData = createAsyncThunk(
       console.log(combinedData);
       return combinedData;
     } catch (error) {
-      return rejectWithValue(error);
+      console.log(error)
+      throw new Error("API error")
     }
   }
 );

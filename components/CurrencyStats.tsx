@@ -45,8 +45,8 @@ const CurrencyStats = () => {
     }
     // Don't allow users to select more than 1 coin in default mode
     // Don't allow users to select more than 3 coins in compare mode     
-    if (!compare && selectedCoins.length >= 1) return
-    if (compare && selectedCoins.length >= 2) return
+    else if (!compare && selectedCoins.length >= 1) return
+    else if (compare && selectedCoins.length >= 2) return
     else dispatch(addCoin(coinId));
     
   };
