@@ -17,7 +17,6 @@ const CoinsTable = () => {
   const [sortedCoins, setSortedCoins] = useState<CoinData[]>([]);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [page, setPage] = useState(1);
-  const hasMore = coins.length % 50 === 0;
 
   const handleSort = (key: SortKey) => {
     let direction = "ascending";
@@ -39,7 +38,6 @@ const CoinsTable = () => {
     });
 
     setSortedCoins(sortedData);
-    console.log(sortedCoins);
   };
 
   const fetchMoreData = () => {
@@ -116,11 +114,11 @@ const CoinsTable = () => {
       <InfiniteScroll
         dataLength={coins.length}
         next={fetchMoreData}
-        hasMore={hasMore}
+        hasMore={true}
         loader={<p className="text-center mt-4">Loading more coins...</p>}
       >
         {sortedCoins.map((coin, index) => (
-          <CoinRow key={index} coin={coin} index={index} />
+          <CoinRow key={coin.id} coin={coin} index={index} />
         ))}
       </InfiniteScroll>
     </div>

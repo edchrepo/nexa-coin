@@ -25,10 +25,10 @@ const initialState: CoinData[] = [];
 export const fetchCoinsData = createAsyncThunk(
   "coinsData/fetchCoinsData",
   async (page: number = 1) => {
-    // Check if cached data is available and valid
-    const cachedData = getCache("coinDataCache");
+    const cacheKey = `coinDataCache-${page}`;
+    const cachedData = getCache(cacheKey);
     if (cachedData) {
-      return cachedData;
+      return { data: cachedData, page };
     }
 
     if (!process.env.NEXT_PUBLIC_API_COINS_URL) {
@@ -39,10 +39,8 @@ export const fetchCoinsData = createAsyncThunk(
     const response = await fetch(url);
     const data = await response.json();
 
-    // Cache the new data with a specific expiration time (in minutes)
-    setCache("coinDataCache", data, 15);
-
-    return data;
+    setCache(cacheKey, data, 15);
+    return { data, page };
   }
 );
 
@@ -52,7 +50,12 @@ export const coinsDataSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCoinsData.fulfilled, (state, action) => {
-      return [...state, ...action.payload]; // Appending new data from API call
+      const { data, page } = action.payload;
+      if (page === 1) {
+        return data;
+      } else {
+        return [...state, ...data];
+      }
     });
   },
 });
