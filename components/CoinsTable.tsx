@@ -17,6 +17,7 @@ const CoinsTable = () => {
   const [sortedCoins, setSortedCoins] = useState<CoinData[]>([]);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [page, setPage] = useState(1);
+  const [apiError, setApiError] = useState(false);
 
   const handleSort = (key: SortKey) => {
     let direction = "ascending";
@@ -45,7 +46,11 @@ const CoinsTable = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchCoinsData(page));
+    dispatch(fetchCoinsData(page))
+      .unwrap()
+      .catch(() => {
+        setApiError(true);
+      });
   }, [dispatch, page]);
 
   useEffect(() => {
@@ -115,7 +120,11 @@ const CoinsTable = () => {
         dataLength={coins.length}
         next={fetchMoreData}
         hasMore={true}
-        loader={<p className="text-center mt-4">Loading more coins...</p>}
+        loader={
+          <p className="text-center mt-4">
+            {apiError ? "No more coins to load" : "Loading more coins..."}
+          </p>
+        }
       >
         {sortedCoins.map((coin, index) => (
           <CoinRow key={coin.id} coin={coin} index={index} />
