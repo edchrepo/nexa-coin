@@ -9,6 +9,16 @@ import { ChartData, fetchChartData } from "../app/store/slices/chartDataSlice";
 import { formatCurrency } from "@/utils/utils";
 ChartJS.register(...registerables);
 
+interface Dataset {
+  label: string;
+  data: number[];
+  tension?: number;
+  borderColor?: string;
+  fill?: boolean;
+  borderRadius?: number;
+  backgroundColor: any;
+}
+
 const options = {
   plugins: {
     legend: {
@@ -61,7 +71,8 @@ const ChartOverview = () => {
   const getGradient = (
     ctx: CanvasRenderingContext2D,
     chartArea: ChartArea,
-    type: string
+    type: string,
+    index: number
   ) => {
     const gradient = ctx.createLinearGradient(
       0,
@@ -69,10 +80,11 @@ const ChartOverview = () => {
       0,
       chartArea.top
     );
-    if (type === "line") {
+    if (type === "line" || (index === 1 && type === "bar")) {
       gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
       gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
-    } else {
+    }
+    if (type == "bar" || (index === 1 && type === "line")) {
       gradient.addColorStop(0, "rgba(51,38,78,255)");
       gradient.addColorStop(1, "rgba(152,95,210,255)");
     }
@@ -92,32 +104,32 @@ const ChartOverview = () => {
     return { lastValue: null, lastDate: null };
   }
 
-  function prepareChartData(chartData: ChartData, chartType: 'line' | 'bar') {
-    // Determine which data set to use based on chart type
+  function prepareChartData(chartData: ChartData, chartType: 'line' | 'bar'): { labels: string[], datasets: Dataset[] } {
     const dataSet = chartType === 'line' ? chartData.prices : chartData.total_volumes;
   
-    if (Array.isArray(dataSet[0]) && dataSet[0].length > 0) {
-      const labels = dataSet[0].map(data => {
-        if (Array.isArray(data) && data.length === 2) {
-          return new Date(data[0]).getDate();
-        }
-        return '';
-      });
+    let labels: string[] = [];
+    let datasets: Dataset[] = [];
   
-      const dataPoints = dataSet[0].map(data => {
-        if (Array.isArray(data) && data.length === 2) {
-          return data[1];
-        }
-        return 0;
+    // Generate labels from the first dataset
+    if (Array.isArray(dataSet[0])) {
+      labels = dataSet[0].map(data => {
+        return Array.isArray(data) && data.length === 2 ? new Date(data[0]).toLocaleDateString() : '';
       });
+    }
   
-      return {
-        labels,
-        datasets: [{
+    // Generate datasets
+    dataSet.forEach((dataArray, index) => {
+      if (dataArray.length > 0) {
+        const dataPoints = dataArray.map(data => {
+          return Array.isArray(data) && data.length === 2 ? data[1] : 0;
+        });
+  
+        datasets.push({
+          label: `Dataset ${index + 1}`,
           data: dataPoints,
           ...(chartType === 'line' ? {
             tension: 0.4,
-            borderColor: "#7272ed",
+            borderColor: index === 0 ? "#7272ed" : "#d878fa",
             fill: true,
           } : {
             borderRadius: 7,
@@ -128,12 +140,13 @@ const ChartOverview = () => {
             if (!chartArea || !ctx) {
               return 'rgba(0,0,0,0)';
             }
-            return getGradient(ctx, chartArea, chartType);
+            return getGradient(ctx, chartArea, chartType, index);
           },
-        }]
-      };
-    }
-    return { labels: [], datasets: [] };
+        });
+      }
+    });
+  
+    return { labels, datasets };
   }
 
   return (
