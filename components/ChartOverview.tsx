@@ -32,6 +32,7 @@ const options = {
   },
   scales: {
     x: {
+      stacked: true,
       grid: {
         display: false,
       },
@@ -84,9 +85,9 @@ const ChartOverview = () => {
       gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
       gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
     }
-    if (type == "bar" || (index === 1 && type === "line")) {
-      gradient.addColorStop(0, "rgba(51,38,78,255)");
-      gradient.addColorStop(1, "rgba(152,95,210,255)");
+    if (type === "bar" || (index === 1 && type === "line")) {
+      gradient.addColorStop(0, "rgba(51,38,78, 1)");
+      gradient.addColorStop(1, "rgba(152,95,210, 1)");
     }
     return gradient;
   };
@@ -108,7 +109,7 @@ const ChartOverview = () => {
     const dataSet = chartType === 'line' ? chartData.prices : chartData.total_volumes;
   
     let labels: string[] = [];
-    let datasets: Dataset[] = [];
+    let unsortedDatasets: Dataset[] = [];
   
     // Generate labels from the first dataset
     if (Array.isArray(dataSet[0])) {
@@ -117,14 +118,14 @@ const ChartOverview = () => {
       });
     }
   
-    // Generate datasets
+    // Generate unsorted datasets
     dataSet.forEach((dataArray, index) => {
       if (dataArray.length > 0) {
         const dataPoints = dataArray.map(data => {
           return Array.isArray(data) && data.length === 2 ? data[1] : 0;
         });
   
-        datasets.push({
+        unsortedDatasets.push({
           label: `Dataset ${index + 1}`,
           data: dataPoints,
           ...(chartType === 'line' ? {
@@ -142,8 +143,14 @@ const ChartOverview = () => {
             }
             return getGradient(ctx, chartArea, chartType, index);
           },
-        });
-      }
+        })
+  }});
+  
+    // Sort datasets based on their data range (smaller to larger)
+    let datasets = unsortedDatasets.sort((a, b) => {
+      let aMax = Math.max(...a.data);
+      let bMax = Math.max(...b.data);
+      return aMax - bMax;
     });
   
     return { labels, datasets };
