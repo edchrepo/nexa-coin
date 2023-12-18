@@ -28,6 +28,7 @@ export const fetchCoinsData = createAsyncThunk(
     const cacheKey = `coinDataCache-${page}`;
     const cachedData = getCache(cacheKey);
     if (cachedData) {
+      console.log("data retrieved from cache");
       return { data: cachedData, page };
     }
 
@@ -35,7 +36,7 @@ export const fetchCoinsData = createAsyncThunk(
       if (!process.env.NEXT_PUBLIC_API_COINS_URL) {
         throw new Error("API URL is not defined");
       }
-      const url = `${process.env.NEXT_PUBLIC_API_COINS_URL}&page=${page}`;
+      const url = `${process.env.NEXT_PUBLIC_API_COINS_URL}&page=${page}&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`;
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -46,6 +47,7 @@ export const fetchCoinsData = createAsyncThunk(
 
       const data = await response.json();
       setCache(cacheKey, data, 15);
+      console.log("from API call");
       return { data, page };
     } catch (error) {
       return rejectWithValue("API Request Failed");
