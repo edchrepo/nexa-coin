@@ -18,6 +18,7 @@ import Dark from "./dark.svg";
 import Currency from "./currency.svg";
 import Comparison from "./comparison.svg";
 import Exit from "./exit.svg";
+import Sort from "./sort.svg";
 import logo from "./logo.png";
 import logolight from "./logolight.png";
 
@@ -42,6 +43,7 @@ export {
   Currency,
   Comparison,
   Exit,
+  Sort,
   logo,
   logolight,
 };
