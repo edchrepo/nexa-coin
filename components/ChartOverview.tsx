@@ -68,7 +68,6 @@ const ChartOverview = () => {
     dispatch(
       fetchChartData({ timeFrame: timeFrame, selectedCoins: selectedCoins })
     );
-    console.log("Fetched chartData:", chartData);
   }, [dispatch, timeFrame, selectedCoins]);
 
   const getGradient = (
@@ -164,7 +163,7 @@ return (
             <p>Price</p>
             {latestPriceData.lastValue !== null ? (
               <>
-                <p className="text-2xl">{formatCurrency(latestPriceData.lastValue / 1000)} ths</p>
+                <p className="text-2xl">{formatCurrency(latestPriceData.lastValue)}</p>
                 <p>{latestPriceData.lastDate}</p>
               </>
             ) : (
@@ -180,7 +179,7 @@ return (
             <p>Volume</p>
             {latestVolumeData.lastValue !== null ? (
               <>
-                <p className="text-2xl">{formatCurrency(latestVolumeData.lastValue / 1000000000)} blns</p>
+                <p className="text-2xl">{formatCurrency(latestVolumeData.lastValue)}</p>
                 <p>{latestVolumeData.lastDate}</p>
               </>
             ) : (
