@@ -59,8 +59,8 @@ const ChartOverview = () => {
   const timeFrame = useAppSelector((state) => state.time.timeFrame);
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const chartData = useAppSelector((state) => state.chartData);
-  const latestPriceData = getLatestData(chartData.prices);
-  const latestVolumeData = getLatestData(chartData.total_volumes);
+  const latestPriceData = getLatestData(chartData[0].prices);
+  const latestVolumeData = getLatestData(chartData[0].total_volumes);
 
   useEffect(() => {
     dispatch(
@@ -93,37 +93,31 @@ const ChartOverview = () => {
   };
 
   function getLatestData(dataArray: number[][]) {
-    if (Array.isArray(dataArray[0]) && dataArray[0].length > 0) {
-      const lastElement = dataArray[0][dataArray[0].length - 1];
-      if (Array.isArray(lastElement) && lastElement.length === 2) {
-        return {
-          lastValue: lastElement[1],
-          lastDate: new Date(lastElement[0]).toDateString(),
-        };
-      }
+    if (dataArray.length > 0 && dataArray[0].length > 0) {
+      const lastElement = dataArray[0][dataArray[0].length - 1] as unknown as [number, number];
+      return {
+        lastValue: lastElement[1],
+        lastDate: new Date(lastElement[0]).toDateString(),
+      };
     }
     return { lastValue: null, lastDate: null };
   }
 
-  function prepareChartData(chartData: ChartData, chartType: 'line' | 'bar'): { labels: string[], datasets: Dataset[] } {
-    const dataSet = chartType === 'line' ? chartData.prices : chartData.total_volumes;
-  
+  function prepareChartData(chartData: ChartData[], chartType: 'line' | 'bar'): { labels: string[], datasets: Dataset[] } {
     let labels: string[] = [];
     let unsortedDatasets: Dataset[] = [];
   
-    // Generate labels from the first dataset
-    if (Array.isArray(dataSet[0])) {
-      labels = dataSet[0].map(data => {
-        return Array.isArray(data) && data.length === 2 ? new Date(data[0]).toLocaleDateString() : '';
-      });
+    // Generate labels for Chart
+    if (chartData.length > 0) {
+      labels = chartData[0].prices.map(data => new Date(data[0]).toLocaleDateString());
     }
   
-    // Generate unsorted datasets
-    dataSet.forEach((dataArray, index) => {
+    chartData.forEach((coinData, index) => {
+      const dataArray = chartType === 'line' ? coinData.prices : coinData.total_volumes;
+  
+      // Generate dataset for each currency
       if (dataArray.length > 0) {
-        const dataPoints = dataArray.map(data => {
-          return Array.isArray(data) && data.length === 2 ? data[1] : 0;
-        });
+        const dataPoints = dataArray.map(data => data[1]);
   
         unsortedDatasets.push({
           label: `Dataset ${index + 1}`,
@@ -144,7 +138,7 @@ const ChartOverview = () => {
             return getGradient(ctx, chartArea, chartType, index);
           },
         })
-  }});
+    }});
   
     // Sort datasets based on their data range (smaller to larger)
     let datasets = unsortedDatasets.sort((a, b) => {
@@ -156,8 +150,8 @@ const ChartOverview = () => {
     return { labels, datasets };
   }
 
-  return (
-    <div>
+return (
+  <div>
       <div className="md:flex justify-between my-3 md:space-x-5">
         <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#191932] p-7 rounded-[20px] text-black dark:text-white">
           <div className="absolute text-sm">

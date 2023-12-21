@@ -12,11 +12,7 @@ interface ChartDataArgs {
   selectedCoins: string[];
 }
 
-const initialState: ChartData = {
-  prices: [],
-  market_caps: [],
-  total_volumes: [],
-};
+const initialState: ChartData[] = []
 
 export const fetchChartData = createAsyncThunk(
   "chartData/fetchChartData",
@@ -47,18 +43,17 @@ export const fetchChartData = createAsyncThunk(
       const results = await Promise.all(fetchPromises);
 
       // Combine data from all coins
-      const combinedData = results.reduce(
-        (acc, data, index) => {
-          acc.prices.push(data.prices);
-          acc.market_caps.push(data.market_caps);
-          acc.total_volumes.push(data.total_volumes);
-          return acc;
-        },
-        { prices: [], market_caps: [], total_volumes: [] }
-      );
+      // const combinedData = results.reduce(
+      //   (acc, data, index) => {
+      //     acc.prices.push(data.prices);
+      //     acc.market_caps.push(data.market_caps);
+      //     acc.total_volumes.push(data.total_volumes);
+      //     return acc;
+      //   },
+      //   { prices: [], market_caps: [], total_volumes: [] }
+      // );
 
-      console.log(combinedData);
-      return combinedData;
+      return results;
     } catch (error) {
       console.log(error)
       throw new Error("API error")
