@@ -59,14 +59,16 @@ const ChartOverview = () => {
   const timeFrame = useAppSelector((state) => state.time.timeFrame);
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const chartData = useAppSelector((state) => state.chartData);
-  const latestPriceData = chartData.length > 0 ? getLatestData(chartData[0].prices) : { lastValue: null, lastDate: null };
-  const latestVolumeData = chartData.length > 0 ? getLatestData(chartData[0].total_volumes) : { lastValue: null, lastDate: null };  
+  const latestPriceData = chartData.length > 0 ? getLatestData(chartData[0].prices) 
+  : { lastValue: null, lastDate: null };
+  const latestVolumeData = chartData.length > 0 ? getLatestData(chartData[0].total_volumes) 
+  : { lastValue: null, lastDate: null };
 
   useEffect(() => {
     dispatch(
       fetchChartData({ timeFrame: timeFrame, selectedCoins: selectedCoins })
     );
-    console.log(chartData);
+    console.log("Fetched chartData:", chartData);
   }, [dispatch, timeFrame, selectedCoins]);
 
   const getGradient = (
@@ -94,12 +96,15 @@ const ChartOverview = () => {
 
   function getLatestData(dataArray: number[][]) {
     if (dataArray.length > 0 && dataArray[0].length > 0) {
-      const lastElement = dataArray[0][dataArray[0].length - 1] as unknown as [number, number];
-      return {
-        lastValue: lastElement[1],
-        lastDate: new Date(lastElement[0]).toDateString(),
-      };
+      const lastElement = dataArray[dataArray.length - 1];
+      if (Array.isArray(lastElement)) {
+        return {
+          lastValue: lastElement[1],
+          lastDate: new Date(lastElement[0]).toDateString(),
+        };
+      }
     }
+    
     return { lastValue: null, lastDate: null };
   }
 
@@ -114,8 +119,6 @@ const ChartOverview = () => {
   
     chartData.forEach((coinData, index) => {
       const dataArray = chartType === 'line' ? coinData.prices : coinData.total_volumes;
-
-      console.log(dataArray)
   
       // Generate dataset for each currency
       if (dataArray.length > 0) {

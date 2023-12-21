@@ -48,16 +48,12 @@ const CurrencyStats = () => {
     else if (!compare && selectedCoins.length >= 1) return
     else if (compare && selectedCoins.length >= 3) return
     else dispatch(addCoin(coinId));
-    
+
   };
 
   useEffect(() => {
     dispatch(fetchCoinsData());
   }, [dispatch]);
-
-  useEffect(() => {
-    console.log(selectedCoins)
-  }, [selectedCoins])
 
   return (
     <div className="relative bg-[#f3f5f9] dark:bg-[#13121a] flex-col justify-center mx-auto">
