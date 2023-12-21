@@ -59,8 +59,8 @@ const ChartOverview = () => {
   const timeFrame = useAppSelector((state) => state.time.timeFrame);
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const chartData = useAppSelector((state) => state.chartData);
-  const latestPriceData = getLatestData(chartData[0].prices);
-  const latestVolumeData = getLatestData(chartData[0].total_volumes);
+  const latestPriceData = chartData.length > 0 ? getLatestData(chartData[0].prices) : { lastValue: null, lastDate: null };
+  const latestVolumeData = chartData.length > 0 ? getLatestData(chartData[0].total_volumes) : { lastValue: null, lastDate: null };  
 
   useEffect(() => {
     dispatch(
@@ -114,6 +114,8 @@ const ChartOverview = () => {
   
     chartData.forEach((coinData, index) => {
       const dataArray = chartType === 'line' ? coinData.prices : coinData.total_volumes;
+
+      console.log(dataArray)
   
       // Generate dataset for each currency
       if (dataArray.length > 0) {
