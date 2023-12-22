@@ -52,7 +52,7 @@ const CurrencyStats = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchCoinsData());
+    dispatch(fetchCoinsData(1));
   }, [dispatch]);
 
   return (

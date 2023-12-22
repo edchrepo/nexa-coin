@@ -24,24 +24,34 @@ const initialState: CoinData[] = [];
 // Async thunk for fetching chart data
 export const fetchCoinsData = createAsyncThunk(
   "coinsData/fetchCoinsData",
-  async () => {
-    // Check if cached data is available and valid
-    const cachedData = getCache("coinDataCache");
+  async (page: number = 1, { rejectWithValue }) => {
+    const cacheKey = `coinDataCache-${page}`;
+    const cachedData = getCache(cacheKey);
     if (cachedData) {
-      return cachedData;
+      console.log("data retrieved from cache");
+      return { data: cachedData, page };
     }
 
-    if (!process.env.NEXT_PUBLIC_API_COINS_URL) {
-      throw new Error("API URL is not defined");
+    try {
+      if (!process.env.NEXT_PUBLIC_API_COINS_URL) {
+        throw new Error("API URL is not defined");
+      }
+      const url = `${process.env.NEXT_PUBLIC_API_COINS_URL}&page=${page}&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch data: Server responded with status ${response.status}`
+        );
+      }
+
+      const data = await response.json();
+      setCache(cacheKey, data, 15);
+      console.log("from API call");
+      return { data, page };
+    } catch (error) {
+      return rejectWithValue("API Request Failed");
     }
-
-    const response = await fetch(process.env.NEXT_PUBLIC_API_COINS_URL);
-    const data = await response.json();
-
-    // Cache the new data with a specific expiration time (in minutes)
-    setCache("coinDataCache", data, 15);
-
-    return data;
   }
 );
 
@@ -51,7 +61,12 @@ export const coinsDataSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCoinsData.fulfilled, (state, action) => {
-      return action.payload;
+      const { data, page } = action.payload;
+      if (page === 1) {
+        return data;
+      } else {
+        return [...state, ...data];
+      }
     });
   },
 });
