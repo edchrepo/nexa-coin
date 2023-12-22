@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Tabs from "@/components/Tabs";
 import CurrencyStats from "@/components/CurrencyStats";
-import ChartOverview from "@/components/ChartOverview";
+import ChartOverview from "@/components/charts/ChartOverview";
 import CoinsTable from "@/components/CoinsTable";
 import Converter from "@/components/Converter";
 

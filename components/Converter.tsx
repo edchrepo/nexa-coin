@@ -1,131 +1,16 @@
 "use client"
+
 import { useEffect } from "react";
-import { Chart as ChartJS, registerables, ChartArea } from "chart.js";
+import { Chart as ChartJS, registerables } from "chart.js";
 import { Line } from "react-chartjs-2";
 import TimeChart from "./TimeChart";
 import { useTheme } from "@/context/ThemeContext";
 import Image from "next/image";
 import * as Icons from "../icons";
 import { useAppSelector, useAppDispatch } from "../app/store/hooks";
-import { ChartData, fetchChartData } from "../app/store/slices/chartDataSlice";
+import { fetchChartData } from "../app/store/slices/chartDataSlice";
+import { options, prepareChartData } from "../utils/chartUtils"
 ChartJS.register(...registerables);
-
-interface Dataset {
-  label: string;
-  data: number[];
-  tension?: number;
-  borderColor?: string;
-  fill?: boolean;
-  borderRadius?: number;
-  backgroundColor: any;
-}
-
-const getGradient = (
-  ctx: CanvasRenderingContext2D,
-  chartArea: ChartArea,
-  type: string,
-  index: number
-) => {
-  const gradient = ctx.createLinearGradient(
-    0,
-    chartArea.bottom,
-    0,
-    chartArea.top
-  );
-  if (type === "line" || (index === 1 && type === "bar")) {
-    gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
-    gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
-  }
-  if (type === "bar" || (index === 1 && type === "line")) {
-    gradient.addColorStop(0, "rgba(51,38,78, 1)");
-    gradient.addColorStop(1, "rgba(152,95,210, 1)");
-  }
-  return gradient;
-};
-
-const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-  elements: {
-    point: {
-      radius: 0,
-    },
-  },
-  scales: {
-    x: {
-      stacked: true,
-      grid: {
-        display: false,
-      },
-      border: {
-        display: false,
-      },
-    },
-    y: {
-      grid: {
-        display: false,
-      },
-      border: {
-        display: false,
-      },
-      ticks: {
-        display: false,
-      },
-    },
-  },
-};
-
-function prepareChartData(chartData: ChartData[], chartType: 'line' | 'bar'): { labels: string[], datasets: Dataset[] } {
-  let labels: string[] = [];
-  let unsortedDatasets: Dataset[] = [];
-
-  // Generate labels for Chart
-  if (chartData.length > 0) {
-    labels = chartData[0].prices.map(data => new Date(data[0]).toLocaleString("default", { month: "short" }));
-  }
-
-  chartData.forEach((coinData, index) => {
-    const dataArray = chartType === 'line' ? coinData.prices : coinData.total_volumes;
-
-    // Generate dataset for each currency
-    if (dataArray.length > 0) {
-      const dataPoints = dataArray.map(data => data[1]);
-
-      unsortedDatasets.push({
-        label: `Dataset ${index + 1}`,
-        data: dataPoints,
-        ...(chartType === 'line' ? {
-          tension: 0.4,
-          borderColor: index === 0 ? "#7272ed" : "#d878fa",
-          fill: true,
-        } : {
-          borderRadius: 7,
-        }),
-        backgroundColor: (context: any) => {
-          const chart = context.chart;
-          const { ctx, chartArea } = chart;
-          if (!chartArea || !ctx) {
-            return 'rgba(0,0,0,0)';
-          }
-          return getGradient(ctx, chartArea, chartType, index);
-        },
-      })
-  }});
-
-  // Sort datasets based on their data range (smaller to larger)
-  let datasets = unsortedDatasets.sort((a, b) => {
-    let aMax = Math.max(...a.data);
-    let bMax = Math.max(...b.data);
-    return aMax - bMax;
-  });
-
-  return { labels, datasets };
-}
 
 const Converter = () => {
   const chartData = useAppSelector((state) => state.chartData);
@@ -140,6 +25,7 @@ const Converter = () => {
   }, [dispatch, timeFrame]);
 
   return (
+    // Dummy Data for now
     <div>
       <div className="mt-9 mb-5">
         <p className="text-lg text-[#424286] dark:text-white">Online currency converter</p>
@@ -179,7 +65,7 @@ const Converter = () => {
       <div className="w-[100%] h-[450px] bg-white dark:bg-[#191932] mt-14 p-7 rounded-[20px] text-black dark:text-white">
         <p className="text-[#424286] dark:text-white">Bitcoin(BTC) to Ethereum(ETH)</p>
         <div className="w-full h-full p-4">
-          <Line data={prepareChartData(chartData, 'line')} options={options} />
+          <Line data={prepareChartData(chartData, 'line')} options={{...options, maintainAspectRatio: false, responsive: true}} />
         </div>
       </div>
       <TimeChart />
