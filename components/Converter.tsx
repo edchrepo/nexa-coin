@@ -145,7 +145,7 @@ const Converter = () => {
         <p className="text-lg text-[#424286] dark:text-white">Online currency converter</p>
         <p className="text-[#3c3c7e] dark:text-secondary">{new Date().toLocaleString()}</p>
       </div>
-      <div className="md:flex items-center justify-between relative md:space-x-5">
+      <div className="md:flex items-center justify-between relative">
         <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#191932] p-7 rounded-[20px] text-black dark:text-white">
           <div>
             <p className="text-xs text-[#3c3c7e] dark:text-secondary">You sell</p>
@@ -157,14 +157,14 @@ const Converter = () => {
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">1 BTC = $26,250.15</p>
           </div>
         </div>
-        <div className="absolute">
+        <div className="absolute -translate-x-1/2 -translate-y-1/2" style={{ top: '50%', left: '50%' }}>
           {theme === "light" ? (
             <Image className="w-[50px]" src={Icons.ConverterIcon} alt="ConverterIcon" />
           ) : (
             <Image className="w-[50px]" src={Icons.WhiteConverterIcon} alt="WhiteConverterIcon" />
           )}
         </div>
-        <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#1e1932] p-7 rounded-[20px] text-black dark:text-white">
+        <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#1e1932] p-7 rounded-[20px] text-black dark:text-white ml-5">
         <div>
             <p className="text-xs text-[#3c3c7e] dark:text-secondary">You buy</p>
             <div className="flex space-x-2 mt-7 mb-3">
