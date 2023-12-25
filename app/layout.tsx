@@ -6,7 +6,7 @@ import StoreProvider from "./store/StoreProvider";
 import ThemeContextProvider from "@/app/context/ThemeContext";
 
 export const metadata: Metadata = {
-  title: "Crypto App",
+  title: "NexaCoin",
   description: "Analyzing Crypto Trends",
 };
 
