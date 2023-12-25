@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
-import TimeChart from "./TimeChart";
+import TimeFrameSelector from "../TimeFrameSelector";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchChartData } from "@/app/store/slices/chartDataSlice";
 import { formatCurrency } from "@/app/utils/utils";
@@ -72,7 +72,7 @@ const ChartOverview = () => {
           <Bar data={prepareChartData(chartData, "bar")} options={options} />
         </div>
       </div>
-      <TimeChart />
+      <TimeFrameSelector />
     </div>
   );
 };

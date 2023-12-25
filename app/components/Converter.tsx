@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Line } from "react-chartjs-2";
-import TimeChart from "@/app/components/Charts/TimeChart";
+import TimeFrameSelector from "@/app/components/TimeFrameSelector";
 import { useTheme } from "@/app/context/ThemeContext";
 import Image from "next/image";
 import * as Icons from "../icons";
@@ -98,7 +98,7 @@ const Converter = () => {
           />
         </div>
       </div>
-      <TimeChart />
+      <TimeFrameSelector />
     </div>
   );
 };
