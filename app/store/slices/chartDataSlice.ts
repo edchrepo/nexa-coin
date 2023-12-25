@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCache, setCache } from "@/utils/utils";
+import { getCache, setCache } from "@/app/utils/utils";
 
 export interface ChartData {
   prices: number[][];
@@ -12,7 +12,7 @@ interface ChartDataArgs {
   selectedCoins: string[];
 }
 
-const initialState: ChartData[] = []
+const initialState: ChartData[] = [];
 
 export const fetchChartData = createAsyncThunk(
   "chartData/fetchChartData",
@@ -24,7 +24,7 @@ export const fetchChartData = createAsyncThunk(
       selectedCoins.length === 0 ? ["bitcoin"] : selectedCoins;
 
     if (!process.env.NEXT_PUBLIC_API_CHART_URL) {
-      throw new Error("Missing API call")
+      throw new Error("Missing API call");
     }
 
     try {
@@ -42,10 +42,9 @@ export const fetchChartData = createAsyncThunk(
 
       const results = await Promise.all(fetchPromises);
       return results;
-      
     } catch (error) {
-      console.log(error)
-      throw new Error("API error")
+      console.log(error);
+      throw new Error("API error");
     }
   }
 );

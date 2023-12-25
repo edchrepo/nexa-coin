@@ -1,14 +1,14 @@
 import React from "react";
 import Image from "next/image";
-import * as Icons from "../icons";
+import * as Icons from "@/app/icons";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 
-interface CurrencyProps {
+interface CoinProps {
   coin: CoinData;
   isSelected: boolean;
 }
 
-const Currency: React.FC<CurrencyProps> = ({ coin, isSelected }) => {
+const Coin: React.FC<CoinProps> = ({ coin, isSelected }) => {
   const currencyClass = isSelected
     ? "bg-[#aaabe8] dark:bg-[#3c3c7e] border-[#6161cb] shadow-whiteShadow"
     : "bg-white dark:bg-[#181825] border-white dark:border-[#181825]";
@@ -57,4 +57,4 @@ const Currency: React.FC<CurrencyProps> = ({ coin, isSelected }) => {
   );
 };
 
-export default Currency;
+export default Coin;

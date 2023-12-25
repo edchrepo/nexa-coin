@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCache, setCache } from "@/utils/utils";
+import { getCache, setCache } from "@/app/utils/utils";
 
 interface MarketData {
   active_cryptocurrencies: number;

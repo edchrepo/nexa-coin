@@ -1,15 +1,15 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "../app/store/hooks";
-import { setTimeFrame } from "../app/store/slices/timeSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { setTimeFrame } from "@/app/store/slices/timeSlice";
 
 const timeFrameOptions = [
-  { value: 1, label: '1D' },
-  { value: 7, label: '7D' },
-  { value: 14, label: '14D' },
-  { value: 30, label: '1M' },
-  { value: 365, label: '1Y' },
-  { value: 1325, label: '5Y' }
+  { value: 1, label: "1D" },
+  { value: 7, label: "7D" },
+  { value: 14, label: "14D" },
+  { value: 30, label: "1M" },
+  { value: 365, label: "1Y" },
+  { value: 1325, label: "5Y" },
 ];
 
 const TimeChart = () => {

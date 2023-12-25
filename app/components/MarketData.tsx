@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { formatCurrency } from "@/utils/utils";
+import { formatCurrency } from "@/app/utils/utils";
 import Image from "next/image";
 import * as Icons from "../icons";
 import ProgressBar from "./ProgressBar";
-import { useAppDispatch, useAppSelector } from "../app/store/hooks";
-import { fetchMarketData } from "../app/store/slices/marketDataSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { fetchMarketData } from "@/app/store/slices/marketDataSlice";
 
 const MarketData = () => {
   const dispatch = useAppDispatch();

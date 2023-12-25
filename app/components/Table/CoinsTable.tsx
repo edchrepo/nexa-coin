@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../app/store/hooks";
-import { fetchCoinsData } from "../app/store/slices/coinsDataSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { fetchCoinsData } from "@/app/store/slices/coinsDataSlice";
 import Image from "next/image";
-import * as Icons from "../icons";
-import { CoinData } from "../app/store/slices/coinsDataSlice";
+import * as Icons from "@/app/icons";
+import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import CoinRow from "./CoinRow";
 import InfiniteScroll from "react-infinite-scroll-component";
 

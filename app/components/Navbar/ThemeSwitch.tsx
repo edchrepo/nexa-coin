@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { useTheme } from "@/context/ThemeContext";
+import { useTheme } from "@/app/context/ThemeContext";
 import Image from "next/image";
-import * as Icons from "../icons";
+import * as Icons from "@/app/icons";
 
 export default function ThemeSwitch() {
   const { theme, toggleTheme } = useTheme();

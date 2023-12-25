@@ -22,7 +22,7 @@ import Sort from "./sort.svg";
 import logo from "./logo.png";
 import logolight from "./logolight.png";
 import ConverterIcon from "./converter.svg";
-import WhiteConverterIcon from "./whiteconverter.svg"
+import WhiteConverterIcon from "./whiteconverter.svg";
 
 export {
   BoltCircle,
@@ -49,5 +49,5 @@ export {
   logo,
   logolight,
   ConverterIcon,
-  WhiteConverterIcon
+  WhiteConverterIcon,
 };

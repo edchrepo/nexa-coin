@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useTheme } from "@/context/ThemeContext";
+import { useTheme } from "@/app/context/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
-import * as Icons from "../icons";
+import * as Icons from "@/app/icons";
 import ThemeSwitch from "./ThemeSwitch";
 
 const Navbar = () => {

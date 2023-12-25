@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import MarketData from "@/components/MarketData";
+import Navbar from "@/app/components/Navbar/Navbar";
+import MarketData from "@/app/components/MarketData";
 import "./globals.css";
 import StoreProvider from "./store/StoreProvider";
-import ThemeContextProvider from "@/context/ThemeContext";
+import ThemeContextProvider from "@/app/context/ThemeContext";
 
 export const metadata: Metadata = {
   title: "Crypto App",

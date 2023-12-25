@@ -1,5 +1,5 @@
 import { Chart as ChartJS, registerables, ChartArea } from "chart.js";
-import { ChartData } from "../app/store/slices/chartDataSlice";
+import { ChartData } from "@/app/store/slices/chartDataSlice";
 ChartJS.register(...registerables);
 
 // Type for Chart.js dataset
@@ -73,7 +73,6 @@ export const getGradient = (
   return gradient;
 };
 
-
 // Get latest price/volume data for selected coin (passed as dataArray)
 export function getLatestData(dataArray: number[][]) {
   if (dataArray.length > 0 && dataArray[0].length > 0) {
@@ -88,7 +87,6 @@ export function getLatestData(dataArray: number[][]) {
 
   return { lastValue: null, lastDate: null };
 }
-
 
 // Create labels and datasets for either graph (line or bar)
 export function prepareChartData(

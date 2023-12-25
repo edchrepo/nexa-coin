@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Tabs from "@/components/Tabs";
-import CurrencyStats from "@/components/CurrencyStats";
-import ChartOverview from "@/components/charts/ChartOverview";
-import CoinsTable from "@/components/CoinsTable";
-import Converter from "@/components/Converter";
+import Tabs from "@/app/components/Tabs";
+import CoinCarousel from "@/app/components/Carousel/CoinCarousel";
+import ChartOverview from "@/app/components/Charts/ChartOverview";
+import CoinsTable from "@/app/components/Table/CoinsTable";
+import Converter from "@/app/components/Converter";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("coins");
@@ -15,7 +15,7 @@ export default function Home() {
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === "coins" ? (
         <>
-          <CurrencyStats />
+          <CoinCarousel />
           <ChartOverview />
         </>
       ) : (

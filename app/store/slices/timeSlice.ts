@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 interface Time {
-    timeFrame: number;
+  timeFrame: number;
 }
 
 const initialState: Time = {
@@ -9,7 +9,7 @@ const initialState: Time = {
 };
 
 const timeSlice = createSlice({
-  name: 'time',
+  name: "time",
   initialState,
   reducers: {
     setTimeFrame: (state, action) => {

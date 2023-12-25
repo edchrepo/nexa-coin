@@ -1,25 +1,23 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useAppDispatch, useAppSelector } from "../app/store/hooks";
-import { fetchCoinsData } from "../app/store/slices/coinsDataSlice";
-import { addCoin, removeCoin } from "../app/store/slices/selectedCoinSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { fetchCoinsData } from "@/app/store/slices/coinsDataSlice";
+import { addCoin, removeCoin } from "@/app/store/slices/selectedCoinSlice";
 import Image from "next/image";
-import * as Icons from "../icons";
+import * as Icons from "@/app/icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Currency from "./Currency";
+import Coin from "./Coin";
 
-const CurrencyStats = () => {
+const CoinCarousel = () => {
   const [compare, setCompare] = useState(false);
   const slider = useRef<any>(null);
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(true);
   const dispatch = useAppDispatch();
-  const selectedCoins = useAppSelector(
-    (state) => state.selectedCoinData.coins
-  );
+  const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const coins = useAppSelector((state) => state.coinsData);
 
   const settings = {
@@ -28,7 +26,6 @@ const CurrencyStats = () => {
     autoplay: true,
     arrows: false,
     infinite: false,
-    dots: true,
     beforeChange: (_: number, newIndex: number) => {
       setShowPrev(newIndex > 0);
       setShowNext(newIndex < coins.length - 6);
@@ -44,11 +41,10 @@ const CurrencyStats = () => {
       dispatch(removeCoin(coinId));
     }
     // Don't allow users to select more than 1 coin in default mode
-    // Don't allow users to select more than 3 coins in compare mode     
-    else if (!compare && selectedCoins.length >= 1) return
-    else if (compare && selectedCoins.length >= 3) return
+    // Don't allow users to select more than 3 coins in compare mode
+    else if (!compare && selectedCoins.length >= 1) return;
+    else if (compare && selectedCoins.length >= 3) return;
     else dispatch(addCoin(coinId));
-
   };
 
   useEffect(() => {
@@ -85,10 +81,7 @@ const CurrencyStats = () => {
         <Slider ref={slider} {...settings} className="mt-4 mb-8">
           {coins.map((coin) => (
             <div key={coin.id} onClick={() => handleSelectedCurrency(coin.id)}>
-              <Currency
-                coin={coin}
-                isSelected={selectedCoins.includes(coin.id)}
-              />
+              <Coin coin={coin} isSelected={selectedCoins.includes(coin.id)} />
             </div>
           ))}
         </Slider>
@@ -113,4 +106,4 @@ const CurrencyStats = () => {
   );
 };
 
-export default CurrencyStats;
+export default CoinCarousel;

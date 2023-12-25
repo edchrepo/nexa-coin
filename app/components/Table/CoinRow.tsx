@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import * as Icons from "../icons";
-import ProgressBar from "./ProgressBar";
-import { formatCurrency } from "@/utils/utils";
+import * as Icons from "@/app/icons";
+import ProgressBar from "@/app/components/ProgressBar";
+import { formatCurrency } from "@/app/utils/utils";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { Line } from "react-chartjs-2";
 
