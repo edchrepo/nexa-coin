@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
-import { Line } from "react-chartjs-2";
 import TimeFrameSelector from "@/app/components/TimeFrameSelector";
+import ConverterChart from "./ConverterChart";
 import { useTheme } from "@/app/context/ThemeContext";
 import Image from "next/image";
-import * as Icons from "../icons";
+import * as Icons from "../../icons";
 import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { fetchChartData } from "@/app/store/slices/chartDataSlice";
-import { options, prepareConverterData } from "../utils/chartUtils";
-import { convert } from "../utils/converterUtils";
+import { convert } from "../../utils/converterUtils";
 ChartJS.register(...registerables);
 
 const Converter = () => {
@@ -192,26 +191,7 @@ const Converter = () => {
           </div>
         </div>
       </div>
-      <div className="w-[100%] h-[450px] bg-white dark:bg-[#191932] mt-14 p-7 rounded-[20px] text-black dark:text-white">
-        <p className="text-[#424286] dark:text-white">
-          {fromData?.name} ({fromData?.symbol.toUpperCase()}) to {toData?.name}{" "}
-          ({toData?.symbol.toUpperCase()})
-        </p>
-        <div className="w-full h-full p-4">
-          <Line
-            data={prepareConverterData(
-              chartData,
-              fromData?.current_price ?? 0,
-              toData?.current_price ?? 0
-            )}
-            options={{
-              ...options,
-              maintainAspectRatio: false,
-              responsive: true,
-            }}
-          />
-        </div>
-      </div>
+      <ConverterChart fromData={fromData} toData={toData} chartData={chartData}/>
       <TimeFrameSelector />
     </div>
   );

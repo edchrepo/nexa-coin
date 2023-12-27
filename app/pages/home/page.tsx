@@ -5,7 +5,7 @@ import Tabs from "@/app/components/Tabs";
 import CoinCarousel from "@/app/components/Carousel/CoinCarousel";
 import ChartOverview from "@/app/components/Charts/ChartOverview";
 import CoinsTable from "@/app/components/Table/CoinsTable";
-import Converter from "@/app/components/Converter";
+import Converter from "@/app/components/Converter/Converter";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("coins");
