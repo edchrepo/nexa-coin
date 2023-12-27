@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
+import Image from "next/image";
+import { WhiteDownArrow } from "@/app/icons";
 
 interface CustomSelectProps {
   options: CoinData[];
@@ -34,6 +36,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           <p>
             {selectedValue?.name} ({selectedValue?.symbol.toUpperCase()})
           </p>
+          <Image className="w-2 h-2" src={WhiteDownArrow} alt="arrow" />
         </div>
       </div>
 
