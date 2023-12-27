@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
 import TimeFrameSelector from "@/app/components/TimeFrameSelector";
 import ConverterChart from "./ConverterChart";
+import CustomSelect from "./CustomSelect";
 import { useTheme } from "@/app/context/ThemeContext";
 import Image from "next/image";
 import * as Icons from "../../icons";
@@ -23,11 +24,13 @@ const Converter = () => {
   const dispatch = useAppDispatch();
   const { theme } = useTheme();
   const [fromAmount, setFromAmount] = useState(1);
-  const [toAmount, setToAmount] = useState(convert(
-    fromAmount,
-    fromData?.current_price ?? 0,
-    toData?.current_price ?? 0
-  ));
+  const [toAmount, setToAmount] = useState(
+    convert(
+      fromAmount,
+      fromData?.current_price ?? 0,
+      toData?.current_price ?? 0
+    )
+  );
 
   const FROM_CURRENCY = "from";
   const TO_CURRENCY = "to";
@@ -39,17 +42,6 @@ const Converter = () => {
     console.log(coins);
     console.log(chartData);
   }, [dispatch, timeFrame, fromCurrency, toCurrency]);
-
-  const handleChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-    direction: string
-  ) => {
-    if (direction === FROM_CURRENCY) {
-      setFromCurrency(event.target.value);
-    } else if (direction === TO_CURRENCY) {
-      setToCurrency(event.target.value);
-    }
-  };
 
   const handleAmountChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -92,30 +84,11 @@ const Converter = () => {
               You sell
             </p>
             <div className="flex items-center justify-between mt-7 mb-3">
-              <select
-                value={fromCurrency}
-                onChange={(e) => handleChange(e, FROM_CURRENCY)}
-                className="bg-transparent"
-              >
-                {coins.map((coin) => (
-                  <option
-                    key={coin.id}
-                    value={coin.id}
-                    className="bg-white dark:bg-[#1e1932]"
-                  >
-                    <div className="flex space-x-2 items-center">
-                      {/* <img
-                        src={fromData?.image}
-                        className="w-5 h-5"
-                        alt={fromData?.name}
-                      /> */}
-                      <p>
-                        {coin.name} ({coin.symbol.toUpperCase()})
-                      </p>
-                    </div>
-                  </option>
-                ))}
-              </select>
+              <CustomSelect
+                options={coins}
+                selectedValue={fromData}
+                onSelect={(selectedCoin) => setFromCurrency(selectedCoin.id)}
+              />
               <input
                 type="number"
                 value={fromAmount}
@@ -153,30 +126,11 @@ const Converter = () => {
               You buy
             </p>
             <div className="flex items-center justify-between mt-7 mb-3">
-              <select
-                value={toCurrency}
-                onChange={(e) => handleChange(e, TO_CURRENCY)}
-                className="bg-transparent"
-              >
-                {coins.map((coin) => (
-                  <option
-                    key={coin.id}
-                    value={coin.id}
-                    className="bg-white dark:bg-[#1e1932]"
-                  >
-                    <div className="flex space-x-2 items-center">
-                      {/* <img
-                        src={toData?.image}
-                        className="w-5 h-5"
-                        alt={toData?.name}
-                      /> */}
-                      <p>
-                        {coin.name} ({coin.symbol.toUpperCase()})
-                      </p>
-                    </div>
-                  </option>
-                ))}
-              </select>
+              <CustomSelect
+                options={coins}
+                selectedValue={toData}
+                onSelect={(selectedCoin) => setToCurrency(selectedCoin.id)}
+              />
               <input
                 type="number"
                 value={toAmount}
@@ -191,7 +145,11 @@ const Converter = () => {
           </div>
         </div>
       </div>
-      <ConverterChart fromData={fromData} toData={toData} chartData={chartData}/>
+      <ConverterChart
+        fromData={fromData}
+        toData={toData}
+        chartData={chartData}
+      />
       <TimeFrameSelector />
     </div>
   );
