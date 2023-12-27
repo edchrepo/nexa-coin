@@ -10,7 +10,7 @@ import * as Icons from "../icons";
 import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { fetchChartData } from "@/app/store/slices/chartDataSlice";
 import { options, prepareConverterData } from "../utils/chartUtils";
-import { convert } from "../utils/converterUtils"
+import { convert } from "../utils/converterUtils";
 ChartJS.register(...registerables);
 
 const Converter = () => {
@@ -25,14 +25,25 @@ const Converter = () => {
   const dispatch = useAppDispatch();
   const { theme } = useTheme();
 
+  const FROM_CURRENCY = "from";
+  const TO_CURRENCY = "to";   
+
   useEffect(() => {
     dispatch(
       fetchChartData({ timeFrame: timeFrame, selectedCoins: [fromCurrency] })
     );
     console.log(coins);
-    console.log(chartData)
-  }, [dispatch, timeFrame]);
+    console.log(chartData);
+  }, [dispatch, timeFrame, fromCurrency, toCurrency]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>, direction: string) => {
+    if (direction === FROM_CURRENCY) {
+      setFromCurrency(event.target.value);
+    } else if (direction === TO_CURRENCY) {
+      setToCurrency(event.target.value);
+    }
+  };
+  
   return (
     <div>
       <div className="mt-9 mb-5">
@@ -50,24 +61,31 @@ const Converter = () => {
               You sell
             </p>
             <div className="flex items-center justify-between mt-7 mb-3">
-              <div className="flex space-x-2 items-center">
-                <img
-                  src={fromData?.image}
-                  className="w-5 h-5"
-                  alt={fromData?.name}
-                />
-                <p>
-                  {fromData?.name} ({fromData?.symbol.toUpperCase()})
-                </p>
-              </div>
-              <p>
-                1
-              </p>
+              <select
+                value={fromCurrency}
+                onChange={(e) => handleChange(e, FROM_CURRENCY)}
+                className="bg-transparent"
+              >
+                {coins.map((coin) => (
+                  <option key={coin.id} value={coin.id} className="bg-white dark:bg-[#1e1932]">
+                    <div className="flex space-x-2 items-center">
+                      {/* <img
+                        src={fromData?.image}
+                        className="w-5 h-5"
+                        alt={fromData?.name}
+                      /> */}
+                      <p>
+                        {coin.name} ({coin.symbol.toUpperCase()})
+                      </p>
+                    </div>
+                  </option>
+                ))}
+              </select>
+              <p>1</p>
             </div>
             <hr className="" />
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">
-              1 {fromData?.symbol.toUpperCase()} = $
-              {fromData?.current_price}
+              1 {fromData?.symbol.toUpperCase()} = ${fromData?.current_price}
             </p>
           </div>
         </div>
@@ -95,14 +113,32 @@ const Converter = () => {
               You buy
             </p>
             <div className="flex items-center justify-between mt-7 mb-3">
-              <div className="flex space-x-2 items-center">
-                <img src={toData?.image} className="w-5 h-5" alt={toData?.name} />
-                <p>
-                  {toData?.name} ({toData?.symbol.toUpperCase()})
-                </p>
-              </div>
+              <select
+                value={toCurrency}
+                onChange={(e) => handleChange(e, TO_CURRENCY)}
+                className="bg-transparent"
+              >
+                {coins.map((coin) => (
+                  <option key={coin.id} value={coin.id} className="bg-white dark:bg-[#1e1932]">
+                    <div className="flex space-x-2 items-center">
+                      {/* <img
+                        src={toData?.image}
+                        className="w-5 h-5"
+                        alt={toData?.name}
+                      /> */}
+                      <p>
+                        {coin.name} ({coin.symbol.toUpperCase()})
+                      </p>
+                    </div>
+                  </option>
+                ))}
+              </select>
               <p>
-                {convert(1, fromData?.current_price ?? 0, toData?.current_price ?? 0)}
+                {convert(
+                  1,
+                  fromData?.current_price ?? 0,
+                  toData?.current_price ?? 0
+                )}
               </p>
             </div>
             <hr className="" />
@@ -114,12 +150,16 @@ const Converter = () => {
       </div>
       <div className="w-[100%] h-[450px] bg-white dark:bg-[#191932] mt-14 p-7 rounded-[20px] text-black dark:text-white">
         <p className="text-[#424286] dark:text-white">
-          {fromData?.name} ({fromData?.symbol.toUpperCase()}) to {toData?.name} (
-          {toData?.symbol.toUpperCase()})
+          {fromData?.name} ({fromData?.symbol.toUpperCase()}) to {toData?.name}{" "}
+          ({toData?.symbol.toUpperCase()})
         </p>
         <div className="w-full h-full p-4">
           <Line
-            data={prepareConverterData(chartData, fromData?.current_price ?? 0, toData?.current_price ?? 0)}
+            data={prepareConverterData(
+              chartData,
+              fromData?.current_price ?? 0,
+              toData?.current_price ?? 0
+            )}
             options={{
               ...options,
               maintainAspectRatio: false,
