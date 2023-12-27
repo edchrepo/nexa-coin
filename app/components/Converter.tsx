@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Line } from "react-chartjs-2";
 import TimeFrameSelector from "@/app/components/TimeFrameSelector";
@@ -9,21 +9,31 @@ import Image from "next/image";
 import * as Icons from "../icons";
 import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { fetchChartData } from "@/app/store/slices/chartDataSlice";
-import { options, prepareChartData } from "../utils/chartUtils";
+import { options, prepareConverterData } from "../utils/chartUtils";
+import { convert } from "../utils/converterUtils"
 ChartJS.register(...registerables);
 
 const Converter = () => {
+  const [amount, setAmount] = useState(0);
+  const [fromCurrency, setFromCurrency] = useState("bitcoin");
+  const [toCurrency, setToCurrency] = useState("ethereum");
   const chartData = useAppSelector((state) => state.chartData);
-  const dispatch = useAppDispatch();
   const timeFrame = useAppSelector((state) => state.time.timeFrame);
+  const coins = useAppSelector((state) => state.coinsData);
+  const fromData = coins.find((obj) => obj.id === fromCurrency);
+  const toData = coins.find((obj) => obj.id === toCurrency);
+  const dispatch = useAppDispatch();
   const { theme } = useTheme();
 
   useEffect(() => {
-    dispatch(fetchChartData({ timeFrame: timeFrame, selectedCoins: [] }));
+    dispatch(
+      fetchChartData({ timeFrame: timeFrame, selectedCoins: [fromCurrency] })
+    );
+    console.log(coins);
+    console.log(chartData)
   }, [dispatch, timeFrame]);
 
   return (
-    // Dummy Data for now
     <div>
       <div className="mt-9 mb-5">
         <p className="text-lg text-[#424286] dark:text-white">
@@ -39,13 +49,25 @@ const Converter = () => {
             <p className="text-xs text-[#3c3c7e] dark:text-secondary">
               You sell
             </p>
-            <div className="flex space-x-2 mt-7 mb-3">
-              <Image className="w-5" src={Icons.BitcoinIcon} alt="BTC" />
-              <p>Bitcoin (BTC)</p>
+            <div className="flex items-center justify-between mt-7 mb-3">
+              <div className="flex space-x-2 items-center">
+                <img
+                  src={fromData?.image}
+                  className="w-5 h-5"
+                  alt={fromData?.name}
+                />
+                <p>
+                  {fromData?.name} ({fromData?.symbol.toUpperCase()})
+                </p>
+              </div>
+              <p>
+                1
+              </p>
             </div>
             <hr className="" />
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">
-              1 BTC = $26,250.15
+              1 {fromData?.symbol.toUpperCase()} = $
+              {fromData?.current_price}
             </p>
           </div>
         </div>
@@ -72,24 +94,32 @@ const Converter = () => {
             <p className="text-xs text-[#3c3c7e] dark:text-secondary">
               You buy
             </p>
-            <div className="flex space-x-2 mt-7 mb-3">
-              <Image className="w-5" src={Icons.EthereumIcon} alt="ETH" />
-              <p>Ethereum (ETH)</p>
+            <div className="flex items-center justify-between mt-7 mb-3">
+              <div className="flex space-x-2 items-center">
+                <img src={toData?.image} className="w-5 h-5" alt={toData?.name} />
+                <p>
+                  {toData?.name} ({toData?.symbol.toUpperCase()})
+                </p>
+              </div>
+              <p>
+                {convert(1, fromData?.current_price ?? 0, toData?.current_price ?? 0)}
+              </p>
             </div>
             <hr className="" />
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">
-              1 BTC = $8,914.12
+              1 {toData?.symbol.toUpperCase()} = ${toData?.current_price}
             </p>
           </div>
         </div>
       </div>
       <div className="w-[100%] h-[450px] bg-white dark:bg-[#191932] mt-14 p-7 rounded-[20px] text-black dark:text-white">
         <p className="text-[#424286] dark:text-white">
-          Bitcoin(BTC) to Ethereum(ETH)
+          {fromData?.name} ({fromData?.symbol.toUpperCase()}) to {toData?.name} (
+          {toData?.symbol.toUpperCase()})
         </p>
         <div className="w-full h-full p-4">
           <Line
-            data={prepareChartData(chartData, "line")}
+            data={prepareConverterData(chartData, fromData?.current_price ?? 0, toData?.current_price ?? 0)}
             options={{
               ...options,
               maintainAspectRatio: false,
