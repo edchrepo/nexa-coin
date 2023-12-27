@@ -14,7 +14,7 @@ import { convert } from "../utils/converterUtils";
 ChartJS.register(...registerables);
 
 const Converter = () => {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(1);
   const [fromCurrency, setFromCurrency] = useState("bitcoin");
   const [toCurrency, setToCurrency] = useState("ethereum");
   const chartData = useAppSelector((state) => state.chartData);
@@ -26,7 +26,7 @@ const Converter = () => {
   const { theme } = useTheme();
 
   const FROM_CURRENCY = "from";
-  const TO_CURRENCY = "to";   
+  const TO_CURRENCY = "to";
 
   useEffect(() => {
     dispatch(
@@ -36,14 +36,21 @@ const Converter = () => {
     console.log(chartData);
   }, [dispatch, timeFrame, fromCurrency, toCurrency]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>, direction: string) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    direction: string
+  ) => {
     if (direction === FROM_CURRENCY) {
       setFromCurrency(event.target.value);
     } else if (direction === TO_CURRENCY) {
       setToCurrency(event.target.value);
     }
   };
-  
+
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(Number(event.target.value));
+  };
+
   return (
     <div>
       <div className="mt-9 mb-5">
@@ -67,7 +74,11 @@ const Converter = () => {
                 className="bg-transparent"
               >
                 {coins.map((coin) => (
-                  <option key={coin.id} value={coin.id} className="bg-white dark:bg-[#1e1932]">
+                  <option
+                    key={coin.id}
+                    value={coin.id}
+                    className="bg-white dark:bg-[#1e1932]"
+                  >
                     <div className="flex space-x-2 items-center">
                       {/* <img
                         src={fromData?.image}
@@ -81,7 +92,12 @@ const Converter = () => {
                   </option>
                 ))}
               </select>
-              <p>1</p>
+              <input
+                type="number"
+                value={amount}
+                onChange={handleAmountChange}
+                className="bg-transparent text-right w-[10%]"
+              />
             </div>
             <hr className="" />
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">
@@ -119,7 +135,11 @@ const Converter = () => {
                 className="bg-transparent"
               >
                 {coins.map((coin) => (
-                  <option key={coin.id} value={coin.id} className="bg-white dark:bg-[#1e1932]">
+                  <option
+                    key={coin.id}
+                    value={coin.id}
+                    className="bg-white dark:bg-[#1e1932]"
+                  >
                     <div className="flex space-x-2 items-center">
                       {/* <img
                         src={toData?.image}
@@ -135,7 +155,7 @@ const Converter = () => {
               </select>
               <p>
                 {convert(
-                  1,
+                  amount,
                   fromData?.current_price ?? 0,
                   toData?.current_price ?? 0
                 )}
