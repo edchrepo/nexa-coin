@@ -14,7 +14,6 @@ import { convert } from "../utils/converterUtils";
 ChartJS.register(...registerables);
 
 const Converter = () => {
-  const [amount, setAmount] = useState(1);
   const [fromCurrency, setFromCurrency] = useState("bitcoin");
   const [toCurrency, setToCurrency] = useState("ethereum");
   const chartData = useAppSelector((state) => state.chartData);
@@ -24,6 +23,12 @@ const Converter = () => {
   const toData = coins.find((obj) => obj.id === toCurrency);
   const dispatch = useAppDispatch();
   const { theme } = useTheme();
+  const [fromAmount, setFromAmount] = useState(1);
+  const [toAmount, setToAmount] = useState(convert(
+    fromAmount,
+    fromData?.current_price ?? 0,
+    toData?.current_price ?? 0
+  ));
 
   const FROM_CURRENCY = "from";
   const TO_CURRENCY = "to";
@@ -47,8 +52,28 @@ const Converter = () => {
     }
   };
 
-  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(Number(event.target.value));
+  const handleAmountChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    direction: string
+  ) => {
+    const newAmount = Number(event.target.value);
+    if (direction === FROM_CURRENCY) {
+      setFromAmount(newAmount);
+      const newToAmount = convert(
+        newAmount,
+        fromData?.current_price ?? 0,
+        toData?.current_price ?? 0
+      );
+      setToAmount(newToAmount);
+    } else if (direction === TO_CURRENCY) {
+      setToAmount(newAmount);
+      const newFromAmount = convert(
+        newAmount,
+        toData?.current_price ?? 0,
+        fromData?.current_price ?? 0
+      );
+      setFromAmount(newFromAmount);
+    }
   };
 
   return (
@@ -94,9 +119,9 @@ const Converter = () => {
               </select>
               <input
                 type="number"
-                value={amount}
-                onChange={handleAmountChange}
-                className="bg-transparent text-right w-[10%]"
+                value={fromAmount}
+                onChange={(e) => handleAmountChange(e, FROM_CURRENCY)}
+                className="bg-transparent text-right"
               />
             </div>
             <hr className="" />
@@ -153,13 +178,12 @@ const Converter = () => {
                   </option>
                 ))}
               </select>
-              <p>
-                {convert(
-                  amount,
-                  fromData?.current_price ?? 0,
-                  toData?.current_price ?? 0
-                )}
-              </p>
+              <input
+                type="number"
+                value={toAmount}
+                onChange={(e) => handleAmountChange(e, TO_CURRENCY)}
+                className="bg-transparent text-right"
+              />
             </div>
             <hr className="" />
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">
