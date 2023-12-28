@@ -35,14 +35,38 @@ const Converter = () => {
   const FROM_CURRENCY = "from";
   const TO_CURRENCY = "to";
 
+  // Load initial chart data, updates whenever either currency or timeFrame changes
   useEffect(() => {
     dispatch(
       fetchChartData({ timeFrame: timeFrame, selectedCoins: [fromCurrency] })
     );
-    console.log(coins);
-    console.log(chartData);
   }, [dispatch, timeFrame, fromCurrency, toCurrency]);
 
+  // Effect for updating amounts when fromCurrency changes
+  useEffect(() => {
+    if (fromData && toData) {
+      const newToAmount = convert(
+        fromAmount,
+        fromData.current_price,
+        toData.current_price
+      );
+      setToAmount(newToAmount);
+    }
+  }, [fromCurrency]);
+
+  // Effect for updating amounts when toCurrency changes
+  useEffect(() => {
+    if (fromData && toData) {
+      const newFromAmount = convert(
+        toAmount,
+        toData.current_price,
+        fromData.current_price
+      );
+      setFromAmount(newFromAmount);
+    }
+  }, [toCurrency]);
+
+  // Updates conversion values 
   const handleAmountChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     direction: string
