@@ -1,9 +1,3 @@
-import React from 'react'
-
-const Portfolio = () => {
-  return (
-    <div>Portfolio</div>
-  )
+export default function Portfolio() {
+  return <div>Portfolio Page</div>;
 }
-
-export default Portfolio
