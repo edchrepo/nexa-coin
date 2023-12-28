@@ -18,6 +18,8 @@ const ChartOverview = () => {
   const dispatch = useAppDispatch();
   const timeFrame = useAppSelector((state) => state.time.timeFrame);
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
+  const coins = useAppSelector((state) => state.coinsData);
+  const coinToPreview = coins.find((obj) => obj.id === selectedCoins[0]);
   const chartData = useAppSelector((state) => state.chartData);
   const latestPriceData =
     chartData.length > 0
@@ -39,34 +41,54 @@ const ChartOverview = () => {
       <div className="md:flex justify-between my-3 md:space-x-5">
         <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#191932] p-7 rounded-[20px] text-black dark:text-white">
           <div className="absolute text-sm">
-            <div className="absolute text-sm">
-              <p>Price</p>
-              {latestPriceData.lastValue !== null ? (
-                <>
-                  <p className="text-2xl">
-                    {formatCurrency(latestPriceData.lastValue)}
-                  </p>
-                  <p>{latestPriceData.lastDate}</p>
-                </>
-              ) : (
-                <p>No price data available</p>
-              )}
-            </div>
+            {selectedCoins.length > 1 ? (
+              <p className="text-2xl">{new Date().toDateString()}</p>
+            ) : (
+              <div>
+                <p className="text-secondary mb-3">
+                  {coinToPreview ? coinToPreview.name : "Bitcoin"} (
+                  {coinToPreview ? coinToPreview.symbol.toUpperCase() : "BTC"})
+                </p>
+                {latestPriceData.lastValue !== null ? (
+                  <>
+                    <p className="text-2xl">
+                      {formatCurrency(latestPriceData.lastValue)}
+                    </p>
+                    <p className="text-secondary">{latestPriceData.lastDate}</p>
+                  </>
+                ) : (
+                  <p>No price data available</p>
+                )}
+              </div>
+            )}
           </div>
           <Line data={prepareChartData(chartData, "line")} options={options} />
         </div>
         <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#1e1932] p-7 rounded-[20px] text-black dark:text-white">
           <div className="absolute text-sm">
-            <p>Volume</p>
-            {latestVolumeData.lastValue !== null ? (
-              <>
-                <p className="text-2xl">
-                  {formatCurrency(latestVolumeData.lastValue)}
+            {selectedCoins.length > 1 ? (
+              <div>
+                <p className="text-2xl mb-2">Volume 24h</p>
+                <p className="text-sm text-secondary">
+                  {new Date().toDateString()}
                 </p>
-                <p>{latestVolumeData.lastDate}</p>
-              </>
+              </div>
             ) : (
-              <p>No volume data available</p>
+              <div>
+                <p className="text-secondary mb-3">Volume 24h</p>
+                {latestVolumeData.lastValue !== null ? (
+                  <>
+                    <p className="text-2xl">
+                      {formatCurrency(latestVolumeData.lastValue)}
+                    </p>
+                    <p className="text-secondary">
+                      {latestVolumeData.lastDate}
+                    </p>
+                  </>
+                ) : (
+                  <p>No volume data available</p>
+                )}
+              </div>
             )}
           </div>
           <Bar data={prepareChartData(chartData, "bar")} options={options} />
