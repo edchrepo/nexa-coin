@@ -8,13 +8,17 @@ import { options, prepareConverterData } from "../../utils/chartUtils";
 ChartJS.register(...registerables);
 
 interface ConverterChartProps {
-    fromData?: CoinData;
-    toData?: CoinData;
-    chartData: ChartData[];
+  fromData?: CoinData;
+  toData?: CoinData;
+  chartData: ChartData[];
 }
 
-const ConverterChart = ({ fromData, toData, chartData }: ConverterChartProps) => {
-    return (
+const ConverterChart = ({
+  fromData,
+  toData,
+  chartData,
+}: ConverterChartProps) => {
+  return (
     <div className="w-[100%] h-[450px] bg-white dark:bg-[#191932] mt-14 p-7 rounded-[20px] text-black dark:text-white">
       <p className="text-[#424286] dark:text-white">
         {fromData?.name} ({fromData?.symbol.toUpperCase()}) to {toData?.name} (

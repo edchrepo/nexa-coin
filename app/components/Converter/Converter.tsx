@@ -66,7 +66,7 @@ const Converter = () => {
     }
   }, [toCurrency]);
 
-  // Updates conversion values 
+  // Updates conversion values
   const handleAmountChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     direction: string
