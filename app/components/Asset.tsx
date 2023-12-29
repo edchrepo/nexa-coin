@@ -5,25 +5,31 @@ import ProgressBar from "./ProgressBar";
 
 const Asset = () => {
   return (
-    <div className="flex border bg-[#191925] border-[#19192e] rounded-lg mb-6">
-      <div className="flex-1 p-2 bg-[#191932] rounded-l-lg">
+    <div className="flex border bg-white dark:bg-[#191925] dark:border-[#19192e] rounded-lg mb-6">
+      <div className="flex-1 p-2 bg-[#a2a3e8] dark:bg-[#191932] rounded-l-lg">
         <div className="p-2">
           <div className="flex space-x-2 items-center mt-2">
             <Image className="w-7" src={Icons.BitcoinIcon} alt="BTC" />
-            <span className="text-2xl">Bitcoin (BTC)</span>
+            <span className="text-[#3c3c7e] dark:text-white text-2xl">
+              Bitcoin (BTC)
+            </span>
           </div>
-          <div className="text-secondary mt-8">Total Value</div>
+          <div className="dark:text-secondary mt-8">Total Value</div>
           <div className="flex space-x-2 items-center mt-1">
-            <span className="text-2xl">$29,850 USD</span>
+            <span className="text-[#3c3c7e] dark:text-white text-2xl">
+              $29,850 USD
+            </span>
             <Image className="w-5" src={Icons.UpArrow} alt="+" />
             <span className="text-[#00b1a6]">6.76%</span>
           </div>
-          <div className="text-secondary mt-1">Purchased 03.23.2023</div>
+          <div className="dark:text-secondary mt-1">Purchased 03.23.2023</div>
         </div>
       </div>
       <div className="flex-1 px-4 py-5">
         <div className="flex flex-col rounded-lg p-3">
-          <span className="text-xl">$29,850</span>
+          <span className="text-[#3c3c7e] dark:text-white text-xl">
+            $29,850
+          </span>
           <span className="text-secondary">Current Price</span>
         </div>
         <div className="flex flex-col rounded-lg p-3 mt-4">
