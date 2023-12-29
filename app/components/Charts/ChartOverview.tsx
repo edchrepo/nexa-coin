@@ -63,6 +63,15 @@ const ChartOverview = () => {
             )}
           </div>
           <Line data={prepareChartData(chartData, "line")} options={options} />
+          {selectedCoins.length > 1 && (
+            <div className="flex space-x-3 mt-3">
+              {selectedCoins.map((selectedCoin) => (
+                <div className="flex space-x-1">
+                  <div className="w-5 h-5 bg-blue-500" /> <p>{selectedCoin}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#1e1932] p-7 rounded-[20px] text-black dark:text-white">
           <div className="absolute text-sm">
@@ -92,6 +101,15 @@ const ChartOverview = () => {
             )}
           </div>
           <Bar data={prepareChartData(chartData, "bar")} options={options} />
+          {selectedCoins.length > 1 && (
+            <div className="flex space-x-3 mt-3">
+              {selectedCoins.map((selectedCoin) => (
+                <div className="flex space-x-1">
+                  <div className="w-5 h-5 bg-blue-500" /> <p>{selectedCoin}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <TimeFrameSelector />
