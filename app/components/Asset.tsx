@@ -22,11 +22,11 @@ const Asset = () => {
         </div>
       </div>
       <div className="flex-1 px-4 py-5">
-        <div className="flex flex-col border border-[#212137] rounded-lg p-3">
+        <div className="flex flex-col rounded-lg p-3">
           <span className="text-xl">$29,850</span>
           <span className="text-secondary">Current Price</span>
         </div>
-        <div className="flex flex-col border border-[#212137] rounded-lg p-3 mt-4">
+        <div className="flex flex-col rounded-lg p-3 mt-4">
           <div className="flex items-center">
             <span className="text-[#00b1a6] text-xl mr-6">44%</span>
             <ProgressBar
@@ -39,14 +39,14 @@ const Asset = () => {
         </div>
       </div>
       <div className="flex-1 px-4 py-5">
-        <div className="flex flex-col border border-[#212137] rounded-lg p-3">
+        <div className="flex flex-col rounded-lg p-3">
           <div className="flex space-x-2">
             <Image className="w-5" src={Icons.UpArrow} alt="+" />
             <span className="text-[#00b1a6] text-xl">11.04%</span>
           </div>
           <div className="text-secondary">24h%</div>
         </div>
-        <div className="flex flex-col border border-[#212137] rounded-lg p-3 mt-4">
+        <div className="flex flex-col rounded-lg p-3 mt-4">
           <div className="flex space-x-2">
             <Image className="w-5" src={Icons.UpArrow} alt="+" />
             <span className="text-[#00b1a6] text-xl">8.41%</span>
