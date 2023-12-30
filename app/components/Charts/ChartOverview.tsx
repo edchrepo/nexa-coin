@@ -6,6 +6,7 @@ import { Line, Bar } from "react-chartjs-2";
 import TimeFrameSelector from "../TimeFrameSelector";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchChartData } from "@/app/store/slices/chartDataSlice";
+import { borderColors } from "@/app/utils/chartUtils"
 import { formatCurrency } from "@/app/utils/utils";
 import {
   options,
@@ -65,9 +66,9 @@ const ChartOverview = () => {
           <Line data={prepareChartData(chartData, "line")} options={options} />
           {selectedCoins.length > 1 && (
             <div className="flex space-x-3 mt-3">
-              {selectedCoins.map((selectedCoin) => (
+              {selectedCoins.map((selectedCoin, index) => (
                 <div className="flex space-x-1">
-                  <div className="w-5 h-5 bg-blue-500" /> <p>{selectedCoin}</p>
+                  <div className={`w-5 h-5 bg-[${borderColors[index]}]`} /> <p>{selectedCoin}</p>
                 </div>
               ))}
             </div>
@@ -103,9 +104,9 @@ const ChartOverview = () => {
           <Bar data={prepareChartData(chartData, "bar")} options={options} />
           {selectedCoins.length > 1 && (
             <div className="flex space-x-3 mt-3">
-              {selectedCoins.map((selectedCoin) => (
+              {selectedCoins.map((selectedCoin, index) => (
                 <div className="flex space-x-1">
-                  <div className="w-5 h-5 bg-blue-500" /> <p>{selectedCoin}</p>
+                  <div className={`w-5 h-5 bg-[${borderColors[index]}]`} /> <p>{selectedCoin}</p>
                 </div>
               ))}
             </div>

@@ -13,6 +13,8 @@ export interface Dataset {
   backgroundColor: any;
 }
 
+export const borderColors = ["#7272ed", "#d878fa", "#5ae3fb"];
+
 // Chart.js chart option configs
 export const options = {
   plugins: {
@@ -54,6 +56,7 @@ export const getGradient = (
   ctx: CanvasRenderingContext2D,
   chartArea: ChartArea,
   type: string,
+  chartDataLength: number,
   index: number
 ) => {
   const gradient = ctx.createLinearGradient(
@@ -62,13 +65,27 @@ export const getGradient = (
     0,
     chartArea.top
   );
-  if (type === "line" || (index === 1 && type === "bar")) {
-    gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
-    gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
-  }
-  if (type === "bar" || (index === 1 && type === "line")) {
-    gradient.addColorStop(0, "rgba(51,38,78, 1)");
-    gradient.addColorStop(1, "rgba(152,95,210, 1)");
+  if (chartDataLength === 1) {
+    // Default gradients for single coin selection
+    if (type === "line") {
+      gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
+      gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
+    } else if (type === "bar") {
+      gradient.addColorStop(0, "rgba(51,38,78, 1)");
+      gradient.addColorStop(1, "rgba(152,95,210, 1)");
+    }
+  } else {
+    // Shared gradients for multiple coins (up to 3 (1 < chartDataLength <= 3))
+    if (index === 0) {
+      gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
+      gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
+    } else if (index === 1) {
+      gradient.addColorStop(0, "rgba(51,38,78, 1)");
+      gradient.addColorStop(1, "rgba(152,95,210, 1)");
+    } else if (index === 2) {
+      gradient.addColorStop(0, "rgba(41, 128, 185, 1)");
+      gradient.addColorStop(1, "rgba(21, 67, 96, 1)");
+    }
   }
   return gradient;
 };
@@ -117,7 +134,7 @@ export function prepareChartData(
         ...(chartType === "line"
           ? {
               tension: 0.4,
-              borderColor: index === 0 ? "#7272ed" : "#d878fa",
+              borderColor: borderColors[index],
               fill: true,
             }
           : {
@@ -129,7 +146,7 @@ export function prepareChartData(
           if (!chartArea || !ctx) {
             return "rgba(0,0,0,0)";
           }
-          return getGradient(ctx, chartArea, chartType, index);
+          return getGradient(ctx, chartArea, chartType, chartData.length, index);
         },
       });
     }
