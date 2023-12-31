@@ -6,7 +6,7 @@ import { Line, Bar } from "react-chartjs-2";
 import TimeFrameSelector from "../TimeFrameSelector";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchChartData } from "@/app/store/slices/chartDataSlice";
-import { borderColors } from "@/app/utils/chartUtils"
+import { borderColors } from "@/app/utils/chartUtils";
 import { formatCurrency } from "@/app/utils/utils";
 import {
   options,
@@ -67,8 +67,12 @@ const ChartOverview = () => {
           {selectedCoins.length > 1 && (
             <div className="flex space-x-3 mt-3">
               {selectedCoins.map((selectedCoin, index) => (
-                <div className="flex space-x-1">
-                  <div className={`w-5 h-5 bg-[${borderColors[index]}]`} /> <p>{selectedCoin}</p>
+                <div key={index} className="flex space-x-1">
+                  <div
+                    className={`w-5 h-5`}
+                    style={{ backgroundColor: borderColors[index] }}
+                  />
+                  <p>{selectedCoin}</p>
                 </div>
               ))}
             </div>
@@ -105,8 +109,12 @@ const ChartOverview = () => {
           {selectedCoins.length > 1 && (
             <div className="flex space-x-3 mt-3">
               {selectedCoins.map((selectedCoin, index) => (
-                <div className="flex space-x-1">
-                  <div className={`w-5 h-5 bg-[${borderColors[index]}]`} /> <p>{selectedCoin}</p>
+                <div key={index} className="flex space-x-1">
+                  <div
+                    className={`w-5 h-5`}
+                    style={{ backgroundColor: borderColors[index] }}
+                  />
+                  <p>{selectedCoin}</p>
                 </div>
               ))}
             </div>
