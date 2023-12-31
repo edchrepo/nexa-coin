@@ -24,9 +24,13 @@ export const selectedCoinSlice = createSlice({
                 coin => coin !== action.payload
             );
         },
+        // Action to remove all coins
+        removeAllCoins: (state) => {
+            state.coins = [];
+        },
     },
 });
 
-export const { addCoin, removeCoin } = selectedCoinSlice.actions;
+export const { addCoin, removeCoin, removeAllCoins } = selectedCoinSlice.actions;
 
 export default selectedCoinSlice.reducer;
