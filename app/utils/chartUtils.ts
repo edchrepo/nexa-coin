@@ -1,5 +1,6 @@
 import { Chart as ChartJS, registerables, ChartArea } from "chart.js";
 import { ChartData } from "@/app/store/slices/chartDataSlice";
+import { convert } from "@/app/utils/converterUtils"
 ChartJS.register(...registerables);
 
 // Type for Chart.js dataset
@@ -158,6 +159,46 @@ export function prepareChartData(
     let bMax = Math.max(...b.data);
     return aMax - bMax;
   });
+
+  return { labels, datasets };
+}
+
+// Create labels and datasets for Conversion Graph
+export function prepareConverterData(
+  chartData: ChartData[],
+  convertFrom: number,
+  convertTo: number
+): { labels: string[]; datasets: Dataset[] } {
+  let labels: string[] = [];
+  let datasets: Dataset[] = []
+
+  // Generate labels for Chart
+  if (chartData.length > 0) {
+    labels = chartData[0].prices.map((data) =>
+      new Date(data[0]).toLocaleDateString()
+    );
+  }
+
+  // Convert each original currency datapoint to converted currency amount (BTC to ETH)
+  const dataPoints = chartData[0].prices.map((data) =>
+    convert(data[1] / convertFrom, convertFrom, convertTo)
+  );
+
+  datasets.push({
+    label: "Converted Dataset",
+    data: dataPoints,
+    tension: 0.4,
+    borderColor: "#7272ed",
+    fill: true,
+    backgroundColor: (context: any) => {
+      const chart = context.chart;
+      const { ctx, chartArea } = chart;
+      if (!chartArea || !ctx) {
+        return "rgba(0,0,0,0)";
+      }
+      return getGradient(ctx, chartArea, "line", 1);
+    },
+  })
 
   return { labels, datasets };
 }
