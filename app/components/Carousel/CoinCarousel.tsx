@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchCoinsData } from "@/app/store/slices/coinsDataSlice";
-import { addCoin, removeCoin } from "@/app/store/slices/selectedCoinSlice";
+import { addCoin, removeCoin, removeAllCoins } from "@/app/store/slices/selectedCoinSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import Slider from "react-slick";
@@ -47,6 +47,13 @@ const CoinCarousel = () => {
     else dispatch(addCoin(coinId));
   };
 
+  const handleCompare = () => {
+    if (compare) {
+      dispatch(removeAllCoins())
+    }
+    setCompare(!compare)
+  }
+
   useEffect(() => {
     dispatch(fetchCoinsData(1));
   }, [dispatch]);
@@ -59,7 +66,7 @@ const CoinCarousel = () => {
         </div>
         <button
           className="flex items-center bg-white dark:bg-[#232336] text-[#3c3c7e] dark:text-white rounded-md p-3 px-8"
-          onClick={() => setCompare(!compare)}
+          onClick={handleCompare}
         >
           {compare ? (
             <Image

@@ -1,5 +1,6 @@
 import { Chart as ChartJS, registerables, ChartArea } from "chart.js";
 import { ChartData } from "@/app/store/slices/chartDataSlice";
+import { convert } from "@/app/utils/converterUtils"
 ChartJS.register(...registerables);
 
 // Type for Chart.js dataset
@@ -12,6 +13,8 @@ export interface Dataset {
   borderRadius?: number;
   backgroundColor: any;
 }
+
+export const borderColors = ["#7272ed", "#d878fa", "#5ae3fb"];
 
 // Chart.js chart option configs
 export const options = {
@@ -54,6 +57,7 @@ export const getGradient = (
   ctx: CanvasRenderingContext2D,
   chartArea: ChartArea,
   type: string,
+  chartDataLength: number,
   index: number
 ) => {
   const gradient = ctx.createLinearGradient(
@@ -62,13 +66,27 @@ export const getGradient = (
     0,
     chartArea.top
   );
-  if (type === "line" || (index === 1 && type === "bar")) {
-    gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
-    gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
-  }
-  if (type === "bar" || (index === 1 && type === "line")) {
-    gradient.addColorStop(0, "rgba(51,38,78, 1)");
-    gradient.addColorStop(1, "rgba(152,95,210, 1)");
+  if (chartDataLength === 1) {
+    // Default gradients for single coin selection
+    if (type === "line") {
+      gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
+      gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
+    } else if (type === "bar") {
+      gradient.addColorStop(0, "rgba(51,38,78, 1)");
+      gradient.addColorStop(1, "rgba(152,95,210, 1)");
+    }
+  } else {
+    // Shared gradients for multiple coins (up to 3 (1 < chartDataLength <= 3))
+    if (index === 0) {
+      gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
+      gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
+    } else if (index === 1) {
+      gradient.addColorStop(0, "rgba(51,38,78, 1)");
+      gradient.addColorStop(1, "rgba(152,95,210, 1)");
+    } else if (index === 2) {
+      gradient.addColorStop(0, "rgba(41, 128, 185, 1)");
+      gradient.addColorStop(1, "rgba(21, 67, 96, 1)");
+    }
   }
   return gradient;
 };
@@ -117,7 +135,7 @@ export function prepareChartData(
         ...(chartType === "line"
           ? {
               tension: 0.4,
-              borderColor: index === 0 ? "#7272ed" : "#d878fa",
+              borderColor: borderColors[index],
               fill: true,
             }
           : {
@@ -129,7 +147,7 @@ export function prepareChartData(
           if (!chartArea || !ctx) {
             return "rgba(0,0,0,0)";
           }
-          return getGradient(ctx, chartArea, chartType, index);
+          return getGradient(ctx, chartArea, chartType, chartData.length, index);
         },
       });
     }
@@ -141,6 +159,46 @@ export function prepareChartData(
     let bMax = Math.max(...b.data);
     return aMax - bMax;
   });
+
+  return { labels, datasets };
+}
+
+// Create labels and datasets for Conversion Graph
+export function prepareConverterData(
+  chartData: ChartData[],
+  convertFrom: number,
+  convertTo: number
+): { labels: string[]; datasets: Dataset[] } {
+  let labels: string[] = [];
+  let datasets: Dataset[] = []
+
+  // Generate labels for Chart
+  if (chartData.length > 0) {
+    labels = chartData[0].prices.map((data) =>
+      new Date(data[0]).toLocaleDateString()
+    );
+  }
+
+  // Convert each original currency datapoint to converted currency amount (BTC to ETH)
+  const dataPoints = chartData[0].prices.map((data) =>
+    convert(data[1] / convertFrom, convertFrom, convertTo)
+  );
+
+  datasets.push({
+    label: "Converted Dataset",
+    data: dataPoints,
+    tension: 0.4,
+    borderColor: "#7272ed",
+    fill: true,
+    backgroundColor: (context: any) => {
+      const chart = context.chart;
+      const { ctx, chartArea } = chart;
+      if (!chartArea || !ctx) {
+        return "rgba(0,0,0,0)";
+      }
+      return getGradient(ctx, chartArea, "line", 1);
+    },
+  })
 
   return { labels, datasets };
 }
