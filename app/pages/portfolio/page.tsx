@@ -1,11 +1,25 @@
 "use client";
 
 import React, { useState } from "react";
-import Asset from "@/app/components/Asset";
-import Modal from "@/app/components/Modal";
+import Asset from "@/app/components/Portfolio/Asset";
+import Modal from "@/app/components/Portfolio/Modal";
+
+interface Asset {
+  id: string;
+  symbol: string;
+  name: string;
+  image: string;
+  total_value: number;
+  // percent change?
+  purchase_date: Date;
+  current_price: number;
+  price_change_percentage_24h_in_currency: number;
+  market_vs_volume: number;
+  circ_vs_max: number;
+}
 
 export default function Portfolio() {
-  const assets = [1, 2];
+  const [assets, setAssets] = useState<Asset[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -30,8 +44,8 @@ export default function Portfolio() {
       </div>
       <Modal isOpen={isModalOpen} onClose={closeModal} />
       <div className="p-3 mt-3">
-        {assets.map((index) => (
-          <Asset key={index} />
+        {assets.map((asset) => (
+          <Asset key={asset.id} />
         ))}
       </div>
     </div>

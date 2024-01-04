@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
-import ProgressBar from "./ProgressBar";
+import ProgressBar from "../ProgressBar";
 
 const Asset = () => {
   return (

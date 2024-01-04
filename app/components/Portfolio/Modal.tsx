@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useAppSelector } from "@/app/store/hooks";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 
@@ -7,7 +8,16 @@ type ModalProps = {
   onClose: () => void;
 };
 
+type SelectedCoinProps = {
+  symbol?: string;
+  name?: string;
+  image?: string;
+};
+
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  const coins = useAppSelector((state) => state.coinsData);
+  const [selectedCoin, setSelectedCoin] = useState<SelectedCoinProps>({});
+
   if (!isOpen) return null;
 
   return (
@@ -28,10 +38,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         <div className="text-white flex">
           <div className="flex flex-col justify-center items-center bg-white dark:bg-[#191932] rounded-md w-3/5 mr-6">
             <div className="flex bg-[#2c2c4a] p-3 rounded-lg">
-              <Image className="w-7" src={Icons.BitcoinIcon} alt="BTC" />
+              <img
+                src={selectedCoin.image}
+                className="w-8 h-8 inline-block"
+                alt={selectedCoin.name}
+              />
             </div>
             <span className="text-[#3c3c7e] dark:text-white text-2xl mt-3">
-              Bitcoin (BTC)
+              {selectedCoin.name} ({selectedCoin.symbol?.toUpperCase()})
             </span>
           </div>
           <div className="flex flex-col w-full">
