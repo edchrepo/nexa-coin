@@ -20,6 +20,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCoinId = e.target.value;
+    const matchedCoin = coins.find((coin) => coin.id === selectedCoinId);
+    if (matchedCoin) {
+      setSelectedCoin(matchedCoin);
+    }
+  };
+
   return (
     <div
       className={`fixed inset-0 z-50 ${
@@ -50,8 +58,18 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           </div>
           <div className="flex flex-col w-full">
             <div className="mb-4">
-              <select className="dark:bg-[#191925] text-secondary rounded-md p-2 w-full">
-                <option value="coin">Select coins</option>
+              <select
+                className="dark:bg-[#191925] text-secondary rounded-md p-2 w-full"
+                onChange={handleSelectChange}
+              >
+                <option value="" disabled selected>
+                  Select coins
+                </option>
+                {coins.map((coin) => (
+                  <option key={coin.id} value={coin.id}>
+                    {coin.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="mb-4">
