@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Asset from "@/app/components/Portfolio/Asset";
 import Modal from "@/app/components/Portfolio/Modal";
 
-interface Asset {
+export interface Asset {
   id: string;
   symbol: string;
   name: string;
@@ -29,6 +29,10 @@ export default function Portfolio() {
     setIsModalOpen(false);
   };
 
+  const addAsset = (newAsset: Asset) => {
+    setAssets([...assets, newAsset]);
+  };
+
   return (
     <div className="bg-[#f3f5f9] dark:bg-[#13121a] w-[90%]">
       <div className="flex justify-between p-4 mt-4">
@@ -42,7 +46,7 @@ export default function Portfolio() {
           Add Asset
         </button>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} />
+      <Modal isOpen={isModalOpen} onClose={closeModal} onAddAsset={addAsset} />
       <div className="p-3 mt-3">
         {assets.map((asset) => (
           <Asset key={asset.id} />

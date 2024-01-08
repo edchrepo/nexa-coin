@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useAppSelector } from "@/app/store/hooks";
+import { CoinData } from "@/app/store/slices/coinsDataSlice";
+import { Asset } from "@/app/pages/portfolio/page";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { getTodayDate } from "@/app/utils/utils";
@@ -7,19 +9,25 @@ import { getTodayDate } from "@/app/utils/utils";
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onAddAsset: (newAsset: Asset) => void;
 };
 
-type SelectedCoinProps = {
-  symbol?: string;
-  name?: string;
-  image?: string;
-};
-
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddAsset }) => {
   const coins = useAppSelector((state) => state.coinsData);
-  const [selectedCoin, setSelectedCoin] = useState<SelectedCoinProps>({});
+  const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
   const [purchasedAmount, setPurchasedAmount] = useState(0);
   const [selectedDate, setSelectedDate] = useState("");
+
+  const clearModalState = () => {
+    setSelectedCoin(null);
+    setPurchasedAmount(0);
+    setSelectedDate("");
+  };
+
+  const handleClose = () => {
+    clearModalState();
+    onClose();
+  };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCoinId = e.target.value;
@@ -42,18 +50,26 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     setSelectedDate(e.target.value);
   };
 
-  const clearModalState = () => {
-    setSelectedCoin({});
-    setPurchasedAmount(0);
-    setSelectedDate("");
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (selectedCoin && purchasedAmount > 0 && selectedDate) {
+      const newAsset: Asset = {
+        id: selectedCoin.id,
+        symbol: selectedCoin.symbol,
+        name: selectedCoin.name,
+        image: selectedCoin.image,
+        total_value: purchasedAmount,
+        purchase_date: new Date(selectedDate),
+        current_price: selectedCoin.current_price,
+        price_change_percentage_24h_in_currency:
+          selectedCoin.price_change_percentage_24h_in_currency,
+        market_vs_volume: 0, // change to proper values later
+        circ_vs_max: 0, // change to proper values later
+      };
+      onAddAsset(newAsset);
+      handleClose();
+    }
   };
-
-  const handleClose = () => {
-    clearModalState();
-    onClose();
-  };
-
-  const handleSubmit = () => {};
 
   if (!isOpen) return null;
 
@@ -68,7 +84,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <span className="text-[#3c3c7e] dark:text-white text-lg">
             Select Coins
           </span>
-          <button onClick={handleClose}>
+          <button type="button" onClick={handleClose}>
             <Image className="w-7" src={Icons.Close} alt="close" />
           </button>
         </div>
@@ -76,18 +92,18 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <div className="flex flex-col justify-center items-center bg-white dark:bg-[#191932] rounded-md w-3/5 mr-6">
             <div className="flex bg-[#2c2c4a] p-3 rounded-lg">
               <img
-                src={selectedCoin.image}
+                src={selectedCoin?.image}
                 className="w-8 h-8 inline-block"
-                alt={selectedCoin.name}
+                alt={selectedCoin?.name}
               />
             </div>
-            <span className="text-[#3c3c7e] dark:text-white text-2xl mt-3">
-              {selectedCoin.name
+            <span className="text-[#3c3c7e] dark:text-white text-2xl text-center mt-3">
+              {selectedCoin?.name
                 ? `${selectedCoin.name} (${selectedCoin.symbol?.toUpperCase()})`
                 : "Select a coin"}
             </span>
           </div>
-          <div className="flex flex-col w-full">
+          <form className="flex flex-col w-full" onSubmit={handleSubmit}>
             <div className="mb-4">
               <select
                 className="dark:bg-[#191925] text-secondary rounded-md p-2 w-full"
@@ -104,7 +120,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               </select>
             </div>
             <div className="mb-4">
-              <div className="flex justify-between dark:bg-[#191925] text-secondary rounded-md p-2 w-full">
+              <div className="flex justify-between bg-white dark:bg-[#191925] text-secondary rounded-md p-2 w-full">
                 <label>Purchased Amount</label>
                 <input
                   type="number"
@@ -115,7 +131,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
             <div className="mb-4">
-              <div className="flex justify-between dark:bg-[#191925] text-secondary rounded-md p-2 w-full">
+              <div className="flex justify-between bg-white dark:bg-[#191925] text-secondary rounded-md p-2 w-full">
                 <label>Purchased Date</label>
                 <input
                   type="date"
@@ -128,19 +144,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             </div>
             <div className="flex space-x-2 mt-4">
               <button
+                type="button"
                 className="bg-[#aaabe8] dark:bg-[#232336] text-[#3c3c7e] dark:text-white rounded-md p-2 w-1/2"
                 onClick={handleClose}
               >
                 Cancel
               </button>
               <button
+                type="submit"
                 className="bg-[#aaabe8] dark:bg-[#3c3c7e] text-[#3c3c7e] dark:text-white border-[#6161cb] shadow-whiteShadow rounded-md p-2 w-1/2"
-                onClick={onClose}
               >
                 Save and Continue
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
