@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAppSelector } from "@/app/store/hooks";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
-import { Asset } from "@/app/pages/portfolio/page";
+import { AssetData } from "@/app/pages/portfolio/page";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { getTodayDate } from "@/app/utils/utils";
@@ -9,7 +9,7 @@ import { getTodayDate } from "@/app/utils/utils";
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onAddAsset: (newAsset: Asset) => void;
+  onAddAsset: (newAsset: AssetData) => void;
 };
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddAsset }) => {
@@ -53,7 +53,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddAsset }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (selectedCoin && purchasedAmount > 0 && selectedDate) {
-      const newAsset: Asset = {
+      const newAsset: AssetData = {
         id: selectedCoin.id,
         symbol: selectedCoin.symbol,
         name: selectedCoin.name,
@@ -63,8 +63,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddAsset }) => {
         current_price: selectedCoin.current_price,
         price_change_percentage_24h_in_currency:
           selectedCoin.price_change_percentage_24h_in_currency,
-        market_vs_volume: 0, // change to proper values later
-        circ_vs_max: 0, // change to proper values later
+        market_vs_volume: Math.round(
+          (selectedCoin.total_volume / selectedCoin.market_cap) * 100
+        ),
+        circ_vs_max: Math.round(
+          (selectedCoin.circulating_supply / selectedCoin.total_supply) * 100
+        ),
       };
       onAddAsset(newAsset);
       handleClose();

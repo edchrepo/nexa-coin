@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Asset from "@/app/components/Portfolio/Asset";
 import Modal from "@/app/components/Portfolio/Modal";
 
-export interface Asset {
+export interface AssetData {
   id: string;
   symbol: string;
   name: string;
@@ -19,7 +19,7 @@ export interface Asset {
 }
 
 export default function Portfolio() {
-  const [assets, setAssets] = useState<Asset[]>([]);
+  const [assets, setAssets] = useState<AssetData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -29,7 +29,7 @@ export default function Portfolio() {
     setIsModalOpen(false);
   };
 
-  const addAsset = (newAsset: Asset) => {
+  const addAsset = (newAsset: AssetData) => {
     setAssets([...assets, newAsset]);
   };
 
@@ -49,7 +49,7 @@ export default function Portfolio() {
       <Modal isOpen={isModalOpen} onClose={closeModal} onAddAsset={addAsset} />
       <div className="p-3 mt-3">
         {assets.map((asset) => (
-          <Asset key={asset.id} />
+          <Asset key={asset.id} asset={asset} />
         ))}
       </div>
     </div>
