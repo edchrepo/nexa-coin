@@ -58,7 +58,7 @@ export const getGradient = (
   chartArea: ChartArea,
   type: string,
   chartDataLength: number,
-  index: number
+  index?: number
 ) => {
   const gradient = ctx.createLinearGradient(
     0,

@@ -24,6 +24,11 @@ import logolight from "./logolight.png";
 import ConverterIcon from "./converter.svg";
 import WhiteConverterIcon from "./whiteconverter.svg";
 import WhiteDownArrow from "./whitedownarrow.svg"
+import WhiteLink from "./whitelink.svg"
+import PurpleLink from "./purplelink.svg"
+import WhiteTab from "./whitetab.svg"
+import PurpleTab from "./purpletab.svg"
+import PlusCircle from "./pluscircle.svg"
 
 export {
   BoltCircle,
@@ -51,5 +56,10 @@ export {
   logolight,
   ConverterIcon,
   WhiteConverterIcon,
-  WhiteDownArrow
+  WhiteDownArrow,
+  WhiteLink,
+  PurpleLink,
+  WhiteTab,
+  PurpleTab,
+  PlusCircle
 };
