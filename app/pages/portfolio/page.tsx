@@ -61,7 +61,7 @@ export default function Portfolio() {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        onAddAsset={assetToEdit ? editAsset : addAsset}
+        onUpdateAssets={assetToEdit ? editAsset : addAsset}
         assetToEdit={assetToEdit}
       />
       <div className="p-3 mt-3">

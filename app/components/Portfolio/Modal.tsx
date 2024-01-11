@@ -9,14 +9,14 @@ import { getTodayDate } from "@/app/utils/utils";
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onAddAsset: (newAsset: AssetData) => void;
+  onUpdateAssets: (newAsset: AssetData) => void;
   assetToEdit?: AssetData;
 };
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
-  onAddAsset,
+  onUpdateAssets,
   assetToEdit,
 }) => {
   const coins = useAppSelector((state) => state.coinsData);
@@ -72,7 +72,7 @@ const Modal: React.FC<ModalProps> = ({
     e.preventDefault();
     if (selectedCoin && purchasedAmount > 0 && selectedDate) {
       const newAsset: AssetData = {
-        id: selectedCoin.id,
+        id: assetToEdit ? assetToEdit.id : selectedCoin.id,
         symbol: selectedCoin.symbol,
         name: selectedCoin.name,
         image: selectedCoin.image,
@@ -89,7 +89,7 @@ const Modal: React.FC<ModalProps> = ({
         ),
         // price difference since purchase date
       };
-      onAddAsset(newAsset);
+      onUpdateAssets(newAsset);
       handleClose();
     }
   };
@@ -115,13 +115,15 @@ const Modal: React.FC<ModalProps> = ({
           <div className="flex flex-col justify-center items-center bg-white dark:bg-[#191932] rounded-md w-3/5 mr-6">
             <div className="flex bg-[#2c2c4a] p-3 rounded-lg">
               <img
-                src={selectedCoin?.image}
+                src={assetToEdit ? assetToEdit.image : selectedCoin?.image}
                 className="w-8 h-8 inline-block"
-                alt={selectedCoin?.name}
+                alt={assetToEdit ? assetToEdit.name : selectedCoin?.name}
               />
             </div>
             <span className="text-[#3c3c7e] dark:text-white text-2xl text-center mt-3">
-              {selectedCoin?.name
+              {assetToEdit
+                ? `${assetToEdit.name} (${assetToEdit.symbol?.toUpperCase()})`
+                : selectedCoin?.name
                 ? `${selectedCoin.name} (${selectedCoin.symbol?.toUpperCase()})`
                 : "Select a coin"}
             </span>
