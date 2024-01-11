@@ -26,8 +26,8 @@ import WhiteConverterIcon from "./whiteconverter.svg";
 import WhiteDownArrow from "./whitedownarrow.svg"
 import WhiteLink from "./whitelink.svg"
 import PurpleLink from "./purplelink.svg"
-import WhiteTab from "./whitetab.svg"
-import PurpleTab from "./purpletab.svg"
+import WhiteCopy from "./copy.svg"
+import PurpleCopy from "./purplecopy.svg"
 import PlusCircle from "./pluscircle.svg"
 
 export {
@@ -59,7 +59,7 @@ export {
   WhiteDownArrow,
   WhiteLink,
   PurpleLink,
-  WhiteTab,
-  PurpleTab,
+  WhiteCopy,
+  PurpleCopy,
   PlusCircle
 };

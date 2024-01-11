@@ -1,5 +1,9 @@
-import CoinSummary from "@/app/components/CoinSummary/CoinSummary";
+import React from 'react'
 
-export default function Portfolio() {
-  return <CoinSummary/>
+const page = () => {
+  return (
+    <div>Portfolio</div>
+  )
 }
+
+export default page

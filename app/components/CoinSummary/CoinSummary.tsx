@@ -1,13 +1,26 @@
+"use client";
+
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import DataStats from "./DataStats";
+import Description from "./Description";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { fetchCoinSummary } from "@/app/store/slices/coinSummarySlice";
 
 const CoinSummary = () => {
+  const dispatch = useAppDispatch();
+  const coinSummary = useAppSelector((state) => state.coinSummary);
+
+  useEffect(() => {
+    dispatch(fetchCoinSummary("bitcoin"));
+  }, [dispatch]);
+
   return (
     <div className="flex-col justify-center w-[90%]">
       <div className="mt-9 mb-5">
         <p className="text-lg text-[#424286] dark:text-white">
-          Portfolio / Bitcoin summary
+          Portfolio / {coinSummary.name} summary
         </p>
       </div>
       <div className="flex justify-center space-x-16">
@@ -16,12 +29,14 @@ const CoinSummary = () => {
             <div className="w-[45%] space-y-5">
               <div className="bg-white dark:bg-[#1e1932] p-20 rounded-[20px] text-black dark:text-white ">
                 <div className="flex flex-col items-center justify-center text-center space-y-4">
-                  <Image
+                  <img
                     className="h-10 w-10"
-                    src={Icons.BitcoinIcon}
+                    src={coinSummary.image.large}
                     alt="Bitcoin"
                   />
-                  <p className="text-xl font-bold">Bitcoin (BTC)</p>
+                  <p className="text-xl font-bold">
+                    {coinSummary.name} ({coinSummary.symbol.toUpperCase()})
+                  </p>
                 </div>
               </div>
               <div className="flex items-center justify-center bg-white dark:bg-[#1e1932] p-5 rounded-[20px] text-black dark:text-white space-x-3">
@@ -30,10 +45,10 @@ const CoinSummary = () => {
                   src={Icons.WhiteLink}
                   alt="whitelink"
                 />
-                <p>www.bitcoin.org</p>
+                <p>{coinSummary.links.homepage}</p>
                 <Image
                   className="h-5 w-5"
-                  src={Icons.WhiteTab}
+                  src={Icons.WhiteCopy}
                   alt="whitetab"
                 />
               </div>
@@ -41,14 +56,18 @@ const CoinSummary = () => {
             <div className="w-[55%] flex flex-col justify-center items-center bg-white dark:bg-[#1e1932] rounded-[20px] text-black dark:text-white">
               <div>
                 <div className="flex space-x-6">
-                  <p className="text-3xl font-bold">$40,017</p>
+                  <p className="text-3xl font-bold">
+                    ${coinSummary.market_data.current_price.usd}
+                  </p>
                   <div className="flex items-center space-x-1">
                     <Image
                       className="h-2 w-2"
                       src={Icons.UpArrow}
                       alt="uparrow"
                     />
-                    <p className="text-[#00b1a6]">5.02%</p>
+                    <p className="text-[#00b1a6]">
+                      {coinSummary.market_data.price_change_percentage_24h}
+                    </p>
                   </div>
                 </div>
                 <div className="flex text-lg space-x-2 mt-2">
@@ -69,10 +88,10 @@ const CoinSummary = () => {
                     alt="uparrow2"
                   />
                   <p>All time high:</p>
-                  <p>$64,804</p>
+                  <p>{coinSummary.market_data.ath.usd}</p>
                 </div>
-                <p className="text-[#3c3c7e] dark:text-secondary">
-                  {new Date().toUTCString()}
+                <p className="text-[#3c3c7e] dark:text-secondary ml-8">
+                  {new Date(coinSummary.market_data.ath_date.usd).toUTCString()}
                 </p>
                 <div className="flex items-center mt-5 space-x-3">
                   <Image
@@ -81,64 +100,40 @@ const CoinSummary = () => {
                     alt="downarrow2"
                   />
                   <p>All time low:</p>
-                  <p>$32,805</p>
+                  <p>{coinSummary.market_data.atl.usd}</p>
                 </div>
-                <p className="text-[#3c3c7e] dark:text-secondary">
-                  {new Date().toUTCString()}
+                <p className="text-[#3c3c7e] dark:text-secondary ml-8">
+                  {new Date(coinSummary.market_data.atl_date.usd).toUTCString()}
                 </p>
               </div>
             </div>
           </div>
           <div>
             <p>Description</p>
-            <p>
-              Bitcoin is the first successful internet money based on
-              peer-to-peer technology; whereby no central bank or authority is
-              involved in the transaction and production of the Bitcoin
-              currency. It was created by an anonymous individual/group under
-              the name, Satoshi Nakamoto. The source code is available publicly
-              as an open source project, anybody can look at it and be part of
-              the developmental process. Bitcoin is changing the way we see
-              money as we speak. The idea was to produce a means of exchange,
-              independent of any central authority, that could be transferred
-              electronically in a secure, verifiable and immutable way. It is a
-              decentralized peer-to-peer internet currency making mobile payment
-              easy, very low transaction fees, protects your identity, and it
-              works anywhere all the time with no central authority and banks.
-              Bitcoin is designed to have only 21 million BC ever ... read more
-            </p>
+            <Description text={coinSummary.description.en} maxLength={750} />
           </div>
         </div>
         <div className="w-[45%] space-y-44">
-          <DataStats/>
+          <DataStats data={coinSummary} />
           <div className="space-y-6">
-            <div className="flex items-center justify-center bg-white dark:bg-[#1e1932] p-4 rounded-[20px] text-black dark:text-white space-x-3">
-              <Image
-                className="h-5 w-5"
-                src={Icons.WhiteLink}
-                alt="whitelink"
-              />
-              <p>www.blockchain.com/bitcoin</p>
-              <Image className="h-5 w-5" src={Icons.WhiteTab} alt="whitetab" />
-            </div>
-            <div className="flex items-center justify-center bg-white dark:bg-[#1e1932] p-4 rounded-[20px] text-black dark:text-white space-x-3">
-              <Image
-                className="h-5 w-5"
-                src={Icons.WhiteLink}
-                alt="whitelink"
-              />
-              <p>www.btc.com</p>
-              <Image className="h-5 w-5" src={Icons.WhiteTab} alt="whitetab" />
-            </div>
-            <div className="flex items-center justify-center bg-white dark:bg-[#1e1932] p-4 rounded-[20px] text-black dark:text-white space-x-3">
-              <Image
-                className="h-5 w-5"
-                src={Icons.WhiteLink}
-                alt="whitelink"
-              />
-              <p>www.btc.tokenview.com</p>
-              <Image className="h-5 w-5" src={Icons.WhiteTab} alt="whitetab" />
-            </div>
+            {coinSummary.links.blockchain_site
+              .filter((site) => site.length > 0)
+              .slice(0, 3) // Get only the first 3 links
+              .map((site) => (
+                <div className="flex items-center justify-center bg-white dark:bg-[#1e1932] p-4 rounded-[20px] text-black dark:text-white space-x-3">
+                  <Image
+                    className="h-5 w-5"
+                    src={Icons.WhiteLink}
+                    alt="whitelink"
+                  />
+                  <p>{site}</p>
+                  <Image
+                    className="h-5 w-5"
+                    src={Icons.WhiteCopy}
+                    alt="whitetab"
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>

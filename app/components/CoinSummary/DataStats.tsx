@@ -1,24 +1,29 @@
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import ProgressBar from "../ProgressBar";
+import { CoinSummary } from "@/app/store/slices/coinSummarySlice";
 
 const stats = [
   "Market Cap",
   "Fully Diluted Valuation",
-  "Volume 24h",
+  "Market Cap 24h",
   "Volume/Market",
   "Total Volume",
   "Circulating Supply",
   "Max Supply",
 ];
 
-const DataStats = () => {
+interface DataProps {
+  data: CoinSummary 
+}
+
+const DataStats: React.FC<DataProps> = ({ data }) => {
   return (
     <div className="flex flex-col justify-center items-center bg-white dark:bg-[#1e1932] p-7 rounded-[20px] text-black dark:text-white">
       <div className="w-[80%] flex justify-between">
         <div className="w-[60%] space-y-3">
-          {stats.map((stat) => (
-            <div className="flex items-center space-x-2">
+          {stats.map((stat, index) => (
+            <div key={index} className="flex items-center space-x-2">
               <div className="h-5 w-5 rounded-full shadow-whiteShadow">
                 <Image
                   className="h-5 w-5"
@@ -31,13 +36,13 @@ const DataStats = () => {
           ))}
         </div>
         <div className="w-[40%] space-y-3">
-          <p>$749,864,345,056</p>
-          <p>$840,523,040,085</p>
-          <p>$47,714,337,481</p>
-          <p>0.06363</p>
-          <p>1,192,352 BTC</p>
-          <p>18,734,943 BTC</p>
-          <p>21,000,000 BTC</p>
+          <p>{data.market_data.market_cap.usd}</p>
+          <p>{data.market_data.fully_diluted_valuation.usd}</p>
+          <p>{data.market_data.market_cap_change_24h}</p>
+          <p>{data.market_data.mcap_to_tvl_ratio || "N/A"}</p>
+          <p>{data.market_data.total_volume.btc} BTC</p>
+          <p>{data.market_data.circulating_supply} BTC</p>
+          <p>{data.market_data.max_supply} BTC</p>
         </div>
       </div>
       <div className="w-[80%] mt-10">
