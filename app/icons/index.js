@@ -24,6 +24,7 @@ import logolight from "./logolight.png";
 import ConverterIcon from "./converter.svg";
 import WhiteConverterIcon from "./whiteconverter.svg";
 import WhiteDownArrow from "./whitedownarrow.svg";
+import Edit from "./edit.svg";
 import Close from "./close.svg";
 
 export {
@@ -53,5 +54,6 @@ export {
   ConverterIcon,
   WhiteConverterIcon,
   WhiteDownArrow,
+  Edit,
   Close,
 };

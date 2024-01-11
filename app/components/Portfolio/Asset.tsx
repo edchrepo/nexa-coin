@@ -6,9 +6,10 @@ import ProgressBar from "../ProgressBar";
 
 export interface AssetProps {
   asset: AssetData;
+  onEdit: () => void;
 }
 
-const Asset: React.FC<AssetProps> = ({ asset }) => {
+const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
   return (
     <div className="flex border bg-white dark:bg-[#191925] dark:border-[#19192e] rounded-lg mb-6">
       <div className="flex-1 p-2 bg-[#a2a3e8] dark:bg-[#191932] rounded-l-lg">
@@ -18,6 +19,7 @@ const Asset: React.FC<AssetProps> = ({ asset }) => {
             <span className="text-[#3c3c7e] dark:text-white text-2xl">
               {asset.name} ({asset.symbol?.toUpperCase()})
             </span>
+            <button onClick={onEdit}>EDIT ASSET MODAL</button>
           </div>
           <div className="dark:text-secondary mt-8">Total Value</div>
           <div className="flex space-x-2 items-center mt-1">

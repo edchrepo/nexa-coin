@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppSelector } from "@/app/store/hooks";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { AssetData } from "@/app/pages/portfolio/page";
@@ -10,13 +10,31 @@ type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onAddAsset: (newAsset: AssetData) => void;
+  assetToEdit?: AssetData;
 };
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddAsset }) => {
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  onAddAsset,
+  assetToEdit,
+}) => {
   const coins = useAppSelector((state) => state.coinsData);
   const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
   const [purchasedAmount, setPurchasedAmount] = useState(0);
   const [selectedDate, setSelectedDate] = useState("");
+
+  // change state for asset to edit
+  useEffect(() => {
+    if (assetToEdit) {
+      const coin = coins.find((coin) => coin.id === assetToEdit.id) || null;
+      setSelectedCoin(coin);
+      setPurchasedAmount(assetToEdit.total_value);
+      setSelectedDate(assetToEdit.purchase_date.toISOString().substring(0, 10));
+    } else {
+      clearModalState();
+    }
+  }, [assetToEdit, coins]);
 
   const clearModalState = () => {
     setSelectedCoin(null);
@@ -59,7 +77,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddAsset }) => {
         name: selectedCoin.name,
         image: selectedCoin.image,
         total_value: purchasedAmount,
-        purchase_date: new Date(selectedDate),
+        purchase_date: new Date(selectedDate + "T00:00:00"), // set time to midnight for time zone differences
         current_price: selectedCoin.current_price,
         price_change_percentage_24h_in_currency:
           selectedCoin.price_change_percentage_24h_in_currency,
@@ -69,6 +87,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddAsset }) => {
         circ_vs_max: Math.round(
           (selectedCoin.circulating_supply / selectedCoin.total_supply) * 100
         ),
+        // price difference since purchase date
       };
       onAddAsset(newAsset);
       handleClose();
@@ -129,6 +148,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onAddAsset }) => {
                 <input
                   type="number"
                   className="dark:bg-[#191925] text-right placeholder:text-secondary"
+                  value={assetToEdit?.total_value}
                   placeholder="0"
                   onChange={handleInputChange}
                 />

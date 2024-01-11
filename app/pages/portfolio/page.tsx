@@ -20,6 +20,9 @@ export interface AssetData {
 
 export default function Portfolio() {
   const [assets, setAssets] = useState<AssetData[]>([]);
+  const [assetToEdit, setAssetToEdit] = useState<AssetData | undefined>(
+    undefined
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -27,10 +30,16 @@ export default function Portfolio() {
   };
   const closeModal = () => {
     setIsModalOpen(false);
+    setAssetToEdit(undefined);
   };
 
   const addAsset = (newAsset: AssetData) => {
     setAssets([...assets, newAsset]);
+  };
+
+  const editAsset = (asset: AssetData) => {
+    setAssetToEdit(asset);
+    openModal();
   };
 
   return (
@@ -46,10 +55,15 @@ export default function Portfolio() {
           Add Asset
         </button>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} onAddAsset={addAsset} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onAddAsset={addAsset}
+        assetToEdit={assetToEdit}
+      />
       <div className="p-3 mt-3">
         {assets.map((asset) => (
-          <Asset key={asset.id} asset={asset} />
+          <Asset key={asset.id} asset={asset} onEdit={() => editAsset(asset)} />
         ))}
       </div>
     </div>
