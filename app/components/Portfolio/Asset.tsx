@@ -14,12 +14,16 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
     <div className="flex border bg-white dark:bg-[#191925] dark:border-[#19192e] rounded-lg mb-6">
       <div className="flex-1 p-2 bg-[#a2a3e8] dark:bg-[#191932] rounded-l-lg">
         <div className="p-2">
-          <div className="flex space-x-2 items-center mt-2">
-            <img src={asset.image} className="w-7" alt={asset.name} />
-            <span className="text-[#3c3c7e] dark:text-white text-2xl">
-              {asset.name} ({asset.symbol?.toUpperCase()})
-            </span>
-            <button onClick={onEdit}>EDIT ASSET MODAL</button>
+          <div className="flex justify-between mt-2">
+            <div className="flex space-x-2">
+              <img src={asset.image} className="w-7" alt={asset.name} />
+              <span className="text-[#3c3c7e] dark:text-white text-2xl">
+                {asset.name} ({asset.symbol?.toUpperCase()})
+              </span>
+            </div>
+            <button className="bg-[#3c3c7e] rounded-md p-1" onClick={onEdit}>
+              <Image className="w-6" src={Icons.Edit} alt="edit" />
+            </button>
           </div>
           <div className="dark:text-secondary mt-8">Total Value</div>
           <div className="flex space-x-2 items-center mt-1">

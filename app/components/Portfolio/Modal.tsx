@@ -58,7 +58,7 @@ const Modal: React.FC<ModalProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (parseFloat(value) > 0) {
-      setPurchasedAmount(parseFloat(value));
+      setPurchasedAmount(value ? parseFloat(value) : 0);
     } else {
       setPurchasedAmount(0);
     }
@@ -148,8 +148,7 @@ const Modal: React.FC<ModalProps> = ({
                 <input
                   type="number"
                   className="dark:bg-[#191925] text-right placeholder:text-secondary"
-                  value={assetToEdit?.total_value}
-                  placeholder="0"
+                  value={purchasedAmount}
                   onChange={handleInputChange}
                 />
               </div>
