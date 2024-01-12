@@ -36,13 +36,13 @@ const DataStats: React.FC<DataProps> = ({ data }) => {
           ))}
         </div>
         <div className="w-[40%] space-y-3">
-          <p>{data.market_data.market_cap.usd}</p>
-          <p>{data.market_data.fully_diluted_valuation.usd}</p>
-          <p>{data.market_data.market_cap_change_24h}</p>
+          <p>${data.market_data.market_cap.usd}</p>
+          <p>${data.market_data.fully_diluted_valuation.usd}</p>
+          <p>${data.market_data.market_cap_change_24h}</p>
           <p>{data.market_data.mcap_to_tvl_ratio || "N/A"}</p>
-          <p>{data.market_data.total_volume.btc} BTC</p>
-          <p>{data.market_data.circulating_supply} BTC</p>
-          <p>{data.market_data.max_supply} BTC</p>
+          <p>{data.market_data.total_volume[data.symbol]} {data.symbol.toUpperCase()}</p>
+          <p>{data.market_data.circulating_supply} {data.symbol.toUpperCase()}</p>
+          <p>{data.market_data.max_supply || "N/A"} {data.symbol.toUpperCase()}</p>
         </div>
       </div>
       <div className="w-[80%] mt-10">
