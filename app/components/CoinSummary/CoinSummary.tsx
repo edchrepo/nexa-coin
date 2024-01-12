@@ -14,8 +14,6 @@ const CoinSummary = () => {
   const params = useParams();
   const coinSummary = useAppSelector((state) => state.coinSummary);
 
-  console.log(params.coinId)
-
   useEffect(() => {
     const coinId = params.coinId as string;
     dispatch(fetchCoinSummary(coinId));
@@ -131,7 +129,7 @@ const CoinSummary = () => {
                     src={Icons.WhiteLink}
                     alt="whitelink"
                   />
-                  <p>{site}</p>
+                  <p>{site.substring(0, 50)}</p>
                   <Image
                     className="h-5 w-5"
                     src={Icons.WhiteCopy}
