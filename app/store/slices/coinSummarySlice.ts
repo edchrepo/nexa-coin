@@ -25,36 +25,19 @@ export interface CoinSummary {
   };
 }
 
-const initialState: CoinSummary = {
-  id: "",
-  symbol: "",
-  name: "",
-  description: { en: "" },
-  image: { large: "" },
-  links: { homepage: [], blockchain_site: []},
-  market_data: {
-    current_price: {},
-    price_change_percentage_24h: 0,
-    ath: {},
-    ath_date: {},
-    atl: {},
-    atl_date: {},
-    market_cap: {},
-    fully_diluted_valuation: {},
-    market_cap_change_24h: 0,
-    mcap_to_tvl_ratio: 0,
-    total_volume: {},
-    circulating_supply: 0,
-    max_supply: 0,
-  },
-};
+interface CoinSummariesState {
+  [key: string]: CoinSummary; // using an object to map coin IDs to their summaries
+}
+
+const initialState: CoinSummariesState = {};
 
 export const fetchCoinSummary = createAsyncThunk(
   "coinSummary/fetchCoinSummary",
   async (coinId: string) => {
     // Check if cached data is available and valid
-    const cachedData = getCache("coinSummaryCache");
+    const cachedData = getCache("coinSummaryCache", coinId);
     if (cachedData) {
+      console.log("Summary data retrieved from cache")
       return cachedData;
     }
 
@@ -66,10 +49,8 @@ export const fetchCoinSummary = createAsyncThunk(
     const response = await fetch(url);
     const data = await response.json();
 
-    console.log(data);
-
     // Cache the new data with a specific expiration time (in minutes)
-    setCache("coinSummaryCache", data.data, 15);
+    setCache("coinSummaryCache", data, 15, coinId);
 
     return data;
   }
@@ -81,7 +62,8 @@ export const coinSummarySlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCoinSummary.fulfilled, (state, action) => {
-      return action.payload;
+      const data: CoinSummary = action.payload;
+      state[data.id] = data; // Store the summary under its coin ID
     });
   },
 });

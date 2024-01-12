@@ -12,18 +12,21 @@ import { fetchCoinSummary } from "@/app/store/slices/coinSummarySlice";
 const CoinSummary = () => {
   const dispatch = useAppDispatch();
   const params = useParams();
+  const coinId = params.coinId as string;
   const coinSummary = useAppSelector((state) => state.coinSummary);
 
+
   useEffect(() => {
-    const coinId = params.coinId as string;
     dispatch(fetchCoinSummary(coinId));
+    console.log(coinSummary)
   }, [dispatch, params]);
 
   return (
+    (coinSummary[coinId] &&
     <div className="flex-col justify-center w-[90%]">
       <div className="mt-9 mb-5">
         <p className="text-lg text-[#424286] dark:text-white">
-          Portfolio / {coinSummary.name} summary
+          Portfolio / {coinSummary[coinId].name} summary
         </p>
       </div>
       <div className="flex justify-center space-x-16">
@@ -34,11 +37,11 @@ const CoinSummary = () => {
                 <div className="flex flex-col items-center justify-center text-center space-y-4">
                   <img
                     className="h-10 w-10"
-                    src={coinSummary.image.large}
+                    src={coinSummary[coinId].image.large}
                     alt="Bitcoin"
                   />
                   <p className="text-xl font-bold">
-                    {coinSummary.name} ({coinSummary.symbol.toUpperCase()})
+                    {coinSummary[coinId].name} ({coinSummary[coinId].symbol.toUpperCase()})
                   </p>
                 </div>
               </div>
@@ -48,7 +51,7 @@ const CoinSummary = () => {
                   src={Icons.WhiteLink}
                   alt="whitelink"
                 />
-                <p>{coinSummary.links.homepage}</p>
+                <p>{coinSummary[coinId].links.homepage}</p>
                 <Image
                   className="h-5 w-5"
                   src={Icons.WhiteCopy}
@@ -60,7 +63,7 @@ const CoinSummary = () => {
               <div>
                 <div className="flex space-x-6">
                   <p className="text-3xl font-bold">
-                    ${coinSummary.market_data.current_price.usd}
+                    ${coinSummary[coinId].market_data.current_price.usd}
                   </p>
                   <div className="flex items-center space-x-1">
                     <Image
@@ -69,7 +72,7 @@ const CoinSummary = () => {
                       alt="uparrow"
                     />
                     <p className="text-[#00b1a6]">
-                      {coinSummary.market_data.price_change_percentage_24h}
+                      {coinSummary[coinId].market_data.price_change_percentage_24h}
                     </p>
                   </div>
                 </div>
@@ -91,10 +94,10 @@ const CoinSummary = () => {
                     alt="uparrow2"
                   />
                   <p>All time high:</p>
-                  <p>{coinSummary.market_data.ath.usd}</p>
+                  <p>{coinSummary[coinId].market_data.ath.usd}</p>
                 </div>
                 <p className="text-[#3c3c7e] dark:text-secondary ml-8">
-                  {new Date(coinSummary.market_data.ath_date.usd).toUTCString()}
+                  {new Date(coinSummary[coinId].market_data.ath_date.usd).toUTCString()}
                 </p>
                 <div className="flex items-center mt-5 space-x-3">
                   <Image
@@ -103,23 +106,23 @@ const CoinSummary = () => {
                     alt="downarrow2"
                   />
                   <p>All time low:</p>
-                  <p>{coinSummary.market_data.atl.usd}</p>
+                  <p>{coinSummary[coinId].market_data.atl.usd}</p>
                 </div>
                 <p className="text-[#3c3c7e] dark:text-secondary ml-8">
-                  {new Date(coinSummary.market_data.atl_date.usd).toUTCString()}
+                  {new Date(coinSummary[coinId].market_data.atl_date.usd).toUTCString()}
                 </p>
               </div>
             </div>
           </div>
           <div>
             <p>Description</p>
-            <Description text={coinSummary.description.en} maxLength={750} />
+            <Description text={coinSummary[coinId].description.en} maxLength={750} />
           </div>
         </div>
         <div className="w-[45%] space-y-44">
-          <DataStats data={coinSummary} />
+          <DataStats data={coinSummary[coinId]} />
           <div className="space-y-6">
-            {coinSummary.links.blockchain_site
+            {coinSummary[coinId].links.blockchain_site
               .filter((site) => site.length > 0)
               .slice(0, 3) // Get only the first 3 links
               .map((site, index) => (
@@ -140,7 +143,7 @@ const CoinSummary = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div>)
   );
 };
 
