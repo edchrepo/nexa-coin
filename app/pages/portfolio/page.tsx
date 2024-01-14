@@ -45,6 +45,10 @@ export default function Portfolio() {
     );
   };
 
+  const deleteAsset = (assetId: string) => {
+    setAssets(assets.filter((asset) => asset.id !== assetId));
+  };
+
   return (
     <div className="bg-[#f3f5f9] dark:bg-[#13121a] w-[90%]">
       <div className="flex justify-between p-4 mt-4">
@@ -63,6 +67,7 @@ export default function Portfolio() {
         onClose={closeModal}
         onUpdateAssets={assetToEdit ? editAsset : addAsset}
         assetToEdit={assetToEdit}
+        onDeleteAsset={deleteAsset}
       />
       <div className="p-3 mt-3">
         {assets.map((asset) => (

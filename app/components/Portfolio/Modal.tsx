@@ -12,6 +12,7 @@ type ModalProps = {
   onClose: () => void;
   onUpdateAssets: (newAsset: AssetData) => void;
   assetToEdit?: AssetData;
+  onDeleteAsset: (assetId: string) => void;
 };
 
 const Modal: React.FC<ModalProps> = ({
@@ -19,6 +20,7 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   onUpdateAssets,
   assetToEdit,
+  onDeleteAsset,
 }) => {
   const coins = useAppSelector((state) => state.coinsData);
   const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
@@ -94,6 +96,11 @@ const Modal: React.FC<ModalProps> = ({
       onUpdateAssets(newAsset);
       handleClose();
     }
+  };
+
+  const handleDelete = (assetId: string) => {
+    onDeleteAsset(assetId);
+    handleClose();
   };
 
   if (!isOpen) return null;
@@ -178,6 +185,15 @@ const Modal: React.FC<ModalProps> = ({
               >
                 Cancel
               </button>
+              {assetToEdit && (
+                <button
+                  type="button"
+                  className="bg-[#aaabe8] dark:bg-[#232336] text-[#3c3c7e] dark:text-white rounded-md p-2 w-1/2"
+                  onClick={() => handleDelete(assetToEdit.id)}
+                >
+                  Delete Asset
+                </button>
+              )}
               <button
                 type="submit"
                 className="bg-[#aaabe8] dark:bg-[#3c3c7e] text-[#3c3c7e] dark:text-white border-[#6161cb] shadow-whiteShadow rounded-md p-2 w-1/2"
