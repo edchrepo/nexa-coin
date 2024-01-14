@@ -5,6 +5,7 @@ import { AssetData } from "@/app/pages/portfolio/page";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { getTodayDate } from "@/app/utils/utils";
+import { v4 as uuidv4 } from "uuid";
 
 type ModalProps = {
   isOpen: boolean;
@@ -27,8 +28,9 @@ const Modal: React.FC<ModalProps> = ({
   // change state for asset to edit
   useEffect(() => {
     if (assetToEdit) {
-      const coin = coins.find((coin) => coin.id === assetToEdit.id) || null;
-      setSelectedCoin(coin);
+      setSelectedCoin(
+        coins.find((coin) => coin.name === assetToEdit.name) || null
+      );
       setPurchasedAmount(assetToEdit.total_value);
       setSelectedDate(assetToEdit.purchase_date.toISOString().substring(0, 10));
     } else {
@@ -72,7 +74,7 @@ const Modal: React.FC<ModalProps> = ({
     e.preventDefault();
     if (selectedCoin && purchasedAmount > 0 && selectedDate) {
       const newAsset: AssetData = {
-        id: assetToEdit ? assetToEdit.id : selectedCoin.id,
+        id: assetToEdit ? assetToEdit.id : uuidv4(), // edited asset's id or generate new one
         symbol: selectedCoin.symbol,
         name: selectedCoin.name,
         image: selectedCoin.image,
@@ -132,6 +134,7 @@ const Modal: React.FC<ModalProps> = ({
             <div className="mb-4">
               <select
                 className="dark:bg-[#191925] text-secondary rounded-md p-2 w-full"
+                value={selectedCoin?.id}
                 onChange={handleSelectChange}
               >
                 <option value="" disabled selected>
