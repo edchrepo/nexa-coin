@@ -37,19 +37,28 @@ const Navbar = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "ArrowDown") {
-      setFocusedIndex((prevIndex) =>
-        prevIndex < filteredCoins.length - 1 ? prevIndex + 1 : prevIndex
-      );
-    } else if (e.key === "ArrowUp") {
-      setFocusedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
-    } else if (e.key === "Enter" && focusedIndex !== -1) {
+    let newIndex = -1;
+    if (e.key === 'ArrowDown') {
+      newIndex = focusedIndex < filteredCoins.length - 1 ? focusedIndex + 1 : focusedIndex;
+      setFocusedIndex(newIndex);
+    } else if (e.key === 'ArrowUp') {
+      newIndex = focusedIndex > 0 ? focusedIndex - 1 : 0;
+      setFocusedIndex(newIndex);
+    } else if (e.key === 'Enter' && focusedIndex !== -1) {
       const selectedCoin = filteredCoins[focusedIndex];
-      router.push(`/${selectedCoin.id}`);
-      setSearch("");
-      setFocusedIndex(-1);
+      if (selectedCoin) {
+        router.push(`/${selectedCoin.id}`);
+        setSearch("");
+        setFocusedIndex(-1);
+      }
+      return;
+    }
+    if (newIndex !== -1) {
+      const focusedCoin = filteredCoins[newIndex];
+      setSearch(focusedCoin ? focusedCoin.name : '');
     }
   };
+  
 
   const handleClick = (search: string) => {
     router.push(search);
