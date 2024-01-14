@@ -31,6 +31,9 @@ const Navbar = () => {
       (coin) => coin.name.toLowerCase() === e.target.value.toLowerCase()
     );
     setIsSubmitEnabled(isMatchingCoin);
+    if(e.target.value.length === 0) {
+      setFocusedIndex(-1);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
