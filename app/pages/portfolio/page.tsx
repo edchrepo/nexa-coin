@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Asset from "@/app/components/Portfolio/Asset";
 import Modal from "@/app/components/Portfolio/Modal";
 
@@ -11,15 +11,22 @@ export interface AssetData {
   image: string;
   total_value: number;
   // percent change?
-  purchase_date: Date;
+  purchase_date: string;
   current_price: number;
   price_change_percentage_24h_in_currency: number;
   market_vs_volume: number;
   circ_vs_max: number;
 }
 
+function loadAssetsFromLocalStorage() {
+  if (typeof window === "undefined") return [];
+
+  const savedAssets = localStorage.getItem("assets");
+  return savedAssets ? JSON.parse(savedAssets) : [];
+}
+
 export default function Portfolio() {
-  const [assets, setAssets] = useState<AssetData[]>([]);
+  const [assets, setAssets] = useState<AssetData[]>(loadAssetsFromLocalStorage);
   const [assetToEdit, setAssetToEdit] = useState<AssetData | undefined>(
     undefined
   );
@@ -48,6 +55,10 @@ export default function Portfolio() {
   const deleteAsset = (assetId: string) => {
     setAssets(assets.filter((asset) => asset.id !== assetId));
   };
+
+  useEffect(() => {
+    localStorage.setItem("assets", JSON.stringify(assets));
+  }, [assets]);
 
   return (
     <div className="bg-[#f3f5f9] dark:bg-[#13121a] w-[90%]">

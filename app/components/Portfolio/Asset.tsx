@@ -34,7 +34,7 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
             <span className="text-[#00b1a6]">6.76%</span>
           </div>
           <div className="dark:text-secondary mt-1">
-            Purchased {asset.purchase_date.toDateString()}
+            Purchased {new Date(asset.purchase_date).toLocaleDateString()}
           </div>
         </div>
       </div>

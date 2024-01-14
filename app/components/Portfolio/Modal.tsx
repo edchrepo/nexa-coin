@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({
         coins.find((coin) => coin.name === assetToEdit.name) || null
       );
       setPurchasedAmount(assetToEdit.total_value);
-      setSelectedDate(assetToEdit.purchase_date.toISOString().substring(0, 10));
+      setSelectedDate(assetToEdit.purchase_date.substring(0, 10));
     } else {
       clearModalState();
     }
@@ -81,7 +81,7 @@ const Modal: React.FC<ModalProps> = ({
         name: selectedCoin.name,
         image: selectedCoin.image,
         total_value: purchasedAmount,
-        purchase_date: new Date(selectedDate + "T00:00:00"), // set time to midnight for time zone differences
+        purchase_date: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight for time zone differences
         current_price: selectedCoin.current_price,
         price_change_percentage_24h_in_currency:
           selectedCoin.price_change_percentage_24h_in_currency,
