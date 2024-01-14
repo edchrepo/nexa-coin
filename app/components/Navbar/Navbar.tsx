@@ -125,7 +125,7 @@ const Navbar = () => {
                 {filteredCoins.map((coin) => (
                   <div
                     key={coin.id}
-                    className="ml-2"
+                    className="ml-2 hover:bg-blue-100 cursor-pointer"
                     onClick={() => router.push(`/${coin.id}`)}
                   >
                     {coin.name}
