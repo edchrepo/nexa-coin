@@ -6,15 +6,17 @@ import Image from "next/image";
 import Link from "next/link";
 import * as Icons from "@/app/icons";
 import ThemeSwitch from "./ThemeSwitch";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/app/store/hooks";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 
 const Navbar = () => {
   const [search, setSearch] = useState("");
   const [filteredCoins, setFilteredCoins] = useState<CoinData[]>([]);
-  // only allow user to submit search if searchterm is a valid coin name
+  // Only allow user to submit search if searchterm is a valid coin name
   const [isSubmitEnabled, setIsSubmitEnabled] = useState<boolean>(false);
+  // Allows user to press up and down when searching for coin to focus/highlight a coin
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const [activeLink, setActiveLink] = useState("home");
   const coins = useAppSelector((state) => state.coinsData);
   const { theme } = useTheme();
@@ -25,15 +27,40 @@ const Navbar = () => {
     setFilteredCoins(filterCoins(e.target.value));
 
     // Check if the search value matches the name property of any coin
-    const isMatchingCoin = coins.some((coin) => coin.name.toLowerCase() === e.target.value.toLowerCase());
+    const isMatchingCoin = coins.some(
+      (coin) => coin.name.toLowerCase() === e.target.value.toLowerCase()
+    );
     setIsSubmitEnabled(isMatchingCoin);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowDown") {
+      setFocusedIndex((prevIndex) =>
+        prevIndex < filteredCoins.length - 1 ? prevIndex + 1 : prevIndex
+      );
+    } else if (e.key === "ArrowUp") {
+      setFocusedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
+    } else if (e.key === "Enter" && focusedIndex !== -1) {
+      const selectedCoin = filteredCoins[focusedIndex];
+      router.push(`/${selectedCoin.id}`);
+      setSearch("");
+      setFocusedIndex(-1);
+    }
+  };
+
+  const handleClick = (search: string) => {
+    router.push(search);
+    setSearch("");
+    setFocusedIndex(-1);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     if (isSubmitEnabled) {
-      const coinToSearch = coins.find((coin) => coin.name.toLowerCase() === search.toLowerCase());
+      const coinToSearch = coins.find(
+        (coin) => coin.name.toLowerCase() === search.toLowerCase()
+      );
       if (coinToSearch) {
         router.push(`/${coinToSearch.id}`);
       }
@@ -116,17 +143,20 @@ const Navbar = () => {
                 type="text"
                 className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 w-96 h-10"
                 value={search}
+                onKeyDown={handleKeyDown}
                 onChange={handleChange}
                 placeholder="Search..."
               />
             </form>
             {search && (
               <div className="absolute z-50 bg-white dark:bg-[#1e1932] max-h-[500px] w-full overflow-y-auto">
-                {filteredCoins.map((coin) => (
+                {filteredCoins.map((coin, index) => (
                   <div
                     key={coin.id}
-                    className="ml-2 hover:bg-blue-100 cursor-pointer"
-                    onClick={() => router.push(`/${coin.id}`)}
+                    className={`ml-2 hover:bg-blue-100 cursor-pointer ${
+                      index === focusedIndex ? "bg-blue-200" : ""
+                    }`}
+                    onClick={() => handleClick(`/${coin.id}`)}
                   >
                     {coin.name}
                   </div>
