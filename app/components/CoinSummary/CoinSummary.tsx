@@ -32,7 +32,7 @@ const CoinSummary = () => {
         <div className="w-[55%] space-y-48">
           <div className="flex space-x-8">
             <div className="w-[45%] space-y-5">
-              <div className="bg-white dark:bg-[#1e1932] p-20 rounded-[20px] text-black dark:text-white ">
+              <div className="bg-white dark:bg-[#1e1932] px-8 py-16 rounded-[20px] text-black dark:text-white ">
                 <div className="flex flex-col items-center justify-center text-center space-y-4">
                   <img
                     className="h-10 w-10"
@@ -58,7 +58,7 @@ const CoinSummary = () => {
                 />
               </div>
             </div>
-            <div className="w-[55%] flex flex-col justify-center items-center bg-white dark:bg-[#1e1932] rounded-[20px] text-black dark:text-white">
+            <div className="w-[55%] p-8 flex flex-col justify-center items-center bg-white dark:bg-[#1e1932] rounded-[20px] text-black dark:text-white">
               <div>
                 <div className="flex space-x-6">
                   <p className="text-3xl font-bold">
