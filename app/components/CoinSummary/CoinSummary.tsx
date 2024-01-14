@@ -18,7 +18,6 @@ const CoinSummary = () => {
 
   useEffect(() => {
     dispatch(fetchCoinSummary(coinId));
-    console.log(coinSummary)
   }, [dispatch, params]);
 
   return (
