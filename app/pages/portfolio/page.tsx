@@ -26,7 +26,7 @@ function loadAssetsFromLocalStorage() {
 }
 
 export default function Portfolio() {
-  const [assets, setAssets] = useState<AssetData[]>(loadAssetsFromLocalStorage);
+  const [assets, setAssets] = useState<AssetData[]>([]);
   const [assetToEdit, setAssetToEdit] = useState<AssetData | undefined>(
     undefined
   );
@@ -57,7 +57,18 @@ export default function Portfolio() {
   };
 
   useEffect(() => {
-    localStorage.setItem("assets", JSON.stringify(assets));
+    // Load assets from localStorage after component mounts
+    const loadedAssets = loadAssetsFromLocalStorage();
+    if (loadedAssets.length > 0) {
+      setAssets(loadedAssets);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Runs only on client-side
+    if (typeof window !== "undefined") {
+      localStorage.setItem("assets", JSON.stringify(assets));
+    }
   }, [assets]);
 
   return (
