@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAppSelector } from "@/app/store/hooks";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
-import { AssetData } from "@/app/pages/portfolio/page";
+import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { getTodayDate } from "@/app/utils/utils";

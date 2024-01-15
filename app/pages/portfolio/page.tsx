@@ -1,32 +1,19 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import {
+  addAsset,
+  editAsset,
+  deleteAsset,
+} from "@/app/store/slices/portfolioSlice";
+import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Asset from "@/app/components/Portfolio/Asset";
 import Modal from "@/app/components/Portfolio/Modal";
 
-export interface AssetData {
-  id: string;
-  symbol: string;
-  name: string;
-  image: string;
-  total_value: number;
-  // percent change?
-  purchase_date: string;
-  current_price: number;
-  price_change_percentage_24h_in_currency: number;
-  market_vs_volume: number;
-  circ_vs_max: number;
-}
-
-function loadAssetsFromLocalStorage() {
-  if (typeof window === "undefined") return [];
-
-  const savedAssets = localStorage.getItem("assets");
-  return savedAssets ? JSON.parse(savedAssets) : [];
-}
-
 export default function Portfolio() {
-  const [assets, setAssets] = useState<AssetData[]>([]);
+  const assets = useAppSelector((state) => state.portfolio.assets);
+  const dispatch = useAppDispatch();
   const [assetToEdit, setAssetToEdit] = useState<AssetData | undefined>(
     undefined
   );
@@ -42,27 +29,18 @@ export default function Portfolio() {
     setAssetToEdit(undefined);
   };
 
-  const addAsset = (newAsset: AssetData) => {
-    setAssets([...assets, newAsset]);
-  };
-
-  const editAsset = (editedAsset: AssetData) => {
-    setAssets(
-      assets.map((asset) => (asset.id === editedAsset.id ? editedAsset : asset))
-    );
-  };
-
-  const deleteAsset = (assetId: string) => {
-    setAssets(assets.filter((asset) => asset.id !== assetId));
-  };
-
-  useEffect(() => {
-    // Load assets from localStorage after component mounts
-    const loadedAssets = loadAssetsFromLocalStorage();
-    if (loadedAssets.length > 0) {
-      setAssets(loadedAssets);
+  const handleUpdateAssets = (asset: AssetData) => {
+    if (assetToEdit) {
+      dispatch(editAsset(asset));
+    } else {
+      dispatch(addAsset(asset));
     }
-  }, []);
+    closeModal();
+  };
+
+  const handleDeleteAsset = (assetId: string) => {
+    dispatch(deleteAsset(assetId));
+  };
 
   useEffect(() => {
     // Runs only on client-side
@@ -87,9 +65,9 @@ export default function Portfolio() {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        onUpdateAssets={assetToEdit ? editAsset : addAsset}
+        onUpdateAssets={handleUpdateAssets}
         assetToEdit={assetToEdit}
-        onDeleteAsset={deleteAsset}
+        onDeleteAsset={handleDeleteAsset}
       />
       <div className="p-3 mt-3">
         {assets.map((asset) => (

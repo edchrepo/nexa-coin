@@ -1,5 +1,5 @@
 import React from "react";
-import { AssetData } from "@/app/pages/portfolio/page";
+import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import ProgressBar from "../ProgressBar";
