@@ -6,13 +6,13 @@ export interface AssetData {
   symbol: string;
   name: string;
   image: string;
-  total_value: number;
-  purchase_date: string;
-  current_price: number;
-  profit_percentage: number;
-  price_change_percentage_24h_in_currency: number;
-  market_vs_volume: number;
-  circ_vs_max: number;
+  totalValue: number;
+  purchaseDate: string;
+  currentPrice: number;
+  profitPercentage: number;
+  priceChange24h: number;
+  marketToVolume: number;
+  circToMax: number;
 }
 
 interface PortfolioState {
@@ -90,7 +90,7 @@ export const portfolioSlice = createSlice({
       );
 
       if (assetIndex !== -1) {
-        state.assets[assetIndex].profit_percentage = action.payload;
+        state.assets[assetIndex].profitPercentage = action.payload;
       }
     });
   },

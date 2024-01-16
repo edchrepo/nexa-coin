@@ -35,8 +35,8 @@ const Modal: React.FC<ModalProps> = ({
       setSelectedCoin(
         coins.find((coin) => coin.name === assetToEdit.name) || null
       );
-      setPurchasedAmount(assetToEdit.total_value);
-      setSelectedDate(assetToEdit.purchase_date.substring(0, 10));
+      setPurchasedAmount(assetToEdit.totalValue);
+      setSelectedDate(assetToEdit.purchaseDate.substring(0, 10));
     } else {
       clearModalState();
     }
@@ -93,16 +93,15 @@ const Modal: React.FC<ModalProps> = ({
           symbol: selectedCoin.symbol,
           name: selectedCoin.name,
           image: selectedCoin.image,
-          total_value: purchasedAmount,
-          purchase_date: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight for time zone differences
-          current_price: selectedCoin.current_price,
-          profit_percentage: profitPercentage,
-          price_change_percentage_24h_in_currency:
-            selectedCoin.price_change_percentage_24h_in_currency,
-          market_vs_volume: Math.round(
+          totalValue: purchasedAmount,
+          purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight for time zone differences
+          currentPrice: selectedCoin.current_price,
+          profitPercentage: profitPercentage,
+          priceChange24h: selectedCoin.price_change_percentage_24h_in_currency,
+          marketToVolume: Math.round(
             (selectedCoin.total_volume / selectedCoin.market_cap) * 100
           ),
-          circ_vs_max: Math.round(
+          circToMax: Math.round(
             (selectedCoin.circulating_supply / selectedCoin.total_supply) * 100
           ),
         };

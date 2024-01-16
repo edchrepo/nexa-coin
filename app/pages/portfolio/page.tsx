@@ -20,7 +20,11 @@ export default function Portfolio() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
-  const openModal = (asset?: AssetData) => {
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (asset: AssetData) => {
     setIsModalOpen(true);
     setAssetToEdit(asset);
   };
@@ -66,7 +70,7 @@ export default function Portfolio() {
         </div>
         <button
           className="flex items-center bg-[#aaabe8] dark:bg-[#3c3c7e] text-[#3c3c7e] dark:text-white border-[#6161cb] shadow-whiteShadow rounded-md p-3 px-20"
-          onClick={() => openModal()} // call without params for 'ADD' modal
+          onClick={openModal}
         >
           Add Asset
         </button>
@@ -80,7 +84,11 @@ export default function Portfolio() {
       />
       <div className="p-3 mt-3">
         {assets.map((asset) => (
-          <Asset key={asset.id} asset={asset} onEdit={() => openModal(asset)} /> // call with asset param for 'EDIT' modal
+          <Asset
+            key={asset.id}
+            asset={asset}
+            onEdit={() => openEditModal(asset)}
+          />
         ))}
       </div>
     </div>
