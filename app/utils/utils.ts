@@ -35,6 +35,13 @@ export function getTodayDate(): string {
   return `${year}-${month}-${day}`;
 }
 
+export function formatDate(isoDateStr: string): string {
+  return `${isoDateStr.substring(8, 10)}-${isoDateStr.substring(
+    5,
+    7
+  )}-${isoDateStr.substring(0, 4)}`;
+}
+
 export function formatCurrency(value: number): string {
   let formattedValue: string;
 

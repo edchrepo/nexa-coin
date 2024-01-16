@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useAppSelector } from "@/app/store/hooks";
+import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
+import { fetchProfitPercentage } from "@/app/store/slices/portfolioSlice";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Image from "next/image";
@@ -23,6 +24,7 @@ const Modal: React.FC<ModalProps> = ({
   onDeleteAsset,
 }) => {
   const coins = useAppSelector((state) => state.coinsData);
+  const dispatch = useAppDispatch();
   const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
   const [purchasedAmount, setPurchasedAmount] = useState(0);
   const [selectedDate, setSelectedDate] = useState("");
@@ -72,29 +74,46 @@ const Modal: React.FC<ModalProps> = ({
     setSelectedDate(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (selectedCoin && purchasedAmount > 0 && selectedDate) {
-      const newAsset: AssetData = {
-        id: assetToEdit ? assetToEdit.id : uuidv4(), // edited asset's id or generate new one
-        symbol: selectedCoin.symbol,
-        name: selectedCoin.name,
-        image: selectedCoin.image,
-        total_value: purchasedAmount,
-        purchase_date: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight for time zone differences
-        current_price: selectedCoin.current_price,
-        price_change_percentage_24h_in_currency:
-          selectedCoin.price_change_percentage_24h_in_currency,
-        market_vs_volume: Math.round(
-          (selectedCoin.total_volume / selectedCoin.market_cap) * 100
-        ),
-        circ_vs_max: Math.round(
-          (selectedCoin.circulating_supply / selectedCoin.total_supply) * 100
-        ),
-        // price difference since purchase date
-      };
-      onUpdateAssets(newAsset);
-      handleClose();
+      try {
+        // dispatch thunk and wait for profit percentage result
+        const profitPercentage = await dispatch(
+          fetchProfitPercentage({
+            assetId: selectedCoin.id,
+            purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(),
+            currentPrice: selectedCoin.current_price,
+          })
+        ).unwrap();
+
+        // Finalized asset to be created or edited
+        const newAsset: AssetData = {
+          id: assetToEdit ? assetToEdit.id : uuidv4(), // edited asset's id or generate new one
+          symbol: selectedCoin.symbol,
+          name: selectedCoin.name,
+          image: selectedCoin.image,
+          total_value: purchasedAmount,
+          purchase_date: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight for time zone differences
+          current_price: selectedCoin.current_price,
+          profit_percentage: profitPercentage,
+          price_change_percentage_24h_in_currency:
+            selectedCoin.price_change_percentage_24h_in_currency,
+          market_vs_volume: Math.round(
+            (selectedCoin.total_volume / selectedCoin.market_cap) * 100
+          ),
+          circ_vs_max: Math.round(
+            (selectedCoin.circulating_supply / selectedCoin.total_supply) * 100
+          ),
+        };
+
+        // update finalized asset (either add or edit)
+        onUpdateAssets(newAsset);
+        handleClose();
+      } catch (error) {
+        console.error("Error calculating profit percentage", error);
+        handleClose();
+      }
     }
   };
 

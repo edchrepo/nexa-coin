@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { formatDate } from "@/app/utils/utils";
 
 export interface AssetData {
   id: string;
@@ -8,6 +9,7 @@ export interface AssetData {
   total_value: number;
   purchase_date: string;
   current_price: number;
+  profit_percentage: number;
   price_change_percentage_24h_in_currency: number;
   market_vs_volume: number;
   circ_vs_max: number;
@@ -15,6 +17,12 @@ export interface AssetData {
 
 interface PortfolioState {
   assets: AssetData[];
+}
+
+interface FetchProfitPercentageArgs {
+  assetId: string;
+  purchaseDate: string;
+  currentPrice: number;
 }
 
 function loadAssetsFromLocalStorage() {
@@ -26,6 +34,29 @@ function loadAssetsFromLocalStorage() {
 const initialState: PortfolioState = {
   assets: loadAssetsFromLocalStorage(),
 };
+
+export const fetchProfitPercentage = createAsyncThunk<
+  number,
+  FetchProfitPercentageArgs
+>(
+  "portfolio/fetchPriceDifference",
+  async ({ assetId, purchaseDate, currentPrice }) => {
+    try {
+      const formattedDate = formatDate(purchaseDate);
+      const response = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${assetId}/history?date=${formattedDate}`
+      );
+      const historicalData = await response.json();
+      const historicalPrice = historicalData.market_data.current_price.usd;
+      const profitPercentage =
+        ((currentPrice - historicalPrice) / historicalPrice) * 100; // formula for calculating net income
+      return parseFloat(profitPercentage.toFixed(2));
+    } catch (error) {
+      console.error("Error fetching historical data", error);
+      throw error;
+    }
+  }
+);
 
 export const portfolioSlice = createSlice({
   name: "portfolio",
@@ -51,7 +82,18 @@ export const portfolioSlice = createSlice({
       state.assets = action.payload;
     },
   },
-  // extraReducers for async thunks (API call for price difference)
+  extraReducers: (builder) => {
+    builder.addCase(fetchProfitPercentage.fulfilled, (state, action) => {
+      const { assetId } = action.meta.arg;
+      const assetIndex = state.assets.findIndex(
+        (asset) => asset.id === assetId
+      );
+
+      if (assetIndex !== -1) {
+        state.assets[assetIndex].profit_percentage = action.payload;
+      }
+    });
+  },
 });
 
 export const { addAsset, editAsset, deleteAsset, setAssets } =

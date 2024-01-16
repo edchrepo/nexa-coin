@@ -18,6 +18,7 @@ export default function Portfolio() {
     undefined
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   const openModal = (asset?: AssetData) => {
     setIsModalOpen(true);
@@ -48,6 +49,14 @@ export default function Portfolio() {
       localStorage.setItem("assets", JSON.stringify(assets));
     }
   }, [assets]);
+
+  useEffect(() => {
+    setIsClient(true); // on client
+  }, []);
+
+  if (!isClient) {
+    return <div>Loading...</div>; // loading when not on client
+  }
 
   return (
     <div className="bg-[#f3f5f9] dark:bg-[#13121a] w-[90%]">

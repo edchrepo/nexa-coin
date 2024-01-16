@@ -30,8 +30,20 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
             <span className="text-[#3c3c7e] dark:text-white text-2xl">
               ${asset.total_value.toLocaleString()} USD
             </span>
-            <Image className="w-5" src={Icons.UpArrow} alt="+" />
-            <span className="text-[#00b1a6]">6.76%</span>
+            {asset.profit_percentage > 0 ? (
+              <Image className="w-5" src={Icons.UpArrow} alt="+" />
+            ) : (
+              <Image className="w-5" src={Icons.DownArrow} alt="-" />
+            )}
+            <span
+              className={
+                asset.profit_percentage > 0
+                  ? "text-[#00b1a6]"
+                  : "text-[#fe2264]"
+              }
+            >
+              {asset.profit_percentage}%
+            </span>
           </div>
           <div className="dark:text-secondary mt-1">
             Purchased {new Date(asset.purchase_date).toLocaleDateString()}
