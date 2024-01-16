@@ -15,6 +15,10 @@ const CoinSummary = () => {
   const coinId = params.coinId as string;
   const coinSummary = useAppSelector((state) => state.coinSummary);
 
+  const handleCopy = (link: string) => {
+    navigator.clipboard.writeText(link)
+  };
+
   useEffect(() => {
     dispatch(fetchCoinSummary(coinId));
   }, [dispatch, params]);
@@ -30,14 +34,14 @@ const CoinSummary = () => {
         <div className="space-y-44">
           <div className="flex justify-center space-x-16">
             <div className="w-[55%]">
-              <CoinData data={coinSummary[coinId]} />
+              <CoinData data={coinSummary[coinId]} handleCopy={handleCopy} />
             </div>
             <div className="w-[45%]">
               <DataStats data={coinSummary[coinId]} />
             </div>
           </div>
           <div className="flex justify-center space-x-16">
-            <div className="w-[55%]">
+            <div className="w-[55%] text-[#424286] dark:text-white">
               <p>Description</p>
               <Description
                 text={coinSummary[coinId].description.en}
@@ -45,7 +49,7 @@ const CoinSummary = () => {
               />
             </div>
             <div className="w-[45%]">
-              <LinkSection data={coinSummary[coinId]} />
+              <LinkSection data={coinSummary[coinId]} handleCopy={handleCopy} />
             </div>
           </div>
         </div>

@@ -1,12 +1,17 @@
 import Image from "next/image";
 import * as Icons from "@/app/icons";
-import { DataProps } from "./DataStats";
+import { CoinSummary } from "@/app/store/slices/coinSummarySlice";
 
-const CoinStats: React.FC<DataProps> = ({ data }) => {
+export interface CoinStatsProps {
+  data: CoinSummary;
+  handleCopy: (link: string) => void;
+}
+
+const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy }) => {
   return (
     <div className="flex space-x-8">
       <div className="w-[45%] space-y-5">
-        <div className="bg-white dark:bg-[#1e1932] px-8 py-20 rounded-[20px] text-black dark:text-white ">
+        <div className="bg-[#7272ab] dark:bg-[#1e1932] px-8 py-20 rounded-[20px] text-black dark:text-white ">
           <div className="flex flex-col items-center justify-center text-center space-y-4">
             <img className="h-10 w-10" src={data.image.large} alt="Bitcoin" />
             <p className="text-xl font-bold">
@@ -14,13 +19,15 @@ const CoinStats: React.FC<DataProps> = ({ data }) => {
             </p>
           </div>
         </div>
-        <div className="flex items-center justify-center bg-white dark:bg-[#1e1932] p-5 rounded-[20px] text-black dark:text-white space-x-3">
-          <Image className="h-5 w-5" src={Icons.WhiteLink} alt="whitelink" />
+        <div className="flex items-center justify-center bg-[#7272ab] dark:bg-[#1e1932] p-5 rounded-[20px] text-black dark:text-white space-x-3">
+          <a href={data.links.homepage[0]} target="_blank" rel="noopener noreferrer">
+            <Image className="h-5 w-5 cursor-pointer" src={Icons.WhiteLink} alt="whitelink"/>
+          </a>
           <p>{data.links.homepage}</p>
-          <Image className="h-5 w-5" src={Icons.WhiteCopy} alt="whitetab" />
+          <Image className="h-5 w-5 cursor-pointer" src={Icons.WhiteCopy} alt="whitetab" onClick={() => handleCopy(data.links.homepage[0])}/>
         </div>
       </div>
-      <div className="w-[55%] p-8 flex flex-col justify-center items-center bg-white dark:bg-[#1e1932] rounded-[20px] text-black dark:text-white">
+      <div className="w-[55%] p-8 flex flex-col justify-center items-center bg-[#7272ab] dark:bg-[#1e1932] rounded-[20px] text-black dark:text-white">
         <div>
           <div className="flex space-x-6">
             <p className="text-3xl font-bold">
@@ -29,7 +36,7 @@ const CoinStats: React.FC<DataProps> = ({ data }) => {
             <div className="flex items-center space-x-1">
               <Image className="h-2 w-2" src={Icons.UpArrow} alt="uparrow" />
               <p className="text-[#00b1a6]">
-                {data.market_data.price_change_percentage_24h}
+                {data.market_data.price_change_percentage_24h}%
               </p>
             </div>
           </div>
