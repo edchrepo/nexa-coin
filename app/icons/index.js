@@ -23,7 +23,9 @@ import logo from "./logo.png";
 import logolight from "./logolight.png";
 import ConverterIcon from "./converter.svg";
 import WhiteConverterIcon from "./whiteconverter.svg";
-import WhiteDownArrow from "./whitedownarrow.svg"
+import WhiteDownArrow from "./whitedownarrow.svg";
+import Edit from "./edit.svg";
+import Close from "./close.svg";
 
 export {
   BoltCircle,
@@ -51,5 +53,7 @@ export {
   logolight,
   ConverterIcon,
   WhiteConverterIcon,
-  WhiteDownArrow
+  WhiteDownArrow,
+  Edit,
+  Close,
 };
