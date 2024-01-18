@@ -23,7 +23,9 @@ import logo from "./logo.png";
 import logolight from "./logolight.png";
 import ConverterIcon from "./converter.svg";
 import WhiteConverterIcon from "./whiteconverter.svg";
-import WhiteDownArrow from "./whitedownarrow.svg"
+import WhiteDownArrow from "./whitedownarrow.svg";
+import Edit from "./edit.svg";
+import Close from "./close.svg";
 import WhiteLink from "./whitelink.svg"
 import PurpleLink from "./purplelink.svg"
 import WhiteCopy from "./copy.svg"
@@ -57,6 +59,8 @@ export {
   ConverterIcon,
   WhiteConverterIcon,
   WhiteDownArrow,
+  Edit,
+  Close,
   WhiteLink,
   PurpleLink,
   WhiteCopy,
