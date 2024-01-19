@@ -1,19 +1,25 @@
 "use client";
 
-import CoinData from "../../components/CoinSummary/CoinStats"
+import CoinStats from "../../components/CoinSummary/CoinStats"
 import DataStats from "../../components/CoinSummary/DataStats";
 import Description from "../../components/CoinSummary/Description";
 import LinkSection from "../../components/CoinSummary/LinkSection";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchCoinSummary } from "@/app/store/slices/coinSummarySlice";
+import { AssetData } from "@/app/store/slices/portfolioSlice";
 
 const CoinSummary = () => {
   const dispatch = useAppDispatch();
+  const [asset, setAsset] = useState<AssetData | undefined>(
+    undefined
+  );
   const params = useParams();
   const coinId = params.coinId as string;
   const coinSummary = useAppSelector((state) => state.coinSummary);
+  const coins = useAppSelector((state) => state.coinsData)
+  const portfolio = useAppSelector((state) => state.portfolio)
 
   const handleCopy = (link: string) => {
     navigator.clipboard.writeText(link)
@@ -21,6 +27,9 @@ const CoinSummary = () => {
 
   useEffect(() => {
     dispatch(fetchCoinSummary(coinId));
+    const searchedAsset = coins.find((coin) => coin.id === coinId)
+    // Set asset to pass profit data as props
+    setAsset(portfolio.assets.find((asset) => searchedAsset?.name === asset.name))
   }, [dispatch, params]);
 
   return (
@@ -34,7 +43,7 @@ const CoinSummary = () => {
         <div className="space-y-44">
           <div className="flex justify-center space-x-16">
             <div className="w-[55%]">
-              <CoinData data={coinSummary[coinId]} handleCopy={handleCopy} />
+              <CoinStats data={coinSummary[coinId]} handleCopy={handleCopy} asset={asset}/>
             </div>
             <div className="w-[45%]">
               <DataStats data={coinSummary[coinId]} />

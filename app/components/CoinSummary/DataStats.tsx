@@ -3,7 +3,7 @@ import * as Icons from "@/app/icons";
 import ProgressBar from "../ProgressBar";
 import { CoinSummary } from "@/app/store/slices/coinSummarySlice";
 
-interface DataProps {
+type DataProps = {
   data: CoinSummary;
 }
 

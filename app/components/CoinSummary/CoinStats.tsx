@@ -1,13 +1,20 @@
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { CoinSummary } from "@/app/store/slices/coinSummarySlice";
+import { AssetData } from "@/app/store/slices/portfolioSlice";
 
-export interface CoinStatsProps {
+export type CoinStatsProps = {
   data: CoinSummary;
   handleCopy: (link: string) => void;
-}
+  asset: AssetData | undefined;
+};
 
-const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy }) => {
+const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
+  const profit = Math.round(
+    data.market_data.current_price.usd * ((asset?.profitPercentage ?? 0) / 100)
+  );
+  const percentage = data.market_data.price_change_percentage_24h;
+
   return (
     <div className="flex space-x-8">
       <div className="w-[45%] space-y-5">
@@ -34,15 +41,21 @@ const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy }) => {
               ${data.market_data.current_price.usd}
             </p>
             <div className="flex items-center space-x-1">
-              <Image className="h-2 w-2" src={Icons.UpArrow} alt="uparrow" />
-              <p className="text-[#00b1a6]">
+              {percentage > 0 ? (
+                <Image className="h-2 w-2" src={Icons.UpArrow} alt="uparrow" />
+              ) : (
+                <Image className="h-2 w-2" src={Icons.DownArrow} alt="downarrow"/>
+              )}
+              <p className={`${percentage > 0 ? "text-[#00b1a6]" : "text-[#fe2264]"}`}>
                 {data.market_data.price_change_percentage_24h}%
               </p>
             </div>
           </div>
           <div className="flex text-lg space-x-2 mt-2">
             <p>Profit:</p>
-            <p className="text-[#00b1a6]">$1,502</p>
+            <p className={`${profit > 0 ? "text-[#00b1a6]" : "text-[#fe2264]"}`}>
+              ${profit}
+            </p>
           </div>
           <div className="flex justify-center">
             <Image className="h-5 w-5 mt-5" src={Icons.Stack} alt="stack" />

@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import marketDataReducer from "./slices/marketDataSlice";
 import chartDataReducer from "./slices/chartDataSlice";
 import coinsDataReducer from "./slices/coinsDataSlice";
-import coinSummaryReducer from './slices/coinSummarySlice'
+import coinSummaryReducer from './slices/coinSummarySlice';
 import selectedCoinReducer from "./slices/selectedCoinSlice";
 import timeReducer from "./slices/timeSlice";
 import portfolioReducer from "./slices/portfolioSlice";

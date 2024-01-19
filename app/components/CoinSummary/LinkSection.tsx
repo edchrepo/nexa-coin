@@ -1,8 +1,13 @@
 import Image from "next/image";
 import * as Icons from "@/app/icons";
-import { CoinStatsProps } from "./CoinStats";
+import { CoinSummary } from "@/app/store/slices/coinSummarySlice";
 
-const LinkSection: React.FC<CoinStatsProps> = ({ data, handleCopy }) => {
+export type LinkSectionProps = {
+  data: CoinSummary;
+  handleCopy: (link: string) => void;
+}
+
+const LinkSection: React.FC<LinkSectionProps> = ({ data, handleCopy }) => {
   return (
     <div className="space-y-6">
       {data.links.blockchain_site

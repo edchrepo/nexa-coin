@@ -159,10 +159,10 @@ const Modal: React.FC<ModalProps> = ({
             <div className="mb-4">
               <select
                 className="dark:bg-[#191925] text-secondary rounded-md p-2 w-full"
-                value={selectedCoin?.id}
+                value={selectedCoin?.id || ""}
                 onChange={handleSelectChange}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   Select coins
                 </option>
                 {coins.map((coin) => (

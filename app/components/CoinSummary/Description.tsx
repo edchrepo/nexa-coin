@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-interface DescriptionProps {
+type DescriptionProps = {
   text: string;
   maxLength: number;
 }
