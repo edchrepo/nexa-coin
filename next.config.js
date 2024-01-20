@@ -11,6 +11,10 @@ module.exports = {
         source: "/portfolio",
         destination: "/pages/portfolio",
       },
+      {
+        source: "/:coinId",
+        destination: "/pages/:coinId",
+      }
     ];
   },
 };

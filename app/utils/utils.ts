@@ -1,29 +1,61 @@
+interface CacheEntry {
+  timestamp: number;
+  data: any;
+  expiration: number;
+}
+
+interface Cache {
+  [id: string]: CacheEntry;
+}
+
 export function setCache(
   key: string,
   data: any,
-  expirationMinutes: number = 15
+  expirationMinutes: number = 15,
+  id: string = "singleItem"
 ) {
-  const cacheEntry = {
+  const cacheString = localStorage.getItem(key);
+  let cache: Cache = {};
+
+  if (cacheString) {
+    cache = JSON.parse(cacheString);
+  }
+
+  // Update the id for each entry in multi-item cache keys
+  // e.g. if key = coinSummaryCache ---> coinSummaryCache[bitcoin], coinSummaryCache[ethereum]
+
+  // If the cache key contains a single item (chartData, coinData), the id is just singleItem
+  // e.g. if key = coinDataCache || chartDataCache ---> coinDataCache[singleItem], chartDataCache[singleItem]
+  cache[id] = {
     timestamp: Date.now(),
     data: data,
     expiration: expirationMinutes,
   };
-  localStorage.setItem(key, JSON.stringify(cacheEntry));
+
+  localStorage.setItem(key, JSON.stringify(cache));
 }
 
-export function getCache(key: string) {
+export function getCache(key: string, id: string = "singleItem") {
   const cacheEntryString = localStorage.getItem(key);
 
   if (!cacheEntryString) return null;
-
-  const { timestamp, data, expiration } = JSON.parse(cacheEntryString);
+  
+  const cache: Cache = JSON.parse(cacheEntryString);
+  const entry = cache[id];
+  if (!entry) return null;
+  
+  const { timestamp, data, expiration } = entry;
   const ageMinutes = (Date.now() - timestamp) / (1000 * 60);
-
+  
   if (ageMinutes < expiration) {
     return data;
   }
+  
+  // Optionally, clean up the specific entry if expired
+  // For single items, this removes the entire cache since cache[id] is cache[singleItem]
+  delete cache[id];
+  localStorage.setItem(key, JSON.stringify(cache));
 
-  localStorage.removeItem(key);
   return null;
 }
 

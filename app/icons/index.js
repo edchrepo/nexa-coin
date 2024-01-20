@@ -26,6 +26,11 @@ import WhiteConverterIcon from "./whiteconverter.svg";
 import WhiteDownArrow from "./whitedownarrow.svg";
 import Edit from "./edit.svg";
 import Close from "./close.svg";
+import WhiteLink from "./whitelink.svg"
+import PurpleLink from "./purplelink.svg"
+import WhiteCopy from "./copy.svg"
+import PurpleCopy from "./purplecopy.svg"
+import PlusCircle from "./pluscircle.svg"
 
 export {
   BoltCircle,
@@ -56,4 +61,9 @@ export {
   WhiteDownArrow,
   Edit,
   Close,
+  WhiteLink,
+  PurpleLink,
+  WhiteCopy,
+  PurpleCopy,
+  PlusCircle
 };

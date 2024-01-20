@@ -1,6 +1,6 @@
 import { Chart as ChartJS, registerables, ChartArea } from "chart.js";
 import { ChartData } from "@/app/store/slices/chartDataSlice";
-import { convert } from "@/app/utils/converterUtils"
+import { convert } from "@/app/utils/converterUtils";
 ChartJS.register(...registerables);
 
 // Type for Chart.js dataset
@@ -58,7 +58,7 @@ export const getGradient = (
   chartArea: ChartArea,
   type: string,
   chartDataLength: number,
-  index: number
+  index?: number
 ) => {
   const gradient = ctx.createLinearGradient(
     0,
@@ -70,22 +70,22 @@ export const getGradient = (
     // Default gradients for single coin selection
     if (type === "line") {
       gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
-      gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
+      gradient.addColorStop(0.4, "rgba(63, 63, 131, 1)");
     } else if (type === "bar") {
-      gradient.addColorStop(0, "rgba(51,38,78, 1)");
-      gradient.addColorStop(1, "rgba(152,95,210, 1)");
+      gradient.addColorStop(0, "rgba(85, 20, 104, 1)");
+      gradient.addColorStop(0.4, "rgba(152, 95, 210, 1)");
     }
   } else {
     // Shared gradients for multiple coins (up to 3 (1 < chartDataLength <= 3))
     if (index === 0) {
       gradient.addColorStop(0, "rgba(34, 34, 67, 1)");
-      gradient.addColorStop(1, "rgba(63, 63, 131, 1)");
+      gradient.addColorStop(0.1, "rgba(63, 63, 131, 1)");
     } else if (index === 1) {
-      gradient.addColorStop(0, "rgba(51,38,78, 1)");
-      gradient.addColorStop(1, "rgba(152,95,210, 1)");
+      gradient.addColorStop(0, "rgba(85, 20, 104, 1)");
+      gradient.addColorStop(0.4, "rgba(152, 95, 210, 1)");
     } else if (index === 2) {
-      gradient.addColorStop(0, "rgba(41, 128, 185, 1)");
-      gradient.addColorStop(1, "rgba(21, 67, 96, 1)");
+      gradient.addColorStop(0, "rgba(21, 67, 96, 1)");
+      gradient.addColorStop(0.4, "rgba(41, 128, 185, 1)");
     }
   }
   return gradient;
@@ -147,7 +147,13 @@ export function prepareChartData(
           if (!chartArea || !ctx) {
             return "rgba(0,0,0,0)";
           }
-          return getGradient(ctx, chartArea, chartType, chartData.length, index);
+          return getGradient(
+            ctx,
+            chartArea,
+            chartType,
+            chartData.length,
+            index
+          );
         },
       });
     }
@@ -170,7 +176,7 @@ export function prepareConverterData(
   convertTo: number
 ): { labels: string[]; datasets: Dataset[] } {
   let labels: string[] = [];
-  let datasets: Dataset[] = []
+  let datasets: Dataset[] = [];
 
   // Generate labels for Chart
   if (chartData.length > 0) {
@@ -198,7 +204,7 @@ export function prepareConverterData(
       }
       return getGradient(ctx, chartArea, "line", 1);
     },
-  })
+  });
 
   return { labels, datasets };
 }
