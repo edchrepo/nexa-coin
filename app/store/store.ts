@@ -3,6 +3,7 @@ import marketDataReducer from "./slices/marketDataSlice";
 import chartDataReducer from "./slices/chartDataSlice";
 import coinsDataReducer from "./slices/coinsDataSlice";
 import coinSummaryReducer from './slices/coinSummarySlice';
+import currencyReducer from "./slices/currencySlice";
 import selectedCoinReducer from "./slices/selectedCoinSlice";
 import timeReducer from "./slices/timeSlice";
 import portfolioReducer from "./slices/portfolioSlice";
@@ -14,6 +15,7 @@ export const makeStore = () => {
       chartData: chartDataReducer,
       coinsData: coinsDataReducer,
       coinSummary: coinSummaryReducer,
+      currency: currencyReducer,
       selectedCoinData: selectedCoinReducer,
       time: timeReducer,
       portfolio: portfolioReducer,

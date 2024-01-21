@@ -7,10 +7,20 @@ import Link from "next/link";
 import * as Icons from "@/app/icons";
 import ThemeSwitch from "./ThemeSwitch";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/app/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
+import { setCurrency } from "@/app/store/slices/currencySlice";
+
+const currencyOptions = [
+  { value: "usd", label: "USD" },
+  { value: "eur", label: "EUR" },
+  { value: "gbp", label: "GBP" },
+  { value: "jpy", label: "JPY" },
+  { value: "krw", label: "KRW" },
+];
 
 const Navbar = () => {
+  const dispatch = useAppDispatch();
   const [search, setSearch] = useState("");
   const [filteredCoins, setFilteredCoins] = useState<CoinData[]>([]);
   // Only allow user to submit search if searchterm is a valid coin name
@@ -77,6 +87,11 @@ const Navbar = () => {
         router.push(`/${coinToSearch.id}`);
       }
     }
+  };
+
+  const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    const selectedCurrency: string = e.target.value;
+    dispatch(setCurrency(selectedCurrency));
   };
 
   const filterCoins = (search: string) => {
@@ -181,13 +196,12 @@ const Navbar = () => {
           <div className="absolute inset-y-0 ml-3 flex items-center pointer-events-none">
             <Image className="h-7 w-7" src={Icons.Currency} alt="currency" />
           </div>
-          <select className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 h-10">
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="EUR">GBP</option>
-            <option value="EUR">JPY</option>
-            <option value="EUR">RMB</option>
-            <option value="EUR">KRW</option>
+          <select 
+            className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 h-10"
+            onChange={handleCurrencyChange}>
+            {currencyOptions.map(({ value , label }) => 
+              <option value={value}>{label}</option>
+            )}
           </select>
         </div>
         <ThemeSwitch />
