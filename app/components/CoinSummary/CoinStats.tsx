@@ -2,6 +2,8 @@ import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { CoinSummary } from "@/app/store/slices/coinSummarySlice";
 import { AssetData } from "@/app/store/slices/portfolioSlice";
+import { useAppSelector } from "@/app/store/hooks";
+import { currencyMap, formatCurrencyCommas } from "@/app/utils/utils";
 
 export type CoinStatsProps = {
   data: CoinSummary;
@@ -10,8 +12,9 @@ export type CoinStatsProps = {
 };
 
 const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
+  const currency = useAppSelector((state) => state.currency)
   const profit = Math.round(
-    data.market_data.current_price.usd * ((asset?.profitPercentage ?? 0) / 100)
+    data.market_data.current_price[currency.value] * ((asset?.profitPercentage ?? 0) / 100)
   );
   const percentage = data.market_data.price_change_percentage_24h;
 
@@ -38,7 +41,7 @@ const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
         <div>
           <div className="flex space-x-6">
             <p className="text-3xl font-bold">
-              ${data.market_data.current_price.usd}
+              {formatCurrencyCommas(data.market_data.current_price[currency.value], currency.value as keyof typeof currencyMap)}
             </p>
             <div className="flex items-center space-x-1">
               {percentage > 0 ? (
@@ -54,7 +57,7 @@ const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
           <div className="flex text-lg space-x-2 mt-2">
             <p>Profit:</p>
             <p className={`${profit > 0 ? "text-[#00b1a6]" : "text-[#fe2264]"}`}>
-              ${profit}
+              {formatCurrencyCommas(profit, currency.value as keyof typeof currencyMap)}
             </p>
           </div>
           <div className="flex justify-center">
@@ -63,18 +66,18 @@ const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
           <div className="flex items-center mt-5 space-x-3">
             <Image className="h-5 w-5" src={Icons.UpArrow} alt="uparrow2" />
             <p>All time high:</p>
-            <p>{data.market_data.ath.usd}</p>
+            <p>{formatCurrencyCommas(data.market_data.ath[currency.value], currency.value as keyof typeof currencyMap)}</p>
           </div>
           <p className="text-[#3c3c7e] dark:text-secondary ml-8">
-            {new Date(data.market_data.ath_date.usd).toUTCString()}
+            {new Date(data.market_data.ath_date[currency.value]).toUTCString()}
           </p>
           <div className="flex items-center mt-5 space-x-3">
             <Image className="h-5 w-5" src={Icons.DownArrow} alt="downarrow2" />
             <p>All time low:</p>
-            <p>{data.market_data.atl.usd}</p>
+            <p>{formatCurrencyCommas(data.market_data.atl[currency.value], currency.value as keyof typeof currencyMap)}</p>
           </div>
           <p className="text-[#3c3c7e] dark:text-secondary ml-8">
-            {new Date(data.market_data.atl_date.usd).toUTCString()}
+            {new Date(data.market_data.atl_date[currency.value]).toUTCString()}
           </p>
         </div>
       </div>

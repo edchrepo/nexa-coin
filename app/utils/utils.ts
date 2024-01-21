@@ -78,7 +78,7 @@ export const currencyMap = {
   usd: "$",
   eur: "€",
   gbp: "£",
-  yen: "¥",
+  yen: "￥",
   krw: "₩",
 };
 
@@ -97,6 +97,19 @@ export function formatCurrency(
   } else {
     formattedValue = `${currencyMap[currency]}${value && value.toFixed(0)}`;
   }
+
+  return formattedValue;
+}
+
+export function formatCurrencyCommas(
+  value: number,
+  currency: keyof typeof currencyMap = "usd"
+): string {
+  // Format number with commas
+  const formattedNumber = new Intl.NumberFormat().format(value);
+
+  // Append currency symbol
+  const formattedValue = `${currencyMap[currency]}${formattedNumber}`;
 
   return formattedValue;
 }
