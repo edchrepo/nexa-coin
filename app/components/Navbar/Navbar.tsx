@@ -200,7 +200,7 @@ const Navbar = () => {
             className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 h-10"
             onChange={handleCurrencyChange}>
             {currencyOptions.map(({ value , label }) => 
-              <option value={value}>{label}</option>
+              <option key={value} value={value}>{label}</option>
             )}
           </select>
         </div>

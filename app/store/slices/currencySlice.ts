@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type Currency = {
-  currency: string;
+  value: string;
 }
 
 const initialState: Currency = {
-  currency: "usd", // Default currency
+  value: "usd", // Default currency
 };
 
 const currencySlice = createSlice({
@@ -13,7 +13,7 @@ const currencySlice = createSlice({
   initialState,
   reducers: {
     setCurrency: (state, action) => {
-      state.currency = action.payload;
+      state.value = action.payload;
     },
   },
 });
