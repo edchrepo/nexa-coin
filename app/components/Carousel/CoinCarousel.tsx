@@ -23,7 +23,6 @@ const CoinCarousel = () => {
   const dispatch = useAppDispatch();
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const coins = useAppSelector((state) => state.coinsData);
-  const currency = useAppSelector((state) => state.currency.value);
 
   const settings = {
     speed: 1000,
@@ -93,11 +92,7 @@ const CoinCarousel = () => {
         <Slider ref={slider} {...settings} className="mt-4 mb-8">
           {coins.map((coin) => (
             <div key={coin.id} onClick={() => handleSelectedCurrency(coin.id)}>
-              <Coin
-                coin={coin}
-                isSelected={selectedCoins.includes(coin.id)}
-                currency={currency}
-              />
+              <Coin coin={coin} isSelected={selectedCoins.includes(coin.id)} />
             </div>
           ))}
         </Slider>

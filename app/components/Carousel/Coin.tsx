@@ -2,15 +2,17 @@ import React from "react";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
+import { useAppSelector } from "@/app/store/hooks";
 import { currencyMap, formatCurrency } from "@/app/utils/utils";
 
 interface CoinProps {
   coin: CoinData;
   isSelected: boolean;
-  currency: string;
 }
 
-const Coin: React.FC<CoinProps> = ({ coin, isSelected, currency }) => {
+const Coin: React.FC<CoinProps> = ({ coin, isSelected }) => {
+  const currency = useAppSelector((state) => state.currency.value);
+
   const currencyClass = isSelected
     ? "bg-[#aaabe8] dark:bg-[#3c3c7e] border-[#6161cb] shadow-whiteShadow"
     : "bg-white dark:bg-[#181825] border-white dark:border-[#181825]";

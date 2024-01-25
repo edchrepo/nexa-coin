@@ -78,7 +78,7 @@ export const currencyMap = {
   usd: "$",
   eur: "€",
   gbp: "£",
-  yen: "￥",
+  jpy: "¥",
   krw: "₩",
 };
 
