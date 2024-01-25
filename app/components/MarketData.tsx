@@ -11,7 +11,7 @@ import { fetchMarketData } from "@/app/store/slices/marketDataSlice";
 const MarketData = () => {
   const dispatch = useAppDispatch();
   const marketData = useAppSelector((state) => state.marketData);
-  const currency = useAppSelector((state) => state.currency)
+  const currency = useAppSelector((state) => state.currency.value);
 
   useEffect(() => {
     dispatch(fetchMarketData());
@@ -50,17 +50,17 @@ const MarketData = () => {
                 }
                 alt="Arrow"
               />
-              <p>{formatCurrency(marketData.total_market_cap[currency.value], currency.value as keyof typeof currencyMap)}</p>
+              <p>{formatCurrency(marketData.total_market_cap[currency], currency as keyof typeof currencyMap)}</p>
             </div>
             <div className="flex items-center w-[13.5%]">
               <span className="mr-2">
-                {formatCurrency(marketData.total_volume[currency.value], currency.value as keyof typeof currencyMap)}
+                {formatCurrency(marketData.total_volume[currency], currency as keyof typeof currencyMap)}
               </span>
               <ProgressBar
                 progress={Math.min(
                   Math.round(
-                    (marketData.total_volume[currency.value] /
-                      marketData.total_market_cap[currency.value]) *
+                    (marketData.total_volume[currency] /
+                      marketData.total_market_cap[currency]) *
                       100
                   ),
                   100

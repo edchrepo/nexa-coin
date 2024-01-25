@@ -10,6 +10,7 @@ import Image from "next/image";
 import * as Icons from "../../icons";
 import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { fetchChartData } from "@/app/store/slices/chartDataSlice";
+import { currencyMap, formatCurrency } from "../../utils/utils";
 import { convert } from "../../utils/converterUtils";
 ChartJS.register(...registerables);
 
@@ -18,6 +19,7 @@ const Converter = () => {
   const [toCurrency, setToCurrency] = useState("ethereum");
   const chartData = useAppSelector((state) => state.chartData);
   const timeFrame = useAppSelector((state) => state.time.timeFrame);
+  const currency = useAppSelector((state) => state.currency.value);
   const coins = useAppSelector((state) => state.coinsData);
   const fromData = coins.find((obj) => obj.id === fromCurrency);
   const toData = coins.find((obj) => obj.id === toCurrency);
@@ -38,9 +40,9 @@ const Converter = () => {
   // Load initial chart data, updates whenever either currency or timeFrame changes
   useEffect(() => {
     dispatch(
-      fetchChartData({ timeFrame: timeFrame, selectedCoins: [fromCurrency] })
+      fetchChartData({ timeFrame: timeFrame, currency: currency, selectedCoins: [fromCurrency] })
     );
-  }, [dispatch, timeFrame, fromCurrency, toCurrency]);
+  }, [dispatch, timeFrame, currency, fromCurrency, toCurrency]);
 
   // Effect for updating amounts when fromCurrency changes
   useEffect(() => {
@@ -122,7 +124,7 @@ const Converter = () => {
             </div>
             <hr className="" />
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">
-              1 {fromData?.symbol.toUpperCase()} = ${fromData?.current_price}
+              1 {fromData?.symbol.toUpperCase()} = {formatCurrency(fromData?.current_price || 0, currency as keyof typeof currencyMap)}
             </p>
           </div>
         </div>
@@ -164,7 +166,7 @@ const Converter = () => {
             </div>
             <hr className="" />
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">
-              1 {toData?.symbol.toUpperCase()} = ${toData?.current_price}
+              1 {toData?.symbol.toUpperCase()} = {formatCurrency(toData?.current_price || 0, currency as keyof typeof currencyMap)}
             </p>
           </div>
         </div>
