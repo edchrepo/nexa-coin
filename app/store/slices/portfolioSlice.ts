@@ -9,11 +9,7 @@ export interface AssetData {
   currency: string;
   totalValue: number;
   purchaseDate: string;
-  currentPrice: number;
   profitPercentage: number;
-  priceChange24h: number;
-  marketToVolume: number;
-  circToMax: number;
 }
 
 interface PortfolioState {

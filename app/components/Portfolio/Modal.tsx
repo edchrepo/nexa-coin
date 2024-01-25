@@ -97,15 +97,7 @@ const Modal: React.FC<ModalProps> = ({
           currency: currency,
           totalValue: purchasedAmount,
           purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight for time zone differences
-          currentPrice: selectedCoin.current_price,
           profitPercentage: profitPercentage,
-          priceChange24h: selectedCoin.price_change_percentage_24h_in_currency,
-          marketToVolume: Math.round(
-            (selectedCoin.total_volume / selectedCoin.market_cap) * 100
-          ),
-          circToMax: Math.round(
-            (selectedCoin.circulating_supply / selectedCoin.total_supply) * 100
-          ),
         };
 
         // update finalized asset (either add or edit)
