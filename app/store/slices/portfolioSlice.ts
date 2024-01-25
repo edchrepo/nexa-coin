@@ -6,6 +6,7 @@ export interface AssetData {
   symbol: string;
   name: string;
   image: string;
+  currency: string;
   totalValue: number;
   purchaseDate: string;
   currentPrice: number;

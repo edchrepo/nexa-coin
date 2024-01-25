@@ -5,7 +5,7 @@ import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
-import { getTodayDate } from "@/app/utils/utils";
+import { currencyMap, getTodayDate } from "@/app/utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 type ModalProps = {
@@ -24,6 +24,7 @@ const Modal: React.FC<ModalProps> = ({
   onDeleteAsset,
 }) => {
   const coins = useAppSelector((state) => state.coinsData);
+  const currency = useAppSelector((state) => state.currency.value);
   const dispatch = useAppDispatch();
   const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
   const [purchasedAmount, setPurchasedAmount] = useState(0);
@@ -93,6 +94,7 @@ const Modal: React.FC<ModalProps> = ({
           symbol: selectedCoin.symbol,
           name: selectedCoin.name,
           image: selectedCoin.image,
+          currency: currency,
           totalValue: purchasedAmount,
           purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight for time zone differences
           currentPrice: selectedCoin.current_price,
@@ -174,7 +176,10 @@ const Modal: React.FC<ModalProps> = ({
             </div>
             <div className="mb-4">
               <div className="flex justify-between bg-white dark:bg-[#191925] text-secondary rounded-md p-2 w-full">
-                <label>Purchased Amount</label>
+                <label>
+                  Purchased Amount (
+                  {currencyMap[currency as keyof typeof currencyMap]})
+                </label>
                 <input
                   type="number"
                   className="dark:bg-[#191925] text-right placeholder:text-secondary"

@@ -4,6 +4,7 @@ import Image from "next/image";
 import * as Icons from "@/app/icons";
 import PercentageDisplay from "./PercentageDisplay";
 import ProgressBar from "../ProgressBar";
+import { currencyMap } from "@/app/utils/utils";
 
 export interface AssetProps {
   asset: AssetData;
@@ -29,7 +30,8 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
           <div className="dark:text-secondary mt-8">Total Value</div>
           <div className="flex space-x-2 items-center mt-1">
             <span className="text-[#3c3c7e] dark:text-white text-2xl">
-              ${asset.totalValue.toLocaleString()} USD
+              {currencyMap[asset.currency as keyof typeof currencyMap]}
+              {asset.totalValue.toLocaleString()} {asset.currency.toUpperCase()}
             </span>
             {asset.profitPercentage > 0 ? (
               <Image className="w-5" src={Icons.UpArrow} alt="+" />
@@ -49,7 +51,8 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
       <div className="flex-1 px-4 py-5">
         <div className="flex flex-col rounded-lg p-3">
           <span className="text-[#3c3c7e] dark:text-white text-xl">
-            ${asset.currentPrice.toLocaleString()}
+            {currencyMap[asset.currency as keyof typeof currencyMap]}
+            {asset.currentPrice.toLocaleString()}
           </span>
           <span className="text-secondary">Current Price</span>
         </div>
