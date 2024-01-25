@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCache, setCache } from "@/app/utils/utils";
+import type { RootState } from "../store";
 
 export interface CoinData {
   id: string;
@@ -24,11 +25,14 @@ const initialState: CoinData[] = [];
 // Async thunk for fetching chart data
 export const fetchCoinsData = createAsyncThunk(
   "coinsData/fetchCoinsData",
-  async (page: number = 1, { rejectWithValue }) => {
-    const cacheKey = `coinDataCache-${page}`;
+  async (page: number = 1, { getState, rejectWithValue }) => {
+    const state = getState() as RootState;
+    const currency = state.currency.value;
+    const cacheKey = `coinDataCache-${page}-${currency}`;
     const cachedData = getCache(cacheKey);
+
     if (cachedData) {
-      console.log("data retrieved from cache");
+      console.log("Data retrieved from cache", cachedData);
       return { data: cachedData, page };
     }
 
@@ -36,7 +40,8 @@ export const fetchCoinsData = createAsyncThunk(
       if (!process.env.NEXT_PUBLIC_API_COINS_URL) {
         throw new Error("API URL is not defined");
       }
-      const url = `${process.env.NEXT_PUBLIC_API_COINS_URL}&page=${page}&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`;
+
+      const url = `${process.env.NEXT_PUBLIC_API_COINS_URL}&vs_currency=${currency}&page=${page}&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`;
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -47,9 +52,9 @@ export const fetchCoinsData = createAsyncThunk(
 
       const data = await response.json();
       setCache(cacheKey, data, 15);
-      console.log("from API call");
       return { data, page };
     } catch (error) {
+      console.error("API Request Error:", error);
       return rejectWithValue("API Request Failed");
     }
   }

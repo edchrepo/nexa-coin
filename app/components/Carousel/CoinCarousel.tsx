@@ -3,7 +3,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchCoinsData } from "@/app/store/slices/coinsDataSlice";
-import { addCoin, removeCoin, removeAllCoins } from "@/app/store/slices/selectedCoinSlice";
+import {
+  addCoin,
+  removeCoin,
+  removeAllCoins,
+} from "@/app/store/slices/selectedCoinSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import Slider from "react-slick";
@@ -19,6 +23,7 @@ const CoinCarousel = () => {
   const dispatch = useAppDispatch();
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const coins = useAppSelector((state) => state.coinsData);
+  const currency = useAppSelector((state) => state.currency.value);
 
   const settings = {
     speed: 1000,
@@ -49,10 +54,10 @@ const CoinCarousel = () => {
 
   const handleCompare = () => {
     if (compare) {
-      dispatch(removeAllCoins())
+      dispatch(removeAllCoins());
     }
-    setCompare(!compare)
-  }
+    setCompare(!compare);
+  };
 
   useEffect(() => {
     dispatch(fetchCoinsData(1));
@@ -88,7 +93,11 @@ const CoinCarousel = () => {
         <Slider ref={slider} {...settings} className="mt-4 mb-8">
           {coins.map((coin) => (
             <div key={coin.id} onClick={() => handleSelectedCurrency(coin.id)}>
-              <Coin coin={coin} isSelected={selectedCoins.includes(coin.id)} />
+              <Coin
+                coin={coin}
+                isSelected={selectedCoins.includes(coin.id)}
+                currency={currency}
+              />
             </div>
           ))}
         </Slider>

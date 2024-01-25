@@ -14,6 +14,7 @@ type SortKey = keyof CoinData;
 const CoinsTable = () => {
   const dispatch = useAppDispatch();
   const coins = useAppSelector((state) => state.coinsData);
+  const currency = useAppSelector((state) => state.currency.value);
   const [sortedCoins, setSortedCoins] = useState<CoinData[]>([]);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [page, setPage] = useState(1);
@@ -51,7 +52,7 @@ const CoinsTable = () => {
       .catch(() => {
         setApiError(true);
       });
-  }, [dispatch, page]);
+  }, [dispatch, page, currency]);
 
   useEffect(() => {
     setSortedCoins(coins);
@@ -127,7 +128,12 @@ const CoinsTable = () => {
         }
       >
         {sortedCoins.map((coin, index) => (
-          <CoinRow key={coin.id} coin={coin} index={index} />
+          <CoinRow
+            key={coin.id}
+            coin={coin}
+            index={index}
+            currency={currency}
+          />
         ))}
       </InfiniteScroll>
     </div>
