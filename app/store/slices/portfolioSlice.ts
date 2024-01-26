@@ -9,7 +9,6 @@ export interface AssetData {
   currency: string;
   totalValue: number;
   purchaseDate: string;
-  profitPercentage: number;
 }
 
 interface PortfolioState {
@@ -20,6 +19,7 @@ interface FetchProfitPercentageArgs {
   assetId: string;
   purchaseDate: string;
   currentPrice: number;
+  currency: string;
 }
 
 function loadAssetsFromLocalStorage() {
@@ -37,14 +37,15 @@ export const fetchProfitPercentage = createAsyncThunk<
   FetchProfitPercentageArgs
 >(
   "portfolio/fetchPriceDifference",
-  async ({ assetId, purchaseDate, currentPrice }) => {
+  async ({ assetId, purchaseDate, currentPrice, currency }) => {
     try {
       const formattedDate = formatDate(purchaseDate);
       const response = await fetch(
         `https://api.coingecko.com/api/v3/coins/${assetId}/history?date=${formattedDate}`
       );
       const historicalData = await response.json();
-      const historicalPrice = historicalData.market_data.current_price.usd;
+      const historicalPrice =
+        historicalData.market_data.current_price[currency];
       const profitPercentage =
         ((currentPrice - historicalPrice) / historicalPrice) * 100; // formula for calculating net income
       return parseFloat(profitPercentage.toFixed(2));
@@ -78,18 +79,6 @@ export const portfolioSlice = createSlice({
     setAssets: (state, action: PayloadAction<AssetData[]>) => {
       state.assets = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetchProfitPercentage.fulfilled, (state, action) => {
-      const { assetId } = action.meta.arg;
-      const assetIndex = state.assets.findIndex(
-        (asset) => asset.id === assetId
-      );
-
-      if (assetIndex !== -1) {
-        state.assets[assetIndex].profitPercentage = action.payload;
-      }
-    });
   },
 });
 

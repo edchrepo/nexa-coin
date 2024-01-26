@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchCoinsData } from "@/app/store/slices/coinsDataSlice";
+import { fetchProfitPercentage } from "@/app/store/slices/portfolioSlice";
 import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
@@ -23,10 +24,7 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
     (coin) => coin.name === asset.name || coin.symbol === asset.symbol
   );
   const currentPrice = coin ? coin.current_price : 0;
-  // const profitPercentage =
-  //   coin && asset.totalValue
-  //     ? ((currentPrice - asset.totalValue) / asset.totalValue) * 100
-  //     : 0;
+  const [profitPercentage, setProfitPercentage] = useState(0);
   const marketToVolume = coin
     ? Math.round((coin.total_volume / coin.market_cap) * 100)
     : 0;
@@ -40,6 +38,29 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
   useEffect(() => {
     dispatch(fetchCoinsData(1));
   }, [dispatch, currency]);
+
+  useEffect(() => {
+    const calculateProfitPercentage = async () => {
+      if (coin && asset && coin.id && coin.current_price) {
+        try {
+          const response = await dispatch(
+            fetchProfitPercentage({
+              assetId: coin.id,
+              purchaseDate: asset.purchaseDate,
+              currentPrice: coin.current_price,
+              currency: currency,
+            })
+          ).unwrap();
+          setProfitPercentage(response);
+        } catch (error) {
+          console.error("Error calculating profit percentage:", error);
+        }
+      }
+    };
+
+    // call async function
+    calculateProfitPercentage();
+  }, [coin, asset, currency, dispatch]);
 
   return (
     <div className="flex border bg-white dark:bg-[#191925] dark:border-[#19192e] rounded-lg mb-6">
@@ -62,14 +83,14 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
               {currencyMap[asset.currency as keyof typeof currencyMap]}
               {asset.totalValue.toLocaleString()} {asset.currency.toUpperCase()}
             </span>
-            {asset.profitPercentage > 0 ? (
+            {profitPercentage > 0 ? (
               <Image className="w-5" src={Icons.UpArrow} alt="+" />
             ) : (
               <Image className="w-5" src={Icons.DownArrow} alt="-" />
             )}
             <PercentageDisplay
-              value={asset.profitPercentage}
-              isPositive={asset.profitPercentage > 0}
+              value={profitPercentage}
+              isPositive={profitPercentage > 0}
             />
           </div>
           <div className="dark:text-secondary mt-1">

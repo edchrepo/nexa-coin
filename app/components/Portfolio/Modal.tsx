@@ -75,38 +75,23 @@ const Modal: React.FC<ModalProps> = ({
     setSelectedDate(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (selectedCoin && purchasedAmount > 0 && selectedDate) {
-      try {
-        // dispatch thunk and wait for profit percentage result
-        const profitPercentage = await dispatch(
-          fetchProfitPercentage({
-            assetId: selectedCoin.id,
-            purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(),
-            currentPrice: selectedCoin.current_price,
-          })
-        ).unwrap();
+      // Finalized asset to be created or edited
+      const newAsset: AssetData = {
+        id: assetToEdit ? assetToEdit.id : uuidv4(), // use existing id or generate a new one
+        symbol: selectedCoin.symbol,
+        name: selectedCoin.name,
+        image: selectedCoin.image,
+        currency: currency,
+        totalValue: purchasedAmount,
+        purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight to adjust for time zone differences
+      };
 
-        // Finalized asset to be created or edited
-        const newAsset: AssetData = {
-          id: assetToEdit ? assetToEdit.id : uuidv4(), // edited asset's id or generate new one
-          symbol: selectedCoin.symbol,
-          name: selectedCoin.name,
-          image: selectedCoin.image,
-          currency: currency,
-          totalValue: purchasedAmount,
-          purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight for time zone differences
-          profitPercentage: profitPercentage,
-        };
-
-        // update finalized asset (either add or edit)
-        onUpdateAssets(newAsset);
-        handleClose();
-      } catch (error) {
-        console.error("Error calculating profit percentage", error);
-        handleClose();
-      }
+      // update finalized asset (either add or edit) and then close the modal
+      onUpdateAssets(newAsset);
+      handleClose();
     }
   };
 
