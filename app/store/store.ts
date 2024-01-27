@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import marketDataReducer from "./slices/marketDataSlice";
 import chartDataReducer from "./slices/chartDataSlice";
 import coinsDataReducer from "./slices/coinsDataSlice";
-import coinSummaryReducer from './slices/coinSummarySlice';
+import pageReducer from "./slices/pageSlice";
+import coinSummaryReducer from "./slices/coinSummarySlice";
 import currencyReducer from "./slices/currencySlice";
 import selectedCoinReducer from "./slices/selectedCoinSlice";
 import timeReducer from "./slices/timeSlice";
@@ -14,6 +15,7 @@ export const makeStore = () => {
       marketData: marketDataReducer,
       chartData: chartDataReducer,
       coinsData: coinsDataReducer,
+      page: pageReducer,
       coinSummary: coinSummaryReducer,
       currency: currencyReducer,
       selectedCoinData: selectedCoinReducer,

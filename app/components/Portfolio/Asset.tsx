@@ -25,6 +25,7 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
   const dispatch = useAppDispatch();
   const coins = useAppSelector((state) => state.coinsData);
   const currency = useAppSelector((state) => state.currency.value);
+  const page = useAppSelector((state) => state.page.value);
   const coin = coins.find(
     (coin) => coin.name === asset.name || coin.symbol === asset.symbol
   );
@@ -41,7 +42,7 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
     : 0;
 
   useEffect(() => {
-    dispatch(fetchCoinsData(1));
+    dispatch(fetchCoinsData(page));
   }, [dispatch, currency]);
 
   useEffect(() => {

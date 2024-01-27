@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchCoinsData } from "@/app/store/slices/coinsDataSlice";
+import { setPage } from "@/app/store/slices/pageSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
@@ -15,9 +16,9 @@ const CoinsTable = () => {
   const dispatch = useAppDispatch();
   const coins = useAppSelector((state) => state.coinsData);
   const currency = useAppSelector((state) => state.currency.value);
+  const page = useAppSelector((state) => state.page.value);
   const [sortedCoins, setSortedCoins] = useState<CoinData[]>([]);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
-  const [page, setPage] = useState(1);
   const [apiError, setApiError] = useState(false);
 
   const handleSort = (key: SortKey) => {
@@ -43,16 +44,22 @@ const CoinsTable = () => {
   };
 
   const fetchMoreData = () => {
-    setPage((prevPage) => prevPage + 1);
+    dispatch(setPage(page + 1));
   };
 
+  // Reset the page number to 1 when the component mounts
+  useEffect(() => {
+    dispatch(setPage(1));
+  }, [dispatch]);
+
+  // For infinite scrolling and currency changes
   useEffect(() => {
     dispatch(fetchCoinsData(page))
       .unwrap()
       .catch(() => {
         setApiError(true);
       });
-  }, [dispatch, page, currency]);
+  }, [page, currency]);
 
   useEffect(() => {
     setSortedCoins(coins);

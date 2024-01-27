@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
-import { fetchProfitPercentage } from "@/app/store/slices/portfolioSlice";
+import { useAppSelector } from "@/app/store/hooks";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Image from "next/image";
@@ -25,7 +24,6 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const coins = useAppSelector((state) => state.coinsData);
   const currency = useAppSelector((state) => state.currency.value);
-  const dispatch = useAppDispatch();
   const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
   const [purchasedAmount, setPurchasedAmount] = useState(0);
   const [selectedDate, setSelectedDate] = useState("");

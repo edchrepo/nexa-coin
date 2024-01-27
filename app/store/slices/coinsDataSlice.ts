@@ -25,7 +25,7 @@ const initialState: CoinData[] = [];
 // Async thunk for fetching chart data
 export const fetchCoinsData = createAsyncThunk(
   "coinsData/fetchCoinsData",
-  async (page: number = 1, { getState, rejectWithValue }) => {
+  async (page: number, { getState, rejectWithValue }) => {
     const state = getState() as RootState;
     const currency = state.currency.value;
     const cacheKey = `coinDataCache-${page}-${currency}`;
@@ -70,7 +70,15 @@ export const coinsDataSlice = createSlice({
       if (page === 1) {
         return data;
       } else {
-        return [...state, ...data];
+        // prevent DUPES from being added to coins
+        const noDups = [...state];
+        data.forEach((coin: CoinData) => {
+          if (!noDups.find((c) => c.id === coin.id)) {
+            // only append to coins with ids that don't already EXIST
+            noDups.push(coin);
+          }
+        });
+        return noDups;
       }
     });
   },
