@@ -9,7 +9,12 @@ import Image from "next/image";
 import * as Icons from "@/app/icons";
 import PercentageDisplay from "./PercentageDisplay";
 import ProgressBar from "../ProgressBar";
-import { currencyMap, formatCurrency } from "@/app/utils/utils";
+import {
+  currencyMap,
+  formatCurrency,
+  getCache,
+  setCache,
+} from "@/app/utils/utils";
 
 export interface AssetProps {
   asset: AssetData;
@@ -42,23 +47,37 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
   useEffect(() => {
     const calculateProfitPercentage = async () => {
       if (coin && asset && coin.id && coin.current_price) {
-        try {
-          const response = await dispatch(
-            fetchProfitPercentage({
-              assetId: coin.id,
-              purchaseDate: asset.purchaseDate,
-              currentPrice: coin.current_price,
-              currency: currency,
-            })
-          ).unwrap();
-          setProfitPercentage(response);
-        } catch (error) {
-          console.error("Error calculating profit percentage:", error);
+        const cacheKey = `profitPercentage-${coin.id}-${currency}`;
+        const cachedData = getCache("profitPercentageCache", cacheKey);
+
+        if (cachedData) {
+          setProfitPercentage(cachedData);
+        } else {
+          try {
+            const response = await dispatch(
+              fetchProfitPercentage({
+                assetId: coin.id,
+                purchaseDate: asset.purchaseDate,
+                currentPrice: coin.current_price,
+                currency: currency,
+              })
+            ).unwrap();
+            setProfitPercentage(response);
+
+            // Cache the fetched data
+            setCache("profitPercentageCache", response, 60, cacheKey); // cache for 60 minutes
+          } catch (error) {
+            console.error("Error calculating profit percentage:", error);
+            // Use existing cached data if API call fails
+            if (cachedData) {
+              setProfitPercentage(cachedData);
+            }
+          }
         }
       }
     };
 
-    // call async function
+    // Recalc the profit percentage whenever there are changes within dependency array
     calculateProfitPercentage();
   }, [coin, asset, currency, dispatch]);
 
