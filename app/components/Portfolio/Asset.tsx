@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchCoinsData } from "@/app/store/slices/coinsDataSlice";
-import { fetchProfitPercentage } from "@/app/store/slices/portfolioSlice";
+import { fetchHistoricalPrice } from "@/app/store/slices/portfolioSlice";
 import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
@@ -12,8 +12,7 @@ import ProgressBar from "../ProgressBar";
 import {
   currencyMap,
   formatCurrency,
-  getCache,
-  setCache,
+  calculateProfitPercentage,
 } from "@/app/utils/utils";
 
 export interface AssetProps {
@@ -41,45 +40,31 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
     ? Math.round((coin.circulating_supply / coin.total_supply) * 100)
     : 0;
 
+  const updateProfitPercentage = async () => {
+    if (coin && asset && coin.id && currentPrice) {
+      try {
+        const historicalPrice = await dispatch(
+          fetchHistoricalPrice({
+            assetId: coin.id,
+            purchaseDate: asset.purchaseDate,
+            currency: currency,
+          })
+        ).unwrap();
+        setProfitPercentage(
+          calculateProfitPercentage(currentPrice, historicalPrice)
+        );
+      } catch (error) {
+        console.error("Error calculating profit percentage:", error);
+      }
+    }
+  };
+
   useEffect(() => {
     dispatch(fetchCoinsData(page));
   }, [dispatch, currency]);
 
   useEffect(() => {
-    const calculateProfitPercentage = async () => {
-      if (coin && asset && coin.id && coin.current_price) {
-        const cacheKey = `profitPercentage-${coin.id}-${currency}`;
-        const cachedData = getCache("profitPercentageCache", cacheKey);
-
-        if (cachedData) {
-          setProfitPercentage(cachedData);
-        } else {
-          try {
-            const response = await dispatch(
-              fetchProfitPercentage({
-                assetId: coin.id,
-                purchaseDate: asset.purchaseDate,
-                currentPrice: coin.current_price,
-                currency: currency,
-              })
-            ).unwrap();
-            setProfitPercentage(response);
-
-            // Cache the fetched data
-            setCache("profitPercentageCache", response, 60, cacheKey); // cache for 60 minutes
-          } catch (error) {
-            console.error("Error calculating profit percentage:", error);
-            // Use existing cached data if API call fails
-            if (cachedData) {
-              setProfitPercentage(cachedData);
-            }
-          }
-        }
-      }
-    };
-
-    // Recalc the profit percentage whenever there are changes within dependency array
-    calculateProfitPercentage();
+    updateProfitPercentage();
   }, [coin, asset, currency, dispatch]);
 
   return (

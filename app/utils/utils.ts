@@ -113,3 +113,13 @@ export function formatCurrencyCommas(
 
   return formattedValue;
 }
+
+export const calculateProfitPercentage = (
+  currentPrice: number,
+  historicalPrice: number
+): number => {
+  if (historicalPrice === 0) return 0;
+  const profitPercentage =
+    ((currentPrice - historicalPrice) / historicalPrice) * 100;
+  return parseFloat(profitPercentage.toFixed(2));
+};

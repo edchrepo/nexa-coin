@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { formatDate } from "@/app/utils/utils";
+import { formatDate, getCache, setCache } from "@/app/utils/utils";
 
 export interface AssetData {
   id: string;
@@ -18,7 +18,6 @@ interface PortfolioState {
 interface FetchProfitPercentageArgs {
   assetId: string;
   purchaseDate: string;
-  currentPrice: number;
   currency: string;
 }
 
@@ -32,23 +31,28 @@ const initialState: PortfolioState = {
   assets: loadAssetsFromLocalStorage(),
 };
 
-export const fetchProfitPercentage = createAsyncThunk<
+export const fetchHistoricalPrice = createAsyncThunk<
   number,
   FetchProfitPercentageArgs
 >(
   "portfolio/fetchPriceDifference",
-  async ({ assetId, purchaseDate, currentPrice, currency }) => {
+  async ({ assetId, purchaseDate, currency }) => {
     try {
       const formattedDate = formatDate(purchaseDate);
+      const cacheKey = `historicalPrice-${assetId}-${formattedDate}-${currency}`;
+      const cachedPrice = getCache(cacheKey);
+
+      if (cachedPrice !== null) return cachedPrice;
+
       const response = await fetch(
         `https://api.coingecko.com/api/v3/coins/${assetId}/history?date=${formattedDate}`
       );
       const historicalData = await response.json();
       const historicalPrice =
         historicalData.market_data.current_price[currency];
-      const profitPercentage =
-        ((currentPrice - historicalPrice) / historicalPrice) * 100; // formula for calculating net income
-      return parseFloat(profitPercentage.toFixed(2));
+
+      setCache(cacheKey, historicalPrice, 60);
+      return historicalPrice;
     } catch (error) {
       console.error("Error fetching historical data", error);
       throw error;

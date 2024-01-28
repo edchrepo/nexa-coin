@@ -31,10 +31,7 @@ export const fetchCoinsData = createAsyncThunk(
     const cacheKey = `coinDataCache-${page}-${currency}`;
     const cachedData = getCache(cacheKey);
 
-    if (cachedData) {
-      console.log("Data retrieved from cache", cachedData);
-      return { data: cachedData, page };
-    }
+    if (cachedData) return { data: cachedData, page };
 
     try {
       if (!process.env.NEXT_PUBLIC_API_COINS_URL) {
