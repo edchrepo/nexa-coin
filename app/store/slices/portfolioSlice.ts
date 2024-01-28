@@ -27,6 +27,20 @@ function loadAssetsFromLocalStorage() {
   return savedAssets ? JSON.parse(savedAssets) : [];
 }
 
+function getFallbackPrice(assetId: string, currency: string): number | null {
+  const fallbackKey = `historicalPrice-${assetId}-${currency}`;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith(fallbackKey)) {
+      const cachedPrice = getCache(key);
+      if (cachedPrice !== null) {
+        return cachedPrice;
+      }
+    }
+  }
+  return null;
+}
+
 const initialState: PortfolioState = {
   assets: loadAssetsFromLocalStorage(),
 };
@@ -55,6 +69,8 @@ export const fetchHistoricalPrice = createAsyncThunk<
       return historicalPrice;
     } catch (error) {
       console.error("Error fetching historical data", error);
+      const fallbackPrice = getFallbackPrice(assetId, currency);
+      if (fallbackPrice !== null) return fallbackPrice;
       throw error;
     }
   }
