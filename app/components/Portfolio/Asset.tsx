@@ -43,15 +43,16 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
   const updateProfitPercentage = async () => {
     if (coin && asset && coin.id && currentPrice) {
       try {
-        const historicalPrice = await dispatch(
+        dispatch(
           fetchHistoricalPrice({
             assetId: coin.id,
+            name: coin.name,
             purchaseDate: asset.purchaseDate,
             currency: currency,
           })
-        ).unwrap();
+        );
         setProfitPercentage(
-          calculateProfitPercentage(currentPrice, historicalPrice)
+          calculateProfitPercentage(currentPrice, asset.historicalPrice)
         );
       } catch (error) {
         console.error("Error calculating profit percentage:", error);

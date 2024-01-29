@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useAppSelector } from "@/app/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
-import { AssetData } from "@/app/store/slices/portfolioSlice";
+import {
+  AssetData,
+  fetchHistoricalPrice,
+} from "@/app/store/slices/portfolioSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { currencyMap, getTodayDate } from "@/app/utils/utils";
@@ -22,8 +25,10 @@ const Modal: React.FC<ModalProps> = ({
   assetToEdit,
   onDeleteAsset,
 }) => {
+  const dispatch = useAppDispatch();
   const coins = useAppSelector((state) => state.coinsData);
   const currency = useAppSelector((state) => state.currency.value);
+  const assets = useAppSelector((state) => state.portfolio.assets);
   const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
   const [purchasedAmount, setPurchasedAmount] = useState(0);
   const [selectedDate, setSelectedDate] = useState("");
@@ -73,23 +78,37 @@ const Modal: React.FC<ModalProps> = ({
     setSelectedDate(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (selectedCoin && purchasedAmount > 0 && selectedDate) {
-      // Finalized asset to be created or edited
-      const newAsset: AssetData = {
-        id: assetToEdit ? assetToEdit.id : uuidv4(), // use existing id or generate a new one
-        symbol: selectedCoin.symbol,
-        name: selectedCoin.name,
-        image: selectedCoin.image,
-        currency: currency,
-        totalValue: purchasedAmount,
-        purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight to adjust for time zone differences
-      };
+      try {
+        const response = await dispatch(
+          fetchHistoricalPrice({
+            assetId: selectedCoin.id,
+            name: selectedCoin.name,
+            purchaseDate: selectedDate,
+            currency: currency,
+          })
+        ).unwrap();
 
-      // update finalized asset (either add or edit) and then close the modal
-      onUpdateAssets(newAsset);
-      handleClose();
+        // Finalized asset to be created or edited
+        const newAsset: AssetData = {
+          id: assetToEdit ? assetToEdit.id : uuidv4(), // use existing id or generate a new one
+          symbol: selectedCoin.symbol,
+          name: selectedCoin.name,
+          image: selectedCoin.image,
+          currency: currency,
+          totalValue: purchasedAmount,
+          purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight to adjust for time zone differences
+          historicalPrice: response.historicalPrice,
+        };
+
+        // Update finalized asset (either add or edit) and then close the modal
+        onUpdateAssets(newAsset);
+        handleClose();
+      } catch (error) {
+        console.error("Error fetching historical price:", error);
+      }
     }
   };
 
@@ -142,11 +161,15 @@ const Modal: React.FC<ModalProps> = ({
                 <option value="" disabled>
                   Select coins
                 </option>
-                {coins.map((coin) => (
-                  <option key={coin.id} value={coin.id}>
-                    {coin.name}
-                  </option>
-                ))}
+                {coins
+                  .filter((coin) =>
+                    assets.every((asset) => asset.name !== coin.name)
+                  )
+                  .map((coin) => (
+                    <option key={coin.id} value={coin.id}>
+                      {coin.name}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="mb-4">

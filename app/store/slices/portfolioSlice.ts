@@ -9,14 +9,21 @@ export interface AssetData {
   currency: string;
   totalValue: number;
   purchaseDate: string;
+  historicalPrice: number;
 }
 
 interface PortfolioState {
   assets: AssetData[];
 }
 
-interface FetchProfitPercentageArgs {
+interface FetchHistoricalPriceResult {
+  name: string;
+  historicalPrice: number;
+}
+
+interface FetchHistoricalPriceArgs {
   assetId: string;
+  name: string;
   purchaseDate: string;
   currency: string;
 }
@@ -27,50 +34,27 @@ function loadAssetsFromLocalStorage() {
   return savedAssets ? JSON.parse(savedAssets) : [];
 }
 
-function getFallbackPrice(assetId: string, currency: string): number | null {
-  const fallbackKey = `historicalPrice-${assetId}-${currency}`;
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (key && key.startsWith(fallbackKey)) {
-      const cachedPrice = getCache(key);
-      if (cachedPrice !== null) {
-        return cachedPrice;
-      }
-    }
-  }
-  return null;
-}
-
 const initialState: PortfolioState = {
   assets: loadAssetsFromLocalStorage(),
 };
 
 export const fetchHistoricalPrice = createAsyncThunk<
-  number,
-  FetchProfitPercentageArgs
+  FetchHistoricalPriceResult,
+  FetchHistoricalPriceArgs
 >(
   "portfolio/fetchPriceDifference",
-  async ({ assetId, purchaseDate, currency }) => {
+  async ({ assetId, name, purchaseDate, currency }) => {
     try {
       const formattedDate = formatDate(purchaseDate);
-      const cacheKey = `historicalPrice-${assetId}-${formattedDate}-${currency}`;
-      const cachedPrice = getCache(cacheKey);
-
-      if (cachedPrice !== null) return cachedPrice;
-
       const response = await fetch(
         `https://api.coingecko.com/api/v3/coins/${assetId}/history?date=${formattedDate}`
       );
       const historicalData = await response.json();
       const historicalPrice =
         historicalData.market_data.current_price[currency];
-
-      setCache(cacheKey, historicalPrice, 60);
-      return historicalPrice;
+      return { name, historicalPrice };
     } catch (error) {
       console.error("Error fetching historical data", error);
-      const fallbackPrice = getFallbackPrice(assetId, currency);
-      if (fallbackPrice !== null) return fallbackPrice;
       throw error;
     }
   }
@@ -99,6 +83,21 @@ export const portfolioSlice = createSlice({
     setAssets: (state, action: PayloadAction<AssetData[]>) => {
       state.assets = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchHistoricalPrice.fulfilled, (state, action) => {
+      console.log("Before update:", state);
+      console.log("Action payload:", action.payload);
+
+      const { name, historicalPrice } = action.payload;
+      const assetIndex = state.assets.findIndex((asset) => asset.name === name);
+
+      if (assetIndex !== -1) {
+        state.assets[assetIndex].historicalPrice = historicalPrice;
+      }
+
+      console.log("After update:", state);
+    });
   },
 });
 

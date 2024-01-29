@@ -115,8 +115,8 @@ export function formatCurrencyCommas(
 }
 
 export const calculateProfitPercentage = (
-  currentPrice: number,
-  historicalPrice: number
+  currentPrice: number = 0,
+  historicalPrice: number = 0
 ): number => {
   if (historicalPrice === 0) return 0;
   const profitPercentage =
