@@ -18,11 +18,11 @@ export type CoinStatsProps = {
 const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
   const currency = useAppSelector((state) => state.currency);
   const profit = Math.round(
-    (data.market_data.current_price[currency.value] *
-      (calculateProfitPercentage(
-        data?.market_data.current_price[currency.value],
+    ((asset?.totalValue || 0) *
+      calculateProfitPercentage(
+        data.market_data.current_price[currency.value],
         asset?.historicalPrice
-      ) ?? 0)) /
+      )) /
       100
   );
   const percentage = data.market_data.price_change_percentage_24h;
