@@ -3,7 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import * as Icons from "@/app/icons";
 import ProgressBar from "@/app/components/ProgressBar";
-import { currencyMap, formatCurrency } from "@/app/utils/utils";
+import {
+  currencyMap,
+  formatCurrency,
+  formatCurrencyCommas,
+} from "@/app/utils/utils";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { Line } from "react-chartjs-2";
 
@@ -80,7 +84,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
           {coin.name} ({coin.symbol.toUpperCase()})
         </div>
         <div className="col-span-4 text-black dark:text-white">
-          {formatCurrency(
+          {formatCurrencyCommas(
             coin.current_price,
             currency as keyof typeof currencyMap
           )}

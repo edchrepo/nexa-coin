@@ -11,7 +11,7 @@ import PercentageDisplay from "./PercentageDisplay";
 import ProgressBar from "../ProgressBar";
 import {
   currencyMap,
-  formatCurrency,
+  formatCurrencyCommas,
   calculateProfitPercentage,
 } from "@/app/utils/utils";
 
@@ -107,7 +107,10 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
       <div className="flex-1 px-4 py-5">
         <div className="flex flex-col rounded-lg p-3">
           <span className="text-[#3c3c7e] dark:text-white text-xl">
-            {formatCurrency(currentPrice, currency as keyof typeof currencyMap)}
+            {formatCurrencyCommas(
+              currentPrice,
+              currency as keyof typeof currencyMap
+            )}
           </span>
           <span className="text-secondary">Current Price</span>
         </div>

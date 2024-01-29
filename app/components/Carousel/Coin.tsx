@@ -3,7 +3,7 @@ import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { useAppSelector } from "@/app/store/hooks";
-import { currencyMap, formatCurrency } from "@/app/utils/utils";
+import { currencyMap, formatCurrencyCommas } from "@/app/utils/utils";
 
 interface CoinProps {
   coin: CoinData;
@@ -36,7 +36,7 @@ const Coin: React.FC<CoinProps> = ({ coin, isSelected }) => {
                 : "text-[#3c3c7e] dark:text-secondary"
             }`}
           >
-            {formatCurrency(
+            {formatCurrencyCommas(
               coin.current_price,
               currency as keyof typeof currencyMap
             )}

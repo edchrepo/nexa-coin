@@ -93,17 +93,11 @@ export const portfolioSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchHistoricalPrice.fulfilled, (state, action) => {
-      console.log("Before update:", state);
-      console.log("Action payload:", action.payload);
-
       const { name, historicalPrice } = action.payload;
       const assetIndex = state.assets.findIndex((asset) => asset.name === name);
-
       if (assetIndex !== -1) {
         state.assets[assetIndex].historicalPrice = historicalPrice;
       }
-
-      console.log("After update:", state);
     });
   },
 });
