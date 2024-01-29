@@ -46,12 +46,19 @@ export const fetchHistoricalPrice = createAsyncThunk<
   async ({ assetId, name, purchaseDate, currency }) => {
     try {
       const formattedDate = formatDate(purchaseDate);
+      const cacheKey = `historicalPrice-${assetId}-${formattedDate}-${currency}`;
+      const cachedPrice = getCache(cacheKey);
+
+      if (cachedPrice !== null) return { name, historicalPrice: cachedPrice };
+
       const response = await fetch(
         `https://api.coingecko.com/api/v3/coins/${assetId}/history?date=${formattedDate}`
       );
       const historicalData = await response.json();
       const historicalPrice =
         historicalData.market_data.current_price[currency];
+
+      setCache(cacheKey, historicalPrice, 60);
       return { name, historicalPrice };
     } catch (error) {
       console.error("Error fetching historical data", error);
