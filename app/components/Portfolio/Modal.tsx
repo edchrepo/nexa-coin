@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
-import { fetchProfitPercentage } from "@/app/store/slices/portfolioSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
-import { AssetData } from "@/app/store/slices/portfolioSlice";
+import {
+  AssetData,
+  fetchHistoricalPrice,
+} from "@/app/store/slices/portfolioSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
-import { getTodayDate } from "@/app/utils/utils";
+import { currencyMap, getTodayDate } from "@/app/utils/utils";
 import { v4 as uuidv4 } from "uuid";
 
 type ModalProps = {
@@ -23,8 +25,10 @@ const Modal: React.FC<ModalProps> = ({
   assetToEdit,
   onDeleteAsset,
 }) => {
-  const coins = useAppSelector((state) => state.coinsData);
   const dispatch = useAppDispatch();
+  const coins = useAppSelector((state) => state.coinsData);
+  const currency = useAppSelector((state) => state.currency.value);
+  const assets = useAppSelector((state) => state.portfolio.assets);
   const [selectedCoin, setSelectedCoin] = useState<CoinData | null>(null);
   const [purchasedAmount, setPurchasedAmount] = useState(0);
   const [selectedDate, setSelectedDate] = useState("");
@@ -78,40 +82,32 @@ const Modal: React.FC<ModalProps> = ({
     e.preventDefault();
     if (selectedCoin && purchasedAmount > 0 && selectedDate) {
       try {
-        // dispatch thunk and wait for profit percentage result
-        const profitPercentage = await dispatch(
-          fetchProfitPercentage({
+        const response = await dispatch(
+          fetchHistoricalPrice({
             assetId: selectedCoin.id,
-            purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(),
-            currentPrice: selectedCoin.current_price,
+            name: selectedCoin.name,
+            purchaseDate: selectedDate,
+            currency: currency,
           })
         ).unwrap();
 
         // Finalized asset to be created or edited
         const newAsset: AssetData = {
-          id: assetToEdit ? assetToEdit.id : uuidv4(), // edited asset's id or generate new one
+          id: assetToEdit ? assetToEdit.id : uuidv4(), // use existing id or generate a new one
           symbol: selectedCoin.symbol,
           name: selectedCoin.name,
           image: selectedCoin.image,
+          currency: currency,
           totalValue: purchasedAmount,
-          purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight for time zone differences
-          currentPrice: selectedCoin.current_price,
-          profitPercentage: profitPercentage,
-          priceChange24h: selectedCoin.price_change_percentage_24h_in_currency,
-          marketToVolume: Math.round(
-            (selectedCoin.total_volume / selectedCoin.market_cap) * 100
-          ),
-          circToMax: Math.round(
-            (selectedCoin.circulating_supply / selectedCoin.total_supply) * 100
-          ),
+          purchaseDate: new Date(selectedDate + "T00:00:00").toISOString(), // set time to midnight to adjust for time zone differences
+          historicalPrice: response.historicalPrice,
         };
 
-        // update finalized asset (either add or edit)
+        // Update finalized asset (either add or edit) and then close the modal
         onUpdateAssets(newAsset);
         handleClose();
       } catch (error) {
-        console.error("Error calculating profit percentage", error);
-        handleClose();
+        console.error("Error fetching historical price:", error);
       }
     }
   };
@@ -165,16 +161,23 @@ const Modal: React.FC<ModalProps> = ({
                 <option value="" disabled>
                   Select coins
                 </option>
-                {coins.map((coin) => (
-                  <option key={coin.id} value={coin.id}>
-                    {coin.name}
-                  </option>
-                ))}
+                {coins
+                  .filter((coin) =>
+                    assets.every((asset) => asset.name !== coin.name)
+                  )
+                  .map((coin) => (
+                    <option key={coin.id} value={coin.id}>
+                      {coin.name}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="mb-4">
               <div className="flex justify-between bg-white dark:bg-[#191925] text-secondary rounded-md p-2 w-full">
-                <label>Purchased Amount</label>
+                <label>
+                  Purchased Amount (
+                  {currencyMap[currency as keyof typeof currencyMap]})
+                </label>
                 <input
                   type="number"
                   className="dark:bg-[#191925] text-right placeholder:text-secondary"

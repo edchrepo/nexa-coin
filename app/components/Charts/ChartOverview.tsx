@@ -7,7 +7,7 @@ import TimeFrameSelector from "../TimeFrameSelector";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchChartData } from "@/app/store/slices/chartDataSlice";
 import { borderColors } from "@/app/utils/chartUtils";
-import { formatCurrency } from "@/app/utils/utils";
+import { currencyMap, formatCurrency } from "@/app/utils/utils";
 import {
   options,
   getLatestData,
@@ -18,6 +18,7 @@ ChartJS.register(...registerables);
 const ChartOverview = () => {
   const dispatch = useAppDispatch();
   const timeFrame = useAppSelector((state) => state.time.timeFrame);
+  const currency = useAppSelector((state) => state.currency.value);
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const coins = useAppSelector((state) => state.coinsData);
   const coinToPreview = coins.find((obj) => obj.id === selectedCoins[0]);
@@ -33,9 +34,9 @@ const ChartOverview = () => {
 
   useEffect(() => {
     dispatch(
-      fetchChartData({ timeFrame: timeFrame, selectedCoins: selectedCoins })
+      fetchChartData({ timeFrame: timeFrame, currency: currency, selectedCoins: selectedCoins })
     );
-  }, [dispatch, timeFrame, selectedCoins]);
+  }, [dispatch, timeFrame, currency, selectedCoins]);
 
   return (
     <div>
@@ -53,7 +54,7 @@ const ChartOverview = () => {
                 {latestPriceData.lastValue !== null ? (
                   <>
                     <p className="text-2xl">
-                      {formatCurrency(latestPriceData.lastValue)}
+                      {formatCurrency(latestPriceData.lastValue, currency as keyof typeof currencyMap)}
                     </p>
                     <p className="text-secondary">{latestPriceData.lastDate}</p>
                   </>
@@ -93,7 +94,7 @@ const ChartOverview = () => {
                 {latestVolumeData.lastValue !== null ? (
                   <>
                     <p className="text-2xl">
-                      {formatCurrency(latestVolumeData.lastValue)}
+                      {formatCurrency(latestVolumeData.lastValue, currency as keyof typeof currencyMap)}
                     </p>
                     <p className="text-secondary">
                       {latestVolumeData.lastDate}

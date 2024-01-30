@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
+import { useAppSelector } from "@/app/store/hooks";
+import { currencyMap, formatCurrencyCommas } from "@/app/utils/utils";
 
 interface CoinProps {
   coin: CoinData;
@@ -9,6 +11,8 @@ interface CoinProps {
 }
 
 const Coin: React.FC<CoinProps> = ({ coin, isSelected }) => {
+  const currency = useAppSelector((state) => state.currency.value);
+
   const currencyClass = isSelected
     ? "bg-[#aaabe8] dark:bg-[#3c3c7e] border-[#6161cb] shadow-whiteShadow"
     : "bg-white dark:bg-[#181825] border-white dark:border-[#181825]";
@@ -32,7 +36,10 @@ const Coin: React.FC<CoinProps> = ({ coin, isSelected }) => {
                 : "text-[#3c3c7e] dark:text-secondary"
             }`}
           >
-            {coin.current_price}
+            {formatCurrencyCommas(
+              coin.current_price,
+              currency as keyof typeof currencyMap
+            )}
           </div>
           <div
             className={`flex items-center ${

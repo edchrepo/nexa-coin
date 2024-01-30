@@ -39,18 +39,18 @@ export function getCache(key: string, id: string = "singleItem") {
   const cacheEntryString = localStorage.getItem(key);
 
   if (!cacheEntryString) return null;
-  
+
   const cache: Cache = JSON.parse(cacheEntryString);
   const entry = cache[id];
   if (!entry) return null;
-  
+
   const { timestamp, data, expiration } = entry;
   const ageMinutes = (Date.now() - timestamp) / (1000 * 60);
-  
+
   if (ageMinutes < expiration) {
     return data;
   }
-  
+
   // Optionally, clean up the specific entry if expired
   // For single items, this removes the entire cache since cache[id] is cache[singleItem]
   delete cache[id];
@@ -74,19 +74,52 @@ export function formatDate(isoDateStr: string): string {
   )}-${isoDateStr.substring(0, 4)}`;
 }
 
-export function formatCurrency(value: number): string {
-  let formattedValue: string;
+export const currencyMap = {
+  usd: "$",
+  eur: "€",
+  gbp: "£",
+  jpy: "¥",
+  krw: "₩",
+};
 
+export function formatCurrency(
+  value: number,
+  currency: keyof typeof currencyMap = "usd"
+): string {
+  let formattedValue: string;
   // conversion to M, B, T
   if (value >= 1e12) {
-    formattedValue = `$${(value / 1e12).toFixed(2)}T`;
+    formattedValue = `${currencyMap[currency]}${(value / 1e12).toFixed(2)}T`;
   } else if (value >= 1e9) {
-    formattedValue = `$${(value / 1e9).toFixed(2)}B`;
+    formattedValue = `${currencyMap[currency]}${(value / 1e9).toFixed(2)}B`;
   } else if (value >= 1e6) {
-    formattedValue = `$${(value / 1e6).toFixed(2)}M`;
+    formattedValue = `${currencyMap[currency]}${(value / 1e6).toFixed(2)}M`;
   } else {
-    formattedValue = `$${value && value.toFixed(0)}`;
+    formattedValue = `${currencyMap[currency]}${value && value.toFixed(0)}`;
   }
 
   return formattedValue;
 }
+
+export function formatCurrencyCommas(
+  value: number,
+  currency: keyof typeof currencyMap = "usd"
+): string {
+  // Format number with commas
+  const formattedNumber = new Intl.NumberFormat().format(value);
+
+  // Append currency symbol
+  const formattedValue = `${currencyMap[currency]}${formattedNumber}`;
+
+  return formattedValue;
+}
+
+export const calculateProfitPercentage = (
+  currentPrice: number = 0,
+  historicalPrice: number = 0
+): number => {
+  if (historicalPrice === 0) return 0;
+  const profitPercentage =
+    ((currentPrice - historicalPrice) / historicalPrice) * 100;
+  return parseFloat(profitPercentage.toFixed(2));
+};

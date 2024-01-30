@@ -3,7 +3,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { fetchCoinsData } from "@/app/store/slices/coinsDataSlice";
-import { addCoin, removeCoin, removeAllCoins } from "@/app/store/slices/selectedCoinSlice";
+import {
+  addCoin,
+  removeCoin,
+  removeAllCoins,
+} from "@/app/store/slices/selectedCoinSlice";
 import Image from "next/image";
 import * as Icons from "@/app/icons";
 import Slider from "react-slick";
@@ -49,10 +53,10 @@ const CoinCarousel = () => {
 
   const handleCompare = () => {
     if (compare) {
-      dispatch(removeAllCoins())
+      dispatch(removeAllCoins());
     }
-    setCompare(!compare)
-  }
+    setCompare(!compare);
+  };
 
   useEffect(() => {
     dispatch(fetchCoinsData(1));
@@ -92,7 +96,7 @@ const CoinCarousel = () => {
             </div>
           ))}
         </Slider>
-        {showPrev && (
+        {coins && showPrev && (
           <button
             onClick={() => slider.current?.slickPrev()}
             className="flex items-center absolute left-0 -ml-6 z-10 bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow bg-opacity-95 p-3 h-10 w-10 rounded-full -translate-y-1/2 top-1/2"
@@ -100,7 +104,7 @@ const CoinCarousel = () => {
             <Image className="h-7 w-7" src={Icons.LeftArrow} alt="Left" />
           </button>
         )}
-        {showNext && (
+        {coins && showNext && (
           <button
             onClick={() => slider.current?.slickNext()}
             className="flex items-center absolute right-0 -mr-7 z-10 bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow bg-opacity-95 p-3 h-10 w-10 rounded-full -translate-y-1/2 top-1/2"

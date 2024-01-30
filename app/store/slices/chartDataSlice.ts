@@ -9,6 +9,7 @@ export interface ChartData {
 
 interface ChartDataArgs {
   timeFrame: number;
+  currency: string;
   selectedCoins: string[];
 }
 
@@ -17,7 +18,7 @@ const initialState: ChartData[] = [];
 export const fetchChartData = createAsyncThunk(
   "chartData/fetchChartData",
   async (args: ChartDataArgs) => {
-    const { timeFrame, selectedCoins } = args;
+    const { timeFrame, currency, selectedCoins } = args;
 
     // Default to 'bitcoin' if selectedCoins is empty
     const coinsToFetch =
@@ -31,7 +32,7 @@ export const fetchChartData = createAsyncThunk(
       // grab data for all selectedCoins
       const fetchPromises = coinsToFetch.map((coinId) =>
         fetch(
-          `${process.env.NEXT_PUBLIC_API_CHART_URL}${coinId}/market_chart?vs_currency=usd&days=${timeFrame}&interval=daily&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
+          `${process.env.NEXT_PUBLIC_API_CHART_URL}${coinId}/market_chart?vs_currency=${currency}&days=${timeFrame}&interval=daily&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
         ).then((response) => {
           if (!response.ok) {
             throw new Error("Network error");

@@ -2,23 +2,28 @@ import Image from "next/image";
 import * as Icons from "@/app/icons";
 import ProgressBar from "../ProgressBar";
 import { CoinSummary } from "@/app/store/slices/coinSummarySlice";
+import { useAppSelector } from "@/app/store/hooks";
+import { currencyMap, formatCurrencyCommas } from "@/app/utils/utils";
 
 type DataProps = {
   data: CoinSummary;
 }
 
 const DataStats: React.FC<DataProps> = ({ data }) => {
+  const currency = useAppSelector((state) => state.currency)
   const dataItems = [
     {
-      value: data.market_data.market_cap.usd,
+      value: formatCurrencyCommas(data.market_data.market_cap[currency.value],
+        currency.value as keyof typeof currencyMap),
       label: "Market Cap",
     },
     {
-      value: data.market_data.fully_diluted_valuation.usd,
+      value: formatCurrencyCommas(data.market_data.fully_diluted_valuation[currency.value],
+        currency.value as keyof typeof currencyMap),
       label: "Fully Diluted Valuation",
     },
     {
-      value: data.market_data.market_cap_change_24h,
+      value: formatCurrencyCommas(data.market_data.market_cap_change_24h),
       label: "Market Cap 24h",
     },
     {

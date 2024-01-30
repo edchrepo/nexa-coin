@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { formatCurrency } from "@/app/utils/utils";
+import { currencyMap, formatCurrency } from "@/app/utils/utils";
 import Image from "next/image";
 import * as Icons from "../icons";
 import ProgressBar from "./ProgressBar";
@@ -11,6 +11,7 @@ import { fetchMarketData } from "@/app/store/slices/marketDataSlice";
 const MarketData = () => {
   const dispatch = useAppDispatch();
   const marketData = useAppSelector((state) => state.marketData);
+  const currency = useAppSelector((state) => state.currency.value);
 
   useEffect(() => {
     dispatch(fetchMarketData());
@@ -49,17 +50,17 @@ const MarketData = () => {
                 }
                 alt="Arrow"
               />
-              <p>{formatCurrency(marketData.total_market_cap.usd)}</p>
+              <p>{formatCurrency(marketData.total_market_cap[currency], currency as keyof typeof currencyMap)}</p>
             </div>
             <div className="flex items-center w-[13.5%]">
               <span className="mr-2">
-                {formatCurrency(marketData.total_volume.usd)}
+                {formatCurrency(marketData.total_volume[currency], currency as keyof typeof currencyMap)}
               </span>
               <ProgressBar
                 progress={Math.min(
                   Math.round(
-                    (marketData.total_volume.usd /
-                      marketData.total_market_cap.usd) *
+                    (marketData.total_volume[currency] /
+                      marketData.total_market_cap[currency]) *
                       100
                   ),
                   100
