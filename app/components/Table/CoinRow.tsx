@@ -71,11 +71,11 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
 
   return (
     <Link href={`/${coin.id}`}>
-      <div className="grid grid-cols-48 gap-2 bg-white dark:bg-[#181825] border-[#181825] rounded-xl my-2 items-center">
-        <div className="col-span-2 text-center text-[#3c3c7e] dark:text-secondary">
+      <div className="grid grid-cols-3 sm:grid-cols-48 gap-2 bg-white dark:bg-[#181825] border-[#181825] rounded-xl my-2 items-center">
+        <div className="hidden sm:block col-span-2 text-center text-[#3c3c7e] dark:text-secondary">
           {index + 1}
         </div>
-        <div className="col-span-6 text-black dark:text-white">
+        <div className="sm:col-span-6 col-span-1 text-black dark:text-white order-1 sm:order-none">
           <img
             src={coin.image}
             className="w-8 h-8 inline-block"
@@ -83,31 +83,34 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
           />{" "}
           {coin.name} ({coin.symbol.toUpperCase()})
         </div>
-        <div className="col-span-4 text-black dark:text-white">
-          {formatCurrencyCommas(
-            coin.current_price,
-            currency as keyof typeof currencyMap
-          )}
+        <div className="col-span-1 sm:col-span-8 sm:flex order-3 sm:order-none">
+          <div className="flex-1 text-black dark:text-white">
+            {formatCurrencyCommas(
+              coin.current_price,
+              currency as keyof typeof currencyMap
+            )}
+          </div>
+          <div
+            className={`flex sm:flex-1 items-center ${
+              coin.price_change_percentage_1h_in_currency > 0
+                ? "text-[#00b1a6]"
+                : "text-[#fe2264]"
+            }`}
+          >
+            {coin.price_change_percentage_1h_in_currency > 0 ? (
+              <Image className="h-3 w-3 mr-1" src={Icons.UpArrow} alt="+" />
+            ) : (
+              <Image className="h-3 w-3 mr-1" src={Icons.DownArrow} alt="-" />
+            )}
+            {Math.abs(
+              Math.round(100 * coin.price_change_percentage_1h_in_currency) /
+                100
+            )}
+            %
+          </div>
         </div>
         <div
-          className={`col-span-4 flex items-center ${
-            coin.price_change_percentage_1h_in_currency > 0
-              ? "text-[#00b1a6]"
-              : "text-[#fe2264]"
-          }`}
-        >
-          {coin.price_change_percentage_1h_in_currency > 0 ? (
-            <Image className="h-3 w-3 mr-1" src={Icons.UpArrow} alt="+" />
-          ) : (
-            <Image className="h-3 w-3 mr-1" src={Icons.DownArrow} alt="-" />
-          )}
-          {Math.abs(
-            Math.round(100 * coin.price_change_percentage_1h_in_currency) / 100
-          )}
-          %
-        </div>
-        <div
-          className={`col-span-4 flex items-center ${
+          className={`hidden sm:flex col-span-4 items-center ${
             coin.price_change_percentage_24h_in_currency > 0
               ? "text-[#00b1a6]"
               : "text-[#fe2264]"
@@ -124,7 +127,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
           %
         </div>
         <div
-          className={`col-span-4 flex items-center ${
+          className={`hidden sm:flex col-span-4 items-center ${
             coin.price_change_percentage_7d_in_currency > 0
               ? "text-[#00b1a6]"
               : "text-[#fe2264]"
@@ -140,7 +143,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
           )}
           %
         </div>
-        <div className="col-span-8 mr-4">
+        <div className="hidden sm:block col-span-8 mr-4">
           <div className="flex justify-between">
             <div
               className={`${
@@ -178,7 +181,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
             }`}
           />
         </div>
-        <div className="col-span-8 mr-4">
+        <div className="hidden sm:block col-span-8 mr-4">
           <div className="flex justify-between">
             <div
               className={`${
@@ -215,7 +218,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
             }`}
           />
         </div>
-        <div className="col-span-6">
+        <div className="sm:col-span-6 col-span-1 order-2 sm:order-none">
           <Line data={chartData} options={options} />
         </div>
       </div>
