@@ -75,13 +75,16 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
         <div className="hidden sm:block col-span-2 text-center text-[#3c3c7e] dark:text-secondary">
           {index + 1}
         </div>
-        <div className="sm:col-span-6 col-span-1 text-black dark:text-white order-1 sm:order-none">
+        <div className="sm:col-span-6 col-span-1 flex items-center space-x-2 text-black dark:text-white order-1 sm:order-none">
           <img
             src={coin.image}
             className="w-8 h-8 inline-block"
             alt={coin.name}
-          />{" "}
-          {coin.name} ({coin.symbol.toUpperCase()})
+          />
+          <div className="flex flex-col sm:flex-row">
+            <span className="sm:mr-1">{coin.name}</span>
+            <span>({coin.symbol.toUpperCase()})</span>
+          </div>
         </div>
         <div className="col-span-1 sm:col-span-8 sm:flex order-3 sm:order-none">
           <div className="flex-1 text-black dark:text-white">
