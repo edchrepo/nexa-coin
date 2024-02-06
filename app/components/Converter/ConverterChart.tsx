@@ -5,6 +5,7 @@ import { Line } from "react-chartjs-2";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { ChartData } from "@/app/store/slices/chartDataSlice";
 import { options, prepareConverterData } from "../../utils/chartUtils";
+import { useAppSelector } from "@/app/store/hooks";
 ChartJS.register(...registerables);
 
 interface ConverterChartProps {
@@ -18,6 +19,8 @@ const ConverterChart = ({
   toData,
   chartData,
 }: ConverterChartProps) => {
+  const timeFrame = useAppSelector((state) => state.time.timeFrame);
+
   return (
     <div className="w-[100%] h-[450px] bg-white dark:bg-[#191932] mt-14 p-7 rounded-[20px] text-black dark:text-white">
       <p className="text-[#424286] dark:text-white">
@@ -29,7 +32,8 @@ const ConverterChart = ({
           data={prepareConverterData(
             chartData,
             fromData?.current_price ?? 0,
-            toData?.current_price ?? 0
+            toData?.current_price ?? 0,
+            timeFrame
           )}
           options={{
             ...options,
