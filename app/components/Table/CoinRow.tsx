@@ -72,10 +72,10 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
   return (
     <Link href={`/${coin.id}`}>
       <div className="grid grid-cols-3 lg:grid-cols-48 gap-2 bg-white dark:bg-[#181825] border-[#181825] rounded-xl my-2 items-center">
-        <div className="hidden lg:block col-span-2 text-center text-[#3c3c7e] dark:text-secondary">
+        <div className="hidden lg:block col-span-1 text-center text-[#3c3c7e] dark:text-secondary">
           {index + 1}
         </div>
-        <div className="lg:col-span-6 col-span-1 flex items-center space-x-2 text-black dark:text-white order-1 lg:order-none">
+        <div className="lg:col-span-7 col-span-1 flex items-center space-x-2 text-black dark:text-white order-1 lg:order-none">
           <img
             src={coin.image}
             className="w-8 h-8 inline-block"
