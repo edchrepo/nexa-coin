@@ -71,22 +71,22 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
 
   return (
     <Link href={`/${coin.id}`}>
-      <div className="grid grid-cols-3 sm:grid-cols-48 gap-2 bg-white dark:bg-[#181825] border-[#181825] rounded-xl my-2 items-center">
-        <div className="hidden sm:block col-span-2 text-center text-[#3c3c7e] dark:text-secondary">
+      <div className="grid grid-cols-3 lg:grid-cols-48 gap-2 bg-white dark:bg-[#181825] border-[#181825] rounded-xl my-2 items-center">
+        <div className="hidden lg:block col-span-2 text-center text-[#3c3c7e] dark:text-secondary">
           {index + 1}
         </div>
-        <div className="sm:col-span-6 col-span-1 flex items-center space-x-2 text-black dark:text-white order-1 sm:order-none">
+        <div className="lg:col-span-6 col-span-1 flex items-center space-x-2 text-black dark:text-white order-1 lg:order-none">
           <img
             src={coin.image}
             className="w-8 h-8 inline-block"
             alt={coin.name}
           />
-          <div className="flex flex-col sm:flex-row">
-            <span className="sm:mr-1">{coin.name}</span>
+          <div className="flex flex-col lg:flex-row">
+            <span className="lg:mr-1">{coin.name}</span>
             <span>({coin.symbol.toUpperCase()})</span>
           </div>
         </div>
-        <div className="col-span-1 sm:col-span-8 sm:flex order-3 sm:order-none">
+        <div className="col-span-1 lg:col-span-8 lg:flex order-3 lg:order-none">
           <div className="flex-1 text-black dark:text-white">
             {formatCurrencyCommas(
               coin.current_price,
@@ -94,7 +94,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
             )}
           </div>
           <div
-            className={`flex sm:flex-1 items-center ${
+            className={`flex lg:flex-1 items-center ${
               coin.price_change_percentage_1h_in_currency > 0
                 ? "text-[#00b1a6]"
                 : "text-[#fe2264]"
@@ -113,7 +113,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
           </div>
         </div>
         <div
-          className={`hidden sm:flex col-span-4 items-center ${
+          className={`hidden lg:flex col-span-4 items-center ${
             coin.price_change_percentage_24h_in_currency > 0
               ? "text-[#00b1a6]"
               : "text-[#fe2264]"
@@ -130,7 +130,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
           %
         </div>
         <div
-          className={`hidden sm:flex col-span-4 items-center ${
+          className={`hidden lg:flex col-span-4 items-center ${
             coin.price_change_percentage_7d_in_currency > 0
               ? "text-[#00b1a6]"
               : "text-[#fe2264]"
@@ -146,7 +146,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
           )}
           %
         </div>
-        <div className="hidden sm:block col-span-8 mr-4">
+        <div className="hidden lg:block col-span-8 mr-4">
           <div className="flex justify-between">
             <div
               className={`${
@@ -184,7 +184,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
             }`}
           />
         </div>
-        <div className="hidden sm:block col-span-8 mr-4">
+        <div className="hidden lg:block col-span-8 mr-4">
           <div className="flex justify-between">
             <div
               className={`${
@@ -221,7 +221,7 @@ const CoinRow: React.FC<CoinProps> = ({ coin, index, currency }) => {
             }`}
           />
         </div>
-        <div className="sm:col-span-6 col-span-1 order-2 sm:order-none">
+        <div className="lg:col-span-6 col-span-1 order-2 lg:order-none">
           <Line data={chartData} options={options} />
         </div>
       </div>
