@@ -40,24 +40,24 @@ const CoinSummary = () => {
             Portfolio / {coinSummary[coinId].name} summary
           </p>
         </div>
-        <div className="space-y-44">
-          <div className="flex justify-center space-x-16">
-            <div className="w-[55%]">
+        <div className="space-y-20 lg:space-y-44">
+          <div className="flex flex-col justify-center lg:flex-row space-y-16 lg:space-x-16 lg:space-y-0">
+            <div className="lg:w-[55%]">
               <CoinStats data={coinSummary[coinId]} handleCopy={handleCopy} asset={asset}/>
             </div>
-            <div className="w-[45%]">
+            <div className="lg:w-[45%]">
               <DataStats data={coinSummary[coinId]} />
             </div>
           </div>
-          <div className="flex justify-center space-x-16">
-            <div className="w-[55%] text-[#424286] dark:text-white">
+          <div className="flex flex-col justify-center lg:flex-row space-y-16 lg:space-x-16 lg:space-y-0">
+            <div className="lg:w-[55%] text-[#424286] dark:text-white">
               <p>Description</p>
               <Description
                 text={coinSummary[coinId].description.en}
                 maxLength={750}
               />
             </div>
-            <div className="w-[45%]">
+            <div className="lg:w-[45%] pb-10 lg:pb-0">
               <LinkSection data={coinSummary[coinId]} handleCopy={handleCopy} />
             </div>
           </div>

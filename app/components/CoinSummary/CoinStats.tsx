@@ -28,8 +28,8 @@ const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
   const percentage = data.market_data.price_change_percentage_24h;
 
   return (
-    <div className="flex space-x-8">
-      <div className="w-[45%] space-y-5">
+    <div className="flex flex-col med:flex-row space-y-8 med:space-x-8 med:space-y-0">
+      <div className="med:w-[45%] space-y-5">
         <div className="bg-[#7272ab] dark:bg-[#1e1932] px-8 py-20 rounded-[20px] text-black dark:text-white ">
           <div className="flex flex-col items-center justify-center text-center space-y-4">
             <img className="h-10 w-10" src={data.image.large} alt="Bitcoin" />
@@ -59,7 +59,7 @@ const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
           />
         </div>
       </div>
-      <div className="w-[55%] p-8 flex flex-col justify-center items-center bg-[#7272ab] dark:bg-[#1e1932] rounded-[20px] text-black dark:text-white">
+      <div className="med:w-[55%] p-8 flex flex-col justify-center items-center bg-[#7272ab] dark:bg-[#1e1932] rounded-[20px] text-black dark:text-white">
         <div>
           <div className="flex space-x-6">
             <p className="text-3xl font-bold">

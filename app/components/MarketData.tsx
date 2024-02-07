@@ -19,13 +19,13 @@ const settings = {
   slidesToShow: 4,
   responsive: [
     {
-      breakpoint: 1000,
+      breakpoint: 1024,
       settings: {
         slidesToShow: 3,
       }
     },
     {
-      breakpoint: 600,
+      breakpoint: 640,
       settings: {
         slidesToShow: 2,
       }
