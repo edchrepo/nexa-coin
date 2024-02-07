@@ -16,7 +16,27 @@ const settings = {
   arrows: false,
   infinite: true,
   speed: 1000,
-  slidesToShow: 3,
+  slidesToShow: 4,
+  responsive: [
+    {
+      breakpoint: 1000,
+      settings: {
+        slidesToShow: 3,
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+      }
+    }
+  ]
 };
 
 const MarketData = () => {
@@ -116,12 +136,12 @@ const MarketData = () => {
         {marketData ? (
           <>
             {/* Mobile View */}
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <Slider {...settings}>{dataMap}</Slider>
             </div>
 
             {/* Desktop View */}
-            <div className="hidden md:flex justify-between">{dataMap}</div>
+            <div className="hidden lg:flex justify-between">{dataMap}</div>
           </>
         ) : (
           <p>Loading Market Data...</p>

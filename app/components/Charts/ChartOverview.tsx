@@ -44,7 +44,7 @@ const ChartOverview = () => {
 
   return (
     <div>
-      <div className="md:flex justify-between my-3 sm:space-y-5 md:space-y-0 lg:space-y-0 md:space-x-5 lg:space-x-5">
+      <div className="md:flex justify-between my-3 space-y-5 sm:space-y-5 md:space-y-0 lg:space-y-0 md:space-x-5 lg:space-x-5">
         <div className="md:w-[50%] sm:w-[100%] sm:h-[250px] md:h-[350px] lg:h-[350px] xl:h-[400px] 2xl:h-[500px] bg-white dark:bg-[#191932] p-7 rounded-[20px] text-black dark:text-white">
           <div className="absolute text-sm">
             {selectedCoins.length > 1 ? (

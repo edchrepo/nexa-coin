@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Tabs from "@/app/components/Tabs";
+import Tabs from "@/app/components/Tabs/Tabs";
 import CoinCarousel from "@/app/components/Carousel/CoinCarousel";
 import ChartOverview from "@/app/components/Charts/ChartOverview";
 import CoinsTable from "@/app/components/Table/CoinsTable";
