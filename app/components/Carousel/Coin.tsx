@@ -19,7 +19,7 @@ const Coin: React.FC<CoinProps> = ({ coin, isSelected }) => {
 
   return (
     <div
-      className={`flex items-center border-2 ${currencyClass} rounded-md mx-1 my-3 p-2 h-20 w-50`}
+      className={`flex items-center border-2 ${currencyClass} rounded-md m-1 p-2 h-15 w-30 lg:h-20 lg:w-50 lg:my-3`}
     >
       <img src={coin.image} className="h-7 w-7 mx-2" alt={coin.name} />
       <div
@@ -27,8 +27,14 @@ const Coin: React.FC<CoinProps> = ({ coin, isSelected }) => {
           isSelected ? "text-white" : "text-black dark:text-white"
         }`}
       >
-        {coin.name} ({coin.symbol.toUpperCase()})
         <div className="flex">
+          <span className="hidden lg:inline mr-2">{coin.name} </span>
+          <span className="lg:hidden">{coin.symbol.toUpperCase()}</span>
+          <span className="hidden lg:inline">
+            ({coin.symbol.toUpperCase()})
+          </span>
+        </div>
+        <div className="hidden lg:flex">
           <div
             className={`mr-2 ${
               isSelected
