@@ -104,9 +104,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative flex items-center justify-between p-4 w-[90%]">
+    <nav className="flex items-center justify-between p-4 w-[90%]">
       {/* Logo Section */}
-      <div className="flex items-center">
+      <div className="lg:hidden">$$$</div>
+      <div className="hidden lg:flex items-center">
         {theme === "light" ? (
           <Image className="w-[150px]" src={Icons.logolight} alt="NexaCoin" />
         ) : (
@@ -115,9 +116,9 @@ const Navbar = () => {
       </div>
 
       {/* Page Section */}
-      <div className="flex items-center">
+      <div className="hidden md:flex items-center">
         <Link
-          className={`flex items-center mr-10 p-2 rounded cursor-pointer ${
+          className={`flex items-center p-2 mr-4 rounded cursor-pointer ${
             activeLink !== "home"
               ? "text-secondary"
               : "text-[#3c3c7e] dark:text-white"
@@ -165,36 +166,37 @@ const Navbar = () => {
       {/* Search and Settings Section */}
       <div className="flex items-center text-[#3c3c7e] dark:text-white">
         <div className="relative">
-          <div className="absolute inset-y-0 ml-3 flex items-center pointer-events-none">
+          <button className="flex items-center bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md p-2 h-10 mr-4 sm:hidden">
+            <Image className="h-5 w-5" src={Icons.Search} alt="search" />
+          </button>
+          <div className="hidden sm:flex absolute inset-y-0 ml-3 items-center pointer-events-none">
             <Image className="h-5 w-5" src={Icons.Search} alt="search" />
           </div>
-          <div>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 w-96 h-10"
-                value={search}
-                onKeyDown={handleKeyDown}
-                onChange={handleChange}
-                placeholder="Search..."
-              />
-            </form>
-            {search && (
-              <div className="absolute z-50 bg-white dark:bg-[#1e1932] max-h-[500px] w-full overflow-y-auto">
-                {filteredCoins.map((coin, index) => (
-                  <div
-                    key={coin.id}
-                    className={`ml-2 hover:bg-blue-100 cursor-pointer ${
-                      index === focusedIndex ? "bg-blue-200" : ""
-                    }`}
-                    onClick={() => handleClick(`/${coin.id}`)}
-                  >
-                    {coin.name}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <form onSubmit={handleSubmit} className="hidden sm:block">
+            <input
+              type="text"
+              className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 h-10"
+              value={search}
+              onKeyDown={handleKeyDown}
+              onChange={handleChange}
+              placeholder="Search..."
+            />
+          </form>
+          {search && (
+            <div className="absolute z-50 bg-white dark:bg-[#1e1932] max-h-[500px] w-full overflow-y-auto">
+              {filteredCoins.map((coin, index) => (
+                <div
+                  key={coin.id}
+                  className={`ml-2 hover:bg-blue-100 cursor-pointer ${
+                    index === focusedIndex ? "bg-blue-200" : ""
+                  }`}
+                  onClick={() => handleClick(`/${coin.id}`)}
+                >
+                  {coin.name}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="relative">
           <div className="absolute inset-y-0 ml-3 flex items-center pointer-events-none">

@@ -40,7 +40,7 @@ const CoinCarousel = () => {
     },
     responsive: [
       {
-        breakpoint: 640,
+        breakpoint: 550,
         settings: {
           slidesToShow: 3,
         },
