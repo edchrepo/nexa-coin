@@ -21,6 +21,7 @@ import Exit from "./exit.svg";
 import Sort from "./sort.svg";
 import logo from "./logo.png";
 import logolight from "./logolight.png";
+import mobilelogo from "./mobilelogo.png"
 import ConverterIcon from "./converter.svg";
 import WhiteConverterIcon from "./whiteconverter.svg";
 import WhiteDownArrow from "./whitedownarrow.svg";
@@ -56,6 +57,7 @@ export {
   Sort,
   logo,
   logolight,
+  mobilelogo,
   ConverterIcon,
   WhiteConverterIcon,
   WhiteDownArrow,
