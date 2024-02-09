@@ -103,6 +103,7 @@ const Navbar = () => {
   const handleHomeReturn = () => {
     router.push("/");
     setActiveTab("coins");
+    setActiveLink("home");
   };
 
   const filterCoins = (search: string) => {
@@ -115,7 +116,7 @@ const Navbar = () => {
       {/* Logo Section */}
       <div className="lg:hidden">
         <Image
-          className="w-[30px]"
+          className="w-[30px] cursor-pointer"
           src={Icons.mobilelogo}
           alt="NexaCoinMobile"
           onClick={handleHomeReturn}
@@ -124,14 +125,14 @@ const Navbar = () => {
       <div className="hidden lg:flex items-center">
         {theme === "light" ? (
           <Image
-            className="w-[150px]"
+            className="w-[150px] cursor-pointer"
             src={Icons.logolight}
             alt="NexaCoin"
             onClick={handleHomeReturn}
           />
         ) : (
           <Image
-            className="w-[150px]"
+            className="w-[150px] cursor-pointer"
             src={Icons.logo}
             alt="NexaCoin"
             onClick={handleHomeReturn}
