@@ -70,8 +70,12 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
 
   return (
     <div className="flex flex-col md:flex-row border bg-white dark:bg-[#191925] dark:border-[#19192e] rounded-lg mb-6">
-      <div className="flex-1 p-2 bg-[#a2a3e8] dark:bg-[#191932] rounded-l-lg">
-        <div className="p-2">
+      <div className="relative flex-1 p-2 bg-[#a2a3e8] dark:bg-[#191932] rounded-t-lg md:rounded-none md:rounded-l-lg">
+        <div
+          className="absolute inset-0 bg-[#a2a3e8] dark:bg-[#191932] bg-no-repeat bg-right-bottom opacity-5 md:hidden"
+          style={{ backgroundImage: `url(${asset.image})` }}
+        ></div>
+        <div className="relative z-10 p-2">
           <div className="flex justify-between mt-2">
             <div className="flex items-center md:space-x-2">
               <img
