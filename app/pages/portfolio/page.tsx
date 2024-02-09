@@ -10,7 +10,7 @@ import {
 import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Asset from "@/app/components/Portfolio/Asset";
 import Modal from "@/app/components/Portfolio/Modal";
-import { useTab } from '@/app/context/TabContext';
+import { useTab } from "@/app/context/TabContext";
 import MobileTabs from "@/app/components/Tabs/MobileTabs";
 
 export default function Portfolio() {
@@ -67,7 +67,7 @@ export default function Portfolio() {
 
   return (
     <div className="bg-[#f3f5f9] dark:bg-[#13121a] w-[90%]">
-      <div className="flex justify-between p-4 mt-4">
+      <div className="hidden md:flex justify-between p-4 mt-4">
         <div className="flex items-center text-[#3c3c7e] dark:text-white text-2xl">
           Portfolio
         </div>
@@ -94,7 +94,7 @@ export default function Portfolio() {
           />
         ))}
       </div>
-      <MobileTabs activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <MobileTabs activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>
   );
 }
