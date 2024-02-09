@@ -10,6 +10,8 @@ import {
 import { AssetData } from "@/app/store/slices/portfolioSlice";
 import Asset from "@/app/components/Portfolio/Asset";
 import Modal from "@/app/components/Portfolio/Modal";
+import { useTab } from '@/app/context/TabContext';
+import MobileTabs from "@/app/components/Tabs/MobileTabs";
 
 export default function Portfolio() {
   const assets = useAppSelector((state) => state.portfolio.assets);
@@ -19,6 +21,7 @@ export default function Portfolio() {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const { activeTab, setActiveTab } = useTab();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -91,6 +94,7 @@ export default function Portfolio() {
           />
         ))}
       </div>
+      <MobileTabs activeTab={activeTab} setActiveTab={setActiveTab}/>
     </div>
   );
 }
