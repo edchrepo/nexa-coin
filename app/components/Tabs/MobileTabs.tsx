@@ -5,9 +5,24 @@ import { TabsProps } from "./Tabs";
 
 const MobileTabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   const tabItems = [
-    { id: "coins", icon: Icons.Home, label: "Overview" },
-    { id: "converter", icon: Icons.ExchangeIcon, label: "Converter" },
-    { id: "portfolio", icon: Icons.Stack, label: "Portfolio", link: "/portfolio" },
+    {
+      id: "coins",
+      icon: Icons.Home,
+      label: "Overview",
+      link: "/",
+    },
+    {
+      id: "converter",
+      icon: Icons.ExchangeIcon,
+      label: "Converter",
+      link: "/",
+    },
+    {
+      id: "portfolio",
+      icon: Icons.Stack,
+      label: "Portfolio",
+      link: "/portfolio",
+    },
   ];
 
   return (
@@ -21,21 +36,14 @@ const MobileTabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
                 ? "bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow"
                 : "text-[#6161cb] dark:text-white"
             } p-4 rounded-lg w-[50%]`}
-            onClick={() => !tab.link && setActiveTab(tab.id)} 
+            onClick={() => setActiveTab(tab.id)}
           >
-            {tab.link ? (
-              <Link href={tab.link}>
-                <div className="flex flex-col items-center">
-                  <Image className="h-7 w-7" src={tab.icon} alt={tab.label} />
-                  {tab.label}
-                </div>
-              </Link>
-            ) : (
+            <Link href={tab.link}>
               <div className="flex flex-col items-center">
                 <Image className="h-7 w-7" src={tab.icon} alt={tab.label} />
                 {tab.label}
               </div>
-            )}
+            </Link>
           </div>
         ))}
       </div>
@@ -44,4 +52,3 @@ const MobileTabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
 };
 
 export default MobileTabs;
-
