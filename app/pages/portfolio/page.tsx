@@ -97,7 +97,7 @@ export default function Portfolio() {
         ))}
       </div>
       <button
-        className="flex justify-center items-center fixed z-10 bottom-28 right-6 bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow bg-opacity-95 p-3 h-16 w-16 rounded-full md:hidden"
+        className="flex justify-center items-center fixed z-10 bottom-32 right-6 bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow bg-opacity-95 p-3 h-16 w-16 rounded-full md:hidden"
         onClick={openModal}
       >
         <Image className="h-7 w-7" src={Icons.Add} alt="add" />
