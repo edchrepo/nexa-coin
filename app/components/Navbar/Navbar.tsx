@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "@/app/context/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
 import * as Icons from "@/app/icons";
 import ThemeSwitch from "./ThemeSwitch";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { useTabLink } from "@/app/context/TabLinkContext";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
@@ -22,6 +22,7 @@ const currencyOptions = [
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
+  const pathname = usePathname();
   const [search, setSearch] = useState("");
   const [filteredCoins, setFilteredCoins] = useState<CoinData[]>([]);
   // Only allow user to submit search if searchterm is a valid coin name
@@ -114,6 +115,16 @@ const Navbar = () => {
     const regex = new RegExp(search, "i"); // 'i' flag for case-insensitive search
     return coins.filter((coin) => regex.test(coin.name));
   };
+
+  useEffect(() => {
+    if (pathname === "/portfolio") {
+      setActiveTab("portfolio")
+      setActiveLink("portfolio")
+    } else {
+      setActiveTab("coins")
+      setActiveLink("home")
+    }
+  }, [pathname])
 
   return (
     <nav className="flex items-center justify-between p-4 w-[90%]">
