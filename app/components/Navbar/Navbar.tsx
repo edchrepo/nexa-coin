@@ -29,7 +29,7 @@ const Navbar = () => {
   const [isSubmitEnabled, setIsSubmitEnabled] = useState<boolean>(false);
   // Allows user to press up and down when searching for coin to focus/highlight a coin
   const [focusedIndex, setFocusedIndex] = useState(-1);
-  const { activeLink, setActiveLink, setActiveTab } = useTabLink();
+  const { activeLink, setActiveLink, activeTab, setActiveTab } = useTabLink();
   const coins = useAppSelector((state) => state.coinsData);
   const { theme } = useTheme();
   const router = useRouter();
@@ -121,7 +121,7 @@ const Navbar = () => {
       setActiveTab("portfolio")
       setActiveLink("portfolio")
     } else {
-      setActiveTab("coins")
+      activeTab === "coins" ? setActiveTab("coins") : setActiveTab("converter")
       setActiveLink("home")
     }
   }, [pathname])
