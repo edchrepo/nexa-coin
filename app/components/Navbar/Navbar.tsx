@@ -172,16 +172,13 @@ const Navbar = () => {
       {/* Search and Settings Section */}
       <div className="flex items-center text-[#3c3c7e] dark:text-white">
         <div className="relative">
-          <button className="flex items-center bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md p-2 h-10 mr-4 sm:hidden">
-            <Image className="h-5 w-5" src={Icons.Search} alt="search" />
-          </button>
-          <div className="hidden sm:flex absolute inset-y-0 ml-3 items-center pointer-events-none">
+          <div className="flex absolute inset-y-0 ml-3 items-center pointer-events-none">
             <Image className="h-5 w-5" src={Icons.Search} alt="search" />
           </div>
-          <form onSubmit={handleSubmit} className="hidden sm:block">
+          <form onSubmit={handleSubmit}>
             <input
               type="text"
-              className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 h-10"
+              className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 h-10 w-36 sm:w-56"
               value={search}
               onKeyDown={handleKeyDown}
               onChange={handleChange}
