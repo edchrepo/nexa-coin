@@ -118,13 +118,13 @@ const Navbar = () => {
 
   useEffect(() => {
     if (pathname === "/portfolio") {
-      setActiveTab("portfolio")
-      setActiveLink("portfolio")
+      setActiveTab("portfolio");
+      setActiveLink("portfolio");
     } else {
-      activeTab === "coins" ? setActiveTab("coins") : setActiveTab("converter")
-      setActiveLink("home")
+      activeTab === "coins" ? setActiveTab("coins") : setActiveTab("converter");
+      setActiveLink("home");
     }
-  }, [pathname])
+  }, [pathname]);
 
   return (
     <nav className="flex items-center justify-between p-4 w-[90%]">

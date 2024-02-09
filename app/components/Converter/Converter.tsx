@@ -171,11 +171,13 @@ const Converter = () => {
           </div>
         </div>
       </div>
-      <ConverterChart
-        fromData={fromData}
-        toData={toData}
-        chartData={chartData}
-      />
+      {chartData.length !== 0 && (
+        <ConverterChart
+          fromData={fromData}
+          toData={toData}
+          chartData={chartData}
+        />
+      )}
       <TimeFrameSelector />
     </div>
   );
