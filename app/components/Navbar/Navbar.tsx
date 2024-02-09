@@ -105,6 +105,11 @@ const Navbar = () => {
     setActiveLink("home");
   };
 
+  const handleLink = (active: string) => {
+    setActiveLink(active);
+    active === "portfolio" ? setActiveTab("portfolio") : setActiveTab("coins");
+  };
+
   const filterCoins = (search: string) => {
     const regex = new RegExp(search, "i"); // 'i' flag for case-insensitive search
     return coins.filter((coin) => regex.test(coin.name));
@@ -147,7 +152,7 @@ const Navbar = () => {
               ? "text-secondary"
               : "text-[#3c3c7e] dark:text-white"
           }`}
-          onClick={() => setActiveLink("home")}
+          onClick={() => handleLink("home")}
           href="/"
         >
           <Image
@@ -169,7 +174,7 @@ const Navbar = () => {
               ? "text-secondary"
               : "text-[#3c3c7e] dark:text-white"
           }`}
-          onClick={() => setActiveLink("portfolio")}
+          onClick={() => handleLink("portfolio")}
           href="/portfolio"
         >
           <Image
