@@ -8,7 +8,7 @@ import * as Icons from "@/app/icons";
 import ThemeSwitch from "./ThemeSwitch";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { useTab } from "@/app/context/TabContext";
+import { useTabLink } from "@/app/context/TabLinkContext";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { setCurrency } from "@/app/store/slices/currencySlice";
 
@@ -28,8 +28,7 @@ const Navbar = () => {
   const [isSubmitEnabled, setIsSubmitEnabled] = useState<boolean>(false);
   // Allows user to press up and down when searching for coin to focus/highlight a coin
   const [focusedIndex, setFocusedIndex] = useState(-1);
-  const [activeLink, setActiveLink] = useState("home");
-  const { setActiveTab } = useTab();
+  const { activeLink, setActiveLink, setActiveTab } = useTabLink();
   const coins = useAppSelector((state) => state.coinsData);
   const { theme } = useTheme();
   const router = useRouter();
@@ -106,6 +105,11 @@ const Navbar = () => {
     setActiveLink("home");
   };
 
+  const handleLink = (active: string) => {
+    setActiveLink(active);
+    active === "portfolio" ? setActiveTab("portfolio") : setActiveTab("coins");
+  };
+
   const filterCoins = (search: string) => {
     const regex = new RegExp(search, "i"); // 'i' flag for case-insensitive search
     return coins.filter((coin) => regex.test(coin.name));
@@ -148,7 +152,7 @@ const Navbar = () => {
               ? "text-secondary"
               : "text-[#3c3c7e] dark:text-white"
           }`}
-          onClick={() => setActiveLink("home")}
+          onClick={() => handleLink("home")}
           href="/"
         >
           <Image
@@ -170,7 +174,7 @@ const Navbar = () => {
               ? "text-secondary"
               : "text-[#3c3c7e] dark:text-white"
           }`}
-          onClick={() => setActiveLink("portfolio")}
+          onClick={() => handleLink("portfolio")}
           href="/portfolio"
         >
           <Image

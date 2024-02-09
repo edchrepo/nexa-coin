@@ -12,7 +12,7 @@ import Image from "next/image";
 import * as Icons from "@/app/icons";
 import Asset from "@/app/components/Portfolio/Asset";
 import Modal from "@/app/components/Portfolio/Modal";
-import { useTab } from "@/app/context/TabContext";
+import { useTabLink } from "@/app/context/TabLinkContext";
 import MobileTabs from "@/app/components/Tabs/MobileTabs";
 
 export default function Portfolio() {
@@ -23,7 +23,7 @@ export default function Portfolio() {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const { activeTab, setActiveTab } = useTab();
+  const { activeTab, setActiveTab } = useTabLink();
 
   const openModal = () => {
     setIsModalOpen(true);
