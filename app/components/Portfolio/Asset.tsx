@@ -73,8 +73,12 @@ const Asset: React.FC<AssetProps> = ({ asset, onEdit }) => {
       <div className="flex-1 p-2 bg-[#a2a3e8] dark:bg-[#191932] rounded-l-lg">
         <div className="p-2">
           <div className="flex justify-between mt-2">
-            <div className="flex space-x-2">
-              <img src={asset.image} className="w-7 h-7" alt={asset.name} />
+            <div className="flex items-center md:space-x-2">
+              <img
+                src={asset.image}
+                className="hidden md:flex w-7 h-7"
+                alt={asset.name}
+              />
               <span className="text-[#3c3c7e] dark:text-white text-2xl">
                 {asset.name} ({asset.symbol?.toUpperCase()})
               </span>

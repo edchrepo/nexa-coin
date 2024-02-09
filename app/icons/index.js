@@ -21,17 +21,18 @@ import Exit from "./exit.svg";
 import Sort from "./sort.svg";
 import logo from "./logo.png";
 import logolight from "./logolight.png";
-import mobilelogo from "./mobilelogo.png"
+import mobilelogo from "./mobilelogo.png";
 import ConverterIcon from "./converter.svg";
 import WhiteConverterIcon from "./whiteconverter.svg";
 import WhiteDownArrow from "./whitedownarrow.svg";
 import Edit from "./edit.svg";
 import Close from "./close.svg";
-import WhiteLink from "./whitelink.svg"
-import PurpleLink from "./purplelink.svg"
-import WhiteCopy from "./copy.svg"
-import PurpleCopy from "./purplecopy.svg"
-import PlusCircle from "./pluscircle.svg"
+import WhiteLink from "./whitelink.svg";
+import PurpleLink from "./purplelink.svg";
+import WhiteCopy from "./copy.svg";
+import PurpleCopy from "./purplecopy.svg";
+import PlusCircle from "./pluscircle.svg";
+import Add from "./add.svg";
 
 export {
   BoltCircle,
@@ -67,5 +68,6 @@ export {
   PurpleLink,
   WhiteCopy,
   PurpleCopy,
-  PlusCircle
+  PlusCircle,
+  Add,
 };
