@@ -8,6 +8,7 @@ import * as Icons from "@/app/icons";
 import ThemeSwitch from "./ThemeSwitch";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { useTab } from "@/app/context/TabContext";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { setCurrency } from "@/app/store/slices/currencySlice";
 
@@ -28,6 +29,7 @@ const Navbar = () => {
   // Allows user to press up and down when searching for coin to focus/highlight a coin
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [activeLink, setActiveLink] = useState("home");
+  const { setActiveTab } = useTab();
   const coins = useAppSelector((state) => state.coinsData);
   const { theme } = useTheme();
   const router = useRouter();
@@ -98,6 +100,11 @@ const Navbar = () => {
     dispatch(setCurrency(selectedCurrency));
   };
 
+  const handleHomeReturn = () => {
+    router.push("/");
+    setActiveTab("coins");
+  };
+
   const filterCoins = (search: string) => {
     const regex = new RegExp(search, "i"); // 'i' flag for case-insensitive search
     return coins.filter((coin) => regex.test(coin.name));
@@ -107,23 +114,28 @@ const Navbar = () => {
     <nav className="flex items-center justify-between p-4 w-[90%]">
       {/* Logo Section */}
       <div className="lg:hidden">
-        <Link href="/">
-          <Image
-            className="w-[30px]"
-            src={Icons.mobilelogo}
-            alt="NexaCoinMobile"
-          />
-        </Link>
+        <Image
+          className="w-[30px]"
+          src={Icons.mobilelogo}
+          alt="NexaCoinMobile"
+          onClick={handleHomeReturn}
+        />
       </div>
       <div className="hidden lg:flex items-center">
         {theme === "light" ? (
-          <Link href="/">
-            <Image className="w-[150px]" src={Icons.logolight} alt="NexaCoin" />
-          </Link>
+          <Image
+            className="w-[150px]"
+            src={Icons.logolight}
+            alt="NexaCoin"
+            onClick={handleHomeReturn}
+          />
         ) : (
-          <Link href="/">
-            <Image className="w-[150px]" src={Icons.logo} alt="NexaCoin" />
-          </Link>
+          <Image
+            className="w-[150px]"
+            src={Icons.logo}
+            alt="NexaCoin"
+            onClick={handleHomeReturn}
+          />
         )}
       </div>
 
