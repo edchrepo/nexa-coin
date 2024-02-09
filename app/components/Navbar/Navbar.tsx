@@ -107,17 +107,23 @@ const Navbar = () => {
     <nav className="flex items-center justify-between p-4 w-[90%]">
       {/* Logo Section */}
       <div className="lg:hidden">
-        <Image
-          className="w-[30px]"
-          src={Icons.mobilelogo}
-          alt="NexaCoinMobile"
-        />
+        <Link href="/">
+          <Image
+            className="w-[30px]"
+            src={Icons.mobilelogo}
+            alt="NexaCoinMobile"
+          />
+        </Link>
       </div>
       <div className="hidden lg:flex items-center">
         {theme === "light" ? (
-          <Image className="w-[150px]" src={Icons.logolight} alt="NexaCoin" />
+          <Link href="/">
+            <Image className="w-[150px]" src={Icons.logolight} alt="NexaCoin" />
+          </Link>
         ) : (
-          <Image className="w-[150px]" src={Icons.logo} alt="NexaCoin" />
+          <Link href="/">
+            <Image className="w-[150px]" src={Icons.logo} alt="NexaCoin" />
+          </Link>
         )}
       </div>
 
