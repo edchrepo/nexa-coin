@@ -162,8 +162,10 @@ const Modal: React.FC<ModalProps> = ({
                   Select coins
                 </option>
                 {coins
-                  .filter((coin) =>
-                    assets.every((asset) => asset.name !== coin.name)
+                  .filter(
+                    (coin) =>
+                      selectedCoin?.id === coin.id ||
+                      assets.every((asset) => asset.name !== coin.name)
                   )
                   .map((coin) => (
                     <option key={coin.id} value={coin.id}>
