@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Navbar from "@/app/components/Navbar/Navbar";
-import MarketData from "@/app/components/MarketData";
+import Navbar from "@/components/Navbar/Navbar";
+import MarketData from "@/components/MarketData";
 import "./globals.css";
-import StoreProvider from "./store/StoreProvider";
-import ThemeContextProvider from "@/app/context/ThemeContext";
-import { TabLinkProvider } from "@/app/context/TabLinkContext";
+import StoreProvider from "@/store/StoreProvider";
+import ThemeContextProvider from "@/context/ThemeContext";
+import { TabLinkProvider } from "@/context/TabLinkContext";
 
 export const metadata: Metadata = {
   title: "NexaCoin",
