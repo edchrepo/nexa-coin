@@ -38,6 +38,26 @@ const CoinCarousel = () => {
       setShowPrev(currentSlide > 0);
       setShowNext(currentSlide < coins.length - 6);
     },
+    responsive: [
+      {
+        breakpoint: 550,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 4,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+        },
+      },
+    ],
   };
 
   const handleSelectedCurrency = (coinId: string) => {
@@ -89,7 +109,12 @@ const CoinCarousel = () => {
         </button>
       </div>
       <div className="relative">
-        <Slider ref={slider} {...settings} className="mt-4 mb-8">
+        <Slider
+          ref={slider}
+          {...settings}
+          key={settings.slidesToShow}
+          className="mt-4 mb-8"
+        >
           {coins.map((coin) => (
             <div key={coin.id} onClick={() => handleSelectedCurrency(coin.id)}>
               <Coin coin={coin} isSelected={selectedCoins.includes(coin.id)} />
@@ -99,7 +124,7 @@ const CoinCarousel = () => {
         {coins && showPrev && (
           <button
             onClick={() => slider.current?.slickPrev()}
-            className="flex items-center absolute left-0 -ml-6 z-10 bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow bg-opacity-95 p-3 h-10 w-10 rounded-full -translate-y-1/2 top-1/2"
+            className="hidden lg:flex items-center absolute left-0 -ml-6 z-10 bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow bg-opacity-95 p-3 h-10 w-10 rounded-full -translate-y-1/2 top-1/2"
           >
             <Image className="h-7 w-7" src={Icons.LeftArrow} alt="Left" />
           </button>
@@ -107,7 +132,7 @@ const CoinCarousel = () => {
         {coins && showNext && (
           <button
             onClick={() => slider.current?.slickNext()}
-            className="flex items-center absolute right-0 -mr-7 z-10 bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow bg-opacity-95 p-3 h-10 w-10 rounded-full -translate-y-1/2 top-1/2"
+            className="hidden lg:flex items-center absolute right-0 -mr-7 z-10 bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow bg-opacity-95 p-3 h-10 w-10 rounded-full -translate-y-1/2 top-1/2"
           >
             <Image className="h-7 w-7" src={Icons.RightArrow} alt="Right" />
           </button>

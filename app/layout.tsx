@@ -4,6 +4,7 @@ import MarketData from "@/app/components/MarketData";
 import "./globals.css";
 import StoreProvider from "./store/StoreProvider";
 import ThemeContextProvider from "@/app/context/ThemeContext";
+import { TabLinkProvider } from "@/app/context/TabLinkContext";
 
 export const metadata: Metadata = {
   title: "NexaCoin",
@@ -20,13 +21,15 @@ export default function RootLayout({
       <body className="bg-[#f3f5f9] dark:bg-[#13121a]">
         <ThemeContextProvider>
           <StoreProvider>
-            <div className="w-[100%]">
-              <MarketData />
-              <div className="flex flex-col items-center justify-center">
-                <Navbar />
-                {children}
+            <TabLinkProvider>
+              <div className="w-[100%]">
+                <MarketData />
+                <div className="flex flex-col items-center justify-center">
+                  <Navbar />
+                  {children}
+                </div>
               </div>
-            </div>
+            </TabLinkProvider>
           </StoreProvider>
         </ThemeContextProvider>
       </body>

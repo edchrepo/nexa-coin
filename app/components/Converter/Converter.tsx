@@ -146,7 +146,7 @@ const Converter = () => {
             />
           )}
         </div>
-        <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#1e1932] p-7 rounded-[20px] text-black dark:text-white ml-5">
+        <div className="md:w-[50%] sm:w-[100%] bg-white dark:bg-[#1e1932] p-7 rounded-[20px] text-black dark:text-white mt-5 md:ml-5 md:mt-0">
           <div>
             <p className="text-xs text-[#3c3c7e] dark:text-secondary">
               You buy
@@ -171,11 +171,13 @@ const Converter = () => {
           </div>
         </div>
       </div>
-      <ConverterChart
-        fromData={fromData}
-        toData={toData}
-        chartData={chartData}
-      />
+      {chartData.length !== 0 && (
+        <ConverterChart
+          fromData={fromData}
+          toData={toData}
+          chartData={chartData}
+        />
+      )}
       <TimeFrameSelector />
     </div>
   );

@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "@/app/context/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
 import * as Icons from "@/app/icons";
 import ThemeSwitch from "./ThemeSwitch";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { useTabLink } from "@/app/context/TabLinkContext";
 import { CoinData } from "@/app/store/slices/coinsDataSlice";
 import { setCurrency } from "@/app/store/slices/currencySlice";
 
@@ -21,13 +22,14 @@ const currencyOptions = [
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
+  const pathname = usePathname();
   const [search, setSearch] = useState("");
   const [filteredCoins, setFilteredCoins] = useState<CoinData[]>([]);
   // Only allow user to submit search if searchterm is a valid coin name
   const [isSubmitEnabled, setIsSubmitEnabled] = useState<boolean>(false);
   // Allows user to press up and down when searching for coin to focus/highlight a coin
   const [focusedIndex, setFocusedIndex] = useState(-1);
-  const [activeLink, setActiveLink] = useState("home");
+  const { activeLink, setActiveLink, activeTab, setActiveTab } = useTabLink();
   const coins = useAppSelector((state) => state.coinsData);
   const { theme } = useTheme();
   const router = useRouter();
@@ -98,31 +100,70 @@ const Navbar = () => {
     dispatch(setCurrency(selectedCurrency));
   };
 
+  const handleHomeReturn = () => {
+    router.push("/");
+    setActiveTab("coins");
+    setActiveLink("home");
+  };
+
+  const handleLink = (active: string) => {
+    setActiveLink(active);
+    active === "portfolio" ? setActiveTab("portfolio") : setActiveTab("coins");
+  };
+
   const filterCoins = (search: string) => {
     const regex = new RegExp(search, "i"); // 'i' flag for case-insensitive search
     return coins.filter((coin) => regex.test(coin.name));
   };
 
+  useEffect(() => {
+    if (pathname === "/portfolio") {
+      setActiveTab("portfolio");
+      setActiveLink("portfolio");
+    } else {
+      activeTab === "coins" ? setActiveTab("coins") : setActiveTab("converter");
+      setActiveLink("home");
+    }
+  }, [pathname]);
+
   return (
-    <nav className="relative flex items-center justify-between p-4 w-[90%]">
+    <nav className="flex items-center justify-between p-4 w-[90%]">
       {/* Logo Section */}
-      <div className="flex items-center">
+      <div className="lg:hidden">
+        <Image
+          className="w-[30px] cursor-pointer"
+          src={Icons.mobilelogo}
+          alt="NexaCoinMobile"
+          onClick={handleHomeReturn}
+        />
+      </div>
+      <div className="hidden lg:flex items-center">
         {theme === "light" ? (
-          <Image className="w-[150px]" src={Icons.logolight} alt="NexaCoin" />
+          <Image
+            className="w-[150px] cursor-pointer"
+            src={Icons.logolight}
+            alt="NexaCoin"
+            onClick={handleHomeReturn}
+          />
         ) : (
-          <Image className="w-[150px]" src={Icons.logo} alt="NexaCoin" />
+          <Image
+            className="w-[150px] cursor-pointer"
+            src={Icons.logo}
+            alt="NexaCoin"
+            onClick={handleHomeReturn}
+          />
         )}
       </div>
 
       {/* Page Section */}
-      <div className="flex items-center">
+      <div className="hidden md:flex items-center">
         <Link
-          className={`flex items-center mr-10 p-2 rounded cursor-pointer ${
+          className={`flex items-center p-2 mr-4 rounded cursor-pointer ${
             activeLink !== "home"
               ? "text-secondary"
               : "text-[#3c3c7e] dark:text-white"
           }`}
-          onClick={() => setActiveLink("home")}
+          onClick={() => handleLink("home")}
           href="/"
         >
           <Image
@@ -144,7 +185,7 @@ const Navbar = () => {
               ? "text-secondary"
               : "text-[#3c3c7e] dark:text-white"
           }`}
-          onClick={() => setActiveLink("portfolio")}
+          onClick={() => handleLink("portfolio")}
           href="/portfolio"
         >
           <Image
@@ -165,36 +206,34 @@ const Navbar = () => {
       {/* Search and Settings Section */}
       <div className="flex items-center text-[#3c3c7e] dark:text-white">
         <div className="relative">
-          <div className="absolute inset-y-0 ml-3 flex items-center pointer-events-none">
+          <div className="flex absolute inset-y-0 ml-3 items-center pointer-events-none">
             <Image className="h-5 w-5" src={Icons.Search} alt="search" />
           </div>
-          <div>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 w-96 h-10"
-                value={search}
-                onKeyDown={handleKeyDown}
-                onChange={handleChange}
-                placeholder="Search..."
-              />
-            </form>
-            {search && (
-              <div className="absolute z-50 bg-white dark:bg-[#1e1932] max-h-[500px] w-full overflow-y-auto">
-                {filteredCoins.map((coin, index) => (
-                  <div
-                    key={coin.id}
-                    className={`ml-2 hover:bg-blue-100 cursor-pointer ${
-                      index === focusedIndex ? "bg-blue-200" : ""
-                    }`}
-                    onClick={() => handleClick(`/${coin.id}`)}
-                  >
-                    {coin.name}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 h-10 w-36 sm:w-56"
+              value={search}
+              onKeyDown={handleKeyDown}
+              onChange={handleChange}
+              placeholder="Search..."
+            />
+          </form>
+          {search && (
+            <div className="absolute z-50 bg-white dark:bg-[#1e1932] max-h-[500px] w-full overflow-y-auto">
+              {filteredCoins.map((coin, index) => (
+                <div
+                  key={coin.id}
+                  className={`ml-2 hover:bg-blue-100 cursor-pointer ${
+                    index === focusedIndex ? "bg-blue-200" : ""
+                  }`}
+                  onClick={() => handleClick(`/${coin.id}`)}
+                >
+                  {coin.name}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="relative">
           <div className="absolute inset-y-0 ml-3 flex items-center pointer-events-none">

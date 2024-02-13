@@ -18,6 +18,7 @@ export const borderColors = ["#7272ed", "#d878fa", "#5ae3fb"];
 
 // Chart.js chart option configs
 export const options = {
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       display: false,
@@ -109,16 +110,29 @@ export function getLatestData(dataArray: number[][]) {
 // Create labels and datasets for either graph (line or bar)
 export function prepareChartData(
   chartData: ChartData[],
-  chartType: "line" | "bar"
+  chartType: "line" | "bar",
+  timeFrame: number
 ): { labels: string[]; datasets: Dataset[] } {
   let labels: string[] = [];
   let unsortedDatasets: Dataset[] = [];
 
   // Generate labels for Chart
   if (chartData.length > 0) {
-    labels = chartData[0].prices.map((data) =>
-      new Date(data[0]).toLocaleDateString()
-    );
+    labels = chartData[0].prices.map((data) => {
+      const date = new Date(data[0]);
+      let dateString;
+
+      // Decide format based on timeFrame
+      if (timeFrame <= 30) {
+        // Display day only for timeFrame of 30 or less
+        dateString = date.getDate().toString();
+      } else {
+        // Display month name for timeFrames greater than 30
+        dateString = date.toLocaleString("default", { month: "short" });
+      }
+
+      return dateString;
+    });
   }
 
   chartData.forEach((coinData, index) => {
@@ -173,16 +187,29 @@ export function prepareChartData(
 export function prepareConverterData(
   chartData: ChartData[],
   convertFrom: number,
-  convertTo: number
+  convertTo: number,
+  timeFrame: number
 ): { labels: string[]; datasets: Dataset[] } {
   let labels: string[] = [];
   let datasets: Dataset[] = [];
 
   // Generate labels for Chart
   if (chartData.length > 0) {
-    labels = chartData[0].prices.map((data) =>
-      new Date(data[0]).toLocaleDateString()
-    );
+    labels = chartData[0].prices.map((data) => {
+      const date = new Date(data[0]);
+      let dateString;
+
+      // Decide format based on timeFrame
+      if (timeFrame <= 30) {
+        // Display day only for timeFrame of 30 or less
+        dateString = date.getDate().toString();
+      } else {
+        // Display month name for timeFrames greater than 30
+        dateString = date.toLocaleString("default", { month: "short" });
+      }
+
+      return dateString;
+    });
   }
 
   // Convert each original currency datapoint to converted currency amount (BTC to ETH)

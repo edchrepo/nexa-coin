@@ -67,9 +67,9 @@ const CoinsTable = () => {
 
   return (
     <div>
-      <div className="grid grid-cols-48 gap-2 text-left text-[#3c3c7e] dark:text-secondary mt-20 mb-5">
-        <div className="col-span-2 text-center">#</div>
-        <div className="flex items-center justify-left col-span-6">
+      <div className="hidden lg:grid lg:grid-cols-48 gap-2 text-left text-[#3c3c7e] dark:text-secondary mt-20 mb-5">
+        <div className="col-span-1 text-center">#</div>
+        <div className="flex items-center justify-left col-span-7">
           <div className="mr-1">Name</div>
           <Image
             className="h-5 w-5 cursor-pointer"

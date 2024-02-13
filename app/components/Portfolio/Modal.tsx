@@ -135,7 +135,7 @@ const Modal: React.FC<ModalProps> = ({
           </button>
         </div>
         <div className="text-white flex">
-          <div className="flex flex-col justify-center items-center bg-white dark:bg-[#191932] rounded-md w-3/5 mr-6">
+          <div className="hidden md:flex flex-col justify-center items-center bg-white dark:bg-[#191932] rounded-md w-3/5 mr-6">
             <div className="flex bg-[#2c2c4a] p-3 rounded-lg">
               <img
                 src={assetToEdit ? assetToEdit.image : selectedCoin?.image}
@@ -162,8 +162,10 @@ const Modal: React.FC<ModalProps> = ({
                   Select coins
                 </option>
                 {coins
-                  .filter((coin) =>
-                    assets.every((asset) => asset.name !== coin.name)
+                  .filter(
+                    (coin) =>
+                      selectedCoin?.id === coin.id ||
+                      assets.every((asset) => asset.name !== coin.name)
                   )
                   .map((coin) => (
                     <option key={coin.id} value={coin.id}>
