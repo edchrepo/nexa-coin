@@ -236,11 +236,11 @@ const Navbar = () => {
           )}
         </div>
         <div className="relative">
-          <div className="absolute inset-y-0 ml-3 flex items-center pointer-events-none">
+          <div className="hidden sm:flex items-center absolute inset-y-0 ml-3 pointer-events-none">
             <Image className="h-7 w-7" src={Icons.Currency} alt="currency" />
           </div>
           <select
-            className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-10 h-10"
+            className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-2 sm:pl-10 h-10"
             onChange={handleCurrencyChange}
           >
             {currencyOptions.map(({ value, label }) => (
