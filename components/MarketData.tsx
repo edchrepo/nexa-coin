@@ -131,7 +131,7 @@ const MarketData = () => {
   ));
 
   return (
-    <div className="bg-[#383474] dark:bg-[#1e1932] p-5 border-b-2 border-[#3f3f4a]">
+    <div className="bg-[#383474] dark:bg-[#1e1932] p-2 md:p-5 border-b-2 border-[#3f3f4a]">
       <div className="w-[60%] text-sm mx-auto">
         {marketData ? (
           <>
