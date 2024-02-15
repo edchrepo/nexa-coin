@@ -8,18 +8,27 @@ import { currencyMap, formatCurrencyCommas } from "@/utils/utils";
 interface CoinProps {
   coin: CoinData;
   isSelected: boolean;
+  compare: boolean;
 }
 
-const Coin: React.FC<CoinProps> = ({ coin, isSelected }) => {
+const Coin: React.FC<CoinProps> = ({ coin, isSelected, compare }) => {
   const currency = useAppSelector((state) => state.currency.value);
+  const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
 
   const currencyClass = isSelected
     ? "bg-[#aaabe8] dark:bg-[#3c3c7e] border-[#6161cb] shadow-whiteShadow"
     : "bg-white dark:bg-[#181825] border-white dark:border-[#181825]";
 
+  // Do not allow users to select more than 3 coins in compare mode (1 coin in non-compare mode)
+  const determineCursorStyle =
+    ((!compare && selectedCoins.length >= 1) ||
+      (compare && selectedCoins.length >= 3)) &&
+    !selectedCoins.includes(coin.id) &&
+    "cursor-not-allowed";
+
   return (
     <div
-      className={`flex items-center border-2 ${currencyClass} rounded-md m-1 p-2 h-15 w-30 lg:h-20 lg:w-50 lg:my-3`}
+      className={`flex items-center border-2 cursor-pointer ${currencyClass} ${determineCursorStyle} rounded-md m-1 p-2 h-15 w-30 lg:h-20 lg:w-50 lg:my-3`}
     >
       <img src={coin.image} className="h-7 w-7 mx-2" alt={coin.name} />
       <div

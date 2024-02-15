@@ -117,7 +117,7 @@ const CoinCarousel = () => {
         >
           {coins.map((coin) => (
             <div key={coin.id} onClick={() => handleSelectedCurrency(coin.id)}>
-              <Coin coin={coin} isSelected={selectedCoins.includes(coin.id)} />
+              <Coin coin={coin} isSelected={selectedCoins.includes(coin.id)} compare={compare} />
             </div>
           ))}
         </Slider>
