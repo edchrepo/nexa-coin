@@ -23,12 +23,13 @@ const Coin: React.FC<CoinProps> = ({ coin, isSelected, compare }) => {
   const determineCursorStyle =
     ((!compare && selectedCoins.length >= 1) ||
       (compare && selectedCoins.length >= 3)) &&
-    !selectedCoins.includes(coin.id) &&
-    "cursor-not-allowed";
+    !selectedCoins.includes(coin.id)
+      ? "cursor-not-allowed"
+      : "cursor-pointer";
 
   return (
     <div
-      className={`flex items-center border-2 cursor-pointer ${currencyClass} ${determineCursorStyle} rounded-md m-1 p-2 h-15 w-30 lg:h-20 lg:w-50 lg:my-3`}
+      className={`flex items-center border-2 ${currencyClass} ${determineCursorStyle} rounded-md m-1 p-2 h-15 w-30 lg:h-20 lg:w-50 lg:my-3`}
     >
       <img src={coin.image} className="h-7 w-7 mx-2" alt={coin.name} />
       <div
