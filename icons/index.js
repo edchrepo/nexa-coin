@@ -33,6 +33,7 @@ import WhiteCopy from "./copy.svg";
 import PurpleCopy from "./purplecopy.svg";
 import PlusCircle from "./pluscircle.svg";
 import Add from "./add.svg";
+import Copied from "./copied.svg"
 
 export {
   BoltCircle,
@@ -70,4 +71,5 @@ export {
   PurpleCopy,
   PlusCircle,
   Add,
+  Copied,
 };

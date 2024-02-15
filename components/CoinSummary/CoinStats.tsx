@@ -13,9 +13,10 @@ export type CoinStatsProps = {
   data: CoinSummary;
   handleCopy: (link: string) => void;
   asset: AssetData | undefined;
+  copied: boolean;
 };
 
-const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
+const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset, copied}) => {
   const currency = useAppSelector((state) => state.currency);
   const profit = Math.round(
     ((asset?.totalValue || 0) *
@@ -53,8 +54,8 @@ const CoinStats: React.FC<CoinStatsProps> = ({ data, handleCopy, asset }) => {
           <p>{data.links.homepage}</p>
           <Image
             className="h-5 w-5 cursor-pointer"
-            src={Icons.WhiteCopy}
-            alt="whitetab"
+            src={copied ? Icons.Copied : Icons.WhiteCopy}
+            alt={copied ? "Check" : "Copy"}
             onClick={() => handleCopy(data.links.homepage[0])}
           />
         </div>
