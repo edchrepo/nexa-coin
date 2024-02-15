@@ -25,7 +25,7 @@ const TimeChart = () => {
       {timeFrameOptions.map(({ value, label }) => (
         <div
           key={value}
-          className={`flex justify-center items-center 
+          className={`flex justify-center items-center cursor-pointer
             ${
               timeSelected.timeFrame === value
                 ? "bg-[#a2a3e8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow"
