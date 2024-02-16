@@ -240,7 +240,7 @@ const Navbar = () => {
             <Image className="h-7 w-7" src={Icons.Currency} alt="currency" />
           </div>
           <select
-            className="bg-[#ebebfd] dark:bg-[#181825] border dark:border-border rounded-md mr-4 p-2 pl-2 sm:pl-10 h-10"
+            className="bg-[#ebebfd] dark:bg-[#181825] cursor-pointer border dark:border-border rounded-md mr-4 p-2 pl-2 sm:pl-10 h-10"
             onChange={handleCurrencyChange}
           >
             {currencyOptions.map(({ value, label }) => (

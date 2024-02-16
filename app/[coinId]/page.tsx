@@ -12,7 +12,7 @@ import { AssetData } from "@/store/slices/portfolioSlice";
 
 const CoinSummary = () => {
   const dispatch = useAppDispatch();
-  const [copied, setCopied] = useState(false);
+  const [copiedLink, setCopiedLink] = useState<string | null>(null);
   const [asset, setAsset] = useState<AssetData | undefined>(undefined);
   const params = useParams();
   const coinId = params.coinId as string;
@@ -22,8 +22,8 @@ const CoinSummary = () => {
 
   const handleCopy = (link: string) => {
     navigator.clipboard.writeText(link);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedLink(link);
+    setTimeout(() => setCopiedLink(null), 2000);
   };
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const CoinSummary = () => {
                 data={coinSummary[coinId]}
                 handleCopy={handleCopy}
                 asset={asset}
-                copied={copied}
+                copiedLink={copiedLink}
               />
             </div>
             <div className="lg:w-[45%]">
@@ -66,7 +66,11 @@ const CoinSummary = () => {
               />
             </div>
             <div className="lg:w-[45%] pb-10 lg:pb-0">
-              <LinkSection data={coinSummary[coinId]} handleCopy={handleCopy} />
+              <LinkSection
+                data={coinSummary[coinId]}
+                handleCopy={handleCopy}
+                copiedLink={copiedLink}
+              />
             </div>
           </div>
         </div>
