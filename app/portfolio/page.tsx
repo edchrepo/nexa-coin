@@ -88,13 +88,19 @@ export default function Portfolio() {
         onDeleteAsset={handleDeleteAsset}
       />
       <div className="p-3 mt-3">
-        {assets.map((asset) => (
-          <Asset
-            key={asset.id}
-            asset={asset}
-            onEdit={() => openEditModal(asset)}
-          />
-        ))}
+        {assets.length !== 0 ? (
+          assets.map((asset) => (
+            <Asset
+              key={asset.id}
+              asset={asset}
+              onEdit={() => openEditModal(asset)}
+            />
+          ))
+        ) : (
+          <div className="flex justify-center items-center border bg-white dark:bg-[#191925] dark:border-[#19192e] rounded-lg h-52 mb-6">
+            You currently have no assets.
+          </div>
+        )}
       </div>
       <button
         className="flex justify-center items-center fixed z-10 bottom-32 right-6 bg-[#aaabe8] dark:bg-[#3c3c7e] border-2 border-[#6161cb] shadow-whiteShadow bg-opacity-95 p-3 h-16 w-16 rounded-full md:hidden"
