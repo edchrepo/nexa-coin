@@ -12,6 +12,7 @@ import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { fetchChartData } from "@/store/slices/chartDataSlice";
 import { currencyMap, formatCurrency } from "../../utils/utils";
 import { convert } from "../../utils/converterUtils";
+import ChartSkeleton from "../Charts/ChartSkeleton";
 ChartJS.register(...registerables);
 
 const Converter = () => {
@@ -124,7 +125,11 @@ const Converter = () => {
             </div>
             <hr className="" />
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">
-              1 {fromData?.symbol.toUpperCase()} = {formatCurrency(fromData?.current_price || 0, currency as keyof typeof currencyMap)}
+              1 {fromData?.symbol.toUpperCase()} =
+              {formatCurrency(
+                fromData?.current_price || 0,
+                currency as keyof typeof currencyMap
+              )}
             </p>
           </div>
         </div>
@@ -166,17 +171,25 @@ const Converter = () => {
             </div>
             <hr className="" />
             <p className="text-xs text-[#3c3c7e] dark:text-secondary mt-3">
-              1 {toData?.symbol.toUpperCase()} = {formatCurrency(toData?.current_price || 0, currency as keyof typeof currencyMap)}
+              1 {toData?.symbol.toUpperCase()} =
+              {formatCurrency(
+                toData?.current_price || 0,
+                currency as keyof typeof currencyMap
+              )}
             </p>
           </div>
         </div>
       </div>
-      {chartData.length !== 0 && (
+      {chartData.length !== 0 ? (
         <ConverterChart
           fromData={fromData}
           toData={toData}
           chartData={chartData}
         />
+      ) : (
+        <div className="mt-10 p-7 rounded-[20px] bg-white dark:bg-[#191932]">
+          <ChartSkeleton />
+        </div>
       )}
       <TimeFrameSelector />
     </div>

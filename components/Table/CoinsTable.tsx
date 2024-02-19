@@ -8,6 +8,7 @@ import Image from "next/image";
 import * as Icons from "@/icons";
 import { CoinData } from "@/store/slices/coinsDataSlice";
 import CoinRow from "./CoinRow";
+import CoinRowSkeleton from "./CoinRowSkeleton";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 type SortKey = keyof CoinData;
@@ -20,6 +21,7 @@ const CoinsTable = () => {
   const [sortedCoins, setSortedCoins] = useState<CoinData[]>([]);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [apiError, setApiError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSort = (key: SortKey) => {
     let direction = "ascending";
@@ -54,10 +56,13 @@ const CoinsTable = () => {
 
   // For infinite scrolling and currency changes
   useEffect(() => {
+    setIsLoading(true); // Render skeleton when loading
     dispatch(fetchCoinsData(page))
       .unwrap()
+      .then(() => setIsLoading(false))
       .catch(() => {
         setApiError(true);
+        setIsLoading(false);
       });
   }, [page, currency]);
 
@@ -134,14 +139,19 @@ const CoinsTable = () => {
           </p>
         }
       >
-        {sortedCoins.map((coin, index) => (
-          <CoinRow
-            key={coin.id}
-            coin={coin}
-            index={index}
-            currency={currency}
-          />
-        ))}
+        {isLoading &&
+          Array.from({ length: 10 }).map((_, index) => (
+            <CoinRowSkeleton key={index} />
+          ))}
+        {!isLoading &&
+          sortedCoins.map((coin, index) => (
+            <CoinRow
+              key={coin.id}
+              coin={coin}
+              index={index}
+              currency={currency}
+            />
+          ))}
       </InfiniteScroll>
     </div>
   );
