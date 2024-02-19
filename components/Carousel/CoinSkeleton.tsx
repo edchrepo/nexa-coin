@@ -7,7 +7,7 @@ const CoinSkeleton = () => {
       <div className="h-7 w-7 mx-2 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
       <div className="flex-col ml-2">
         {/* Name and Symbol */}
-        <div className="h-4 w-16 bg-gray-300 dark:bg-gray-700 rounded mb-2"></div>
+        <div className="h-4 w-16 bg-gray-300 dark:bg-gray-700 rounded lg:mb-2"></div>
         {/* Price */}
         <div className="hidden lg:flex">
           <div className="h-4 w-16 bg-gray-300 dark:bg-gray-700 rounded"></div>
