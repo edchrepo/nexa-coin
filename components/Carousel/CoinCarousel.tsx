@@ -14,12 +14,14 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Coin from "./Coin";
+import CoinSkeleton from "./CoinSkeleton";
 
 const CoinCarousel = () => {
   const [compare, setCompare] = useState(false);
   const slider = useRef<any>(null);
   const [showPrev, setShowPrev] = useState(false);
   const [showNext, setShowNext] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const coins = useAppSelector((state) => state.coinsData);
@@ -79,7 +81,11 @@ const CoinCarousel = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchCoinsData(1));
+    setIsLoading(true);
+    dispatch(fetchCoinsData(1))
+      .unwrap()
+      .then(() => setIsLoading(false))
+      .catch(() => setIsLoading(false));
   }, [dispatch]);
 
   return (
@@ -115,15 +121,22 @@ const CoinCarousel = () => {
           key={settings.slidesToShow}
           className="mt-4 mb-8"
         >
-          {coins.map((coin) => (
-            <div key={coin.id} onClick={() => handleSelectedCurrency(coin.id)}>
-              <Coin
-                coin={coin}
-                isSelected={selectedCoins.includes(coin.id)}
-                compare={compare}
-              />
-            </div>
-          ))}
+          {isLoading
+            ? Array.from({ length: settings.slidesToShow }).map((_, index) => (
+                <CoinSkeleton key={index} />
+              ))
+            : coins.map((coin) => (
+                <div
+                  key={coin.id}
+                  onClick={() => handleSelectedCurrency(coin.id)}
+                >
+                  <Coin
+                    coin={coin}
+                    isSelected={selectedCoins.includes(coin.id)}
+                    compare={compare}
+                  />
+                </div>
+              ))}
         </Slider>
         {coins && showPrev && (
           <button
