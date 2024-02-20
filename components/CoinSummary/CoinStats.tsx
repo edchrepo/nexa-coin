@@ -57,16 +57,23 @@ const CoinStats: React.FC<CoinStatsProps> = ({
             />
           </a>
           <p>{data.links.homepage}</p>
-          <Image
-            className="h-5 w-5 cursor-pointer"
-            src={
-              copiedLink === data.links.homepage[0]
-                ? Icons.Copied
-                : Icons.WhiteCopy
-            }
-            alt={copiedLink === data.links.homepage[0] ? "Check" : "Copy"}
-            onClick={() => handleCopy(data.links.homepage[0])}
-          />
+          <div className="relative">
+            <Image
+              className="h-5 w-5 cursor-pointer"
+              src={
+                copiedLink === data.links.homepage[0]
+                  ? Icons.Copied
+                  : Icons.WhiteCopy
+              }
+              alt={copiedLink === data.links.homepage[0] ? "Check" : "Copy"}
+              onClick={() => handleCopy(data.links.homepage[0])}
+            />
+            {copiedLink === data.links.homepage[0] && (
+              <div className="absolute -mt-14 p-2 bg-black text-white text-xs rounded-lg">
+                Copied!
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="med:w-[55%] p-8 flex flex-col justify-center items-center bg-[#7272ab] dark:bg-[#1e1932] rounded-[20px] text-black dark:text-white">
