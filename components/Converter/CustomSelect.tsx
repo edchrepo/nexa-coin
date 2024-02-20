@@ -46,7 +46,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           {options.map((option) => (
             <div
               key={option.id}
-              className="flex items-center space-x-2 cursor-pointer border"
+              className="flex items-center space-x-2 cursor-pointer p-1 hover:bg-[#503f92]"
               onClick={() => handleSelect(option)}
             >
               <img src={option.image} alt={option.name} className="w-5 h-5" />
