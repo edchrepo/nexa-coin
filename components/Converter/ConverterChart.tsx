@@ -27,7 +27,7 @@ const ConverterChart = ({
         {fromData?.name} ({fromData?.symbol.toUpperCase()}) to {toData?.name} (
         {toData?.symbol.toUpperCase()})
       </p>
-      <div className="w-full h-full p-4">
+      <div className="w-full h-full pb-4">
         <Line
           data={prepareConverterData(
             chartData,
