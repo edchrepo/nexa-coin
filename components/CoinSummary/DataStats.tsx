@@ -1,5 +1,3 @@
-import Image from "next/image";
-import * as Icons from "@/icons";
 import ProgressBar from "../ProgressBar";
 import { CoinSummary } from "@/store/slices/coinSummarySlice";
 import { useAppSelector } from "@/store/hooks";
@@ -57,14 +55,7 @@ const DataStats: React.FC<DataProps> = ({ data }) => {
       <div className="w-[90%] grid gap-2">
         {dataItems.map((item, index) => (
           <div key={index} className="grid grid-cols-2 gap-4 space-y-1.5">
-            <div className="flex items-center space-x-2">
-              <div className="h-5 w-5 rounded-full shadow-whiteShadow">
-                <Image
-                  className="h-5 w-5"
-                  src={Icons.PlusCircle}
-                  alt="pluscircle"
-                />
-              </div>
+            <div className="flex items-center">
               <p className="text-white dark:text-secondary">{item.label}</p>
             </div>
             <p>
