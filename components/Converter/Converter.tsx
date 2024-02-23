@@ -118,9 +118,9 @@ const Converter = () => {
               />
               <input
                 type="number"
-                value={fromAmount}
+                value={Math.round(fromAmount * 1000) / 1000}
                 onChange={(e) => handleAmountChange(e, FROM_CURRENCY)}
-                className="bg-transparent text-right"
+                className="bg-transparent text-right border-none focus:outline-none"
               />
             </div>
             <hr className="" />
@@ -164,9 +164,9 @@ const Converter = () => {
               />
               <input
                 type="number"
-                value={toAmount}
+                value={Math.round(toAmount * 1000) / 1000}
                 onChange={(e) => handleAmountChange(e, TO_CURRENCY)}
-                className="bg-transparent text-right"
+                className="bg-transparent text-right border-none focus:outline-none"
               />
             </div>
             <hr className="" />
@@ -184,6 +184,7 @@ const Converter = () => {
         <ConverterChart
           fromData={fromData}
           toData={toData}
+          toAmount={toAmount}
           chartData={chartData}
         />
       ) : (

@@ -32,7 +32,7 @@ export const fetchChartData = createAsyncThunk(
       // grab data for all selectedCoins
       const fetchPromises = coinsToFetch.map((coinId) =>
         fetch(
-          `${process.env.NEXT_PUBLIC_API_CHART_URL}${coinId}/market_chart?vs_currency=${currency}&days=${timeFrame}&interval=daily&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
+          `${process.env.NEXT_PUBLIC_API_CHART_URL}${coinId}/market_chart?vs_currency=${currency}&days=${timeFrame}${timeFrame > 30 && "&interval=daily"}&x_cg_demo_api_key=${process.env.NEXT_PUBLIC_API_KEY}`
         ).then((response) => {
           if (!response.ok) {
             throw new Error("Network error");

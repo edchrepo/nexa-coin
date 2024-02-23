@@ -1,13 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
-import { Chart as ChartJS, registerables } from "chart.js";
+import { useState, useEffect } from "react";
+import { Chart as ChartJS, TooltipItem, registerables } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
 import TimeFrameSelector from "../TimeFrameSelector";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchChartData } from "@/store/slices/chartDataSlice";
 import { borderColors } from "@/utils/chartUtils";
-import { currencyMap, formatCurrency } from "@/utils/utils";
+import {
+  currencyMap,
+  formatCurrency,
+  formatCurrencyCommas,
+} from "@/utils/utils";
 import {
   options,
   getLatestData,
@@ -32,6 +36,126 @@ const ChartOverview = () => {
     chartData.length > 0
       ? getLatestData(chartData[0].total_volumes)
       : { lastValue: null, lastDate: null };
+  const [priceData, setPriceData] = useState<number>(
+    latestPriceData.lastValue || 0
+  );
+  const [priceTime, setPriceTime] = useState<string>(
+    latestPriceData.lastDate || ""
+  );
+  const [volumeData, setVolumeData] = useState<number>(
+    latestVolumeData.lastValue || 0
+  );
+  const [volumeTime, setVolumeTime] = useState<string>(
+    latestVolumeData.lastDate || ""
+  );
+  const [multiLineData, setMultiLineData] = useState<number[]>([0, 0, 0]);
+  const [multiBarData, setMultiBarData] = useState<number[]>([0, 0, 0]);
+
+  const updateMultiChartData = (
+    index: number,
+    newValue: number,
+    type: string
+  ) => {
+    if (type === "line") {
+      setMultiLineData((arr) =>
+        arr.map((item, i) => (i === index ? newValue : item))
+      );
+    } else {
+      setMultiBarData((arr) =>
+        arr.map((item, i) => (i === index ? newValue : item))
+      );
+    }
+  };
+
+  // Extra options for hovering tooltip functionality
+  const lineChartOptions = {
+    ...options,
+    plugins: {
+      ...options.plugins,
+      tooltip: {
+        ...options.plugins.tooltip,
+        callbacks: {
+          ...options.plugins.tooltip.callbacks,
+          title: function (tooltipItems: TooltipItem<"line">[]) {
+            //If more than 1 tooltipItem (more than 1 coin shown), handle comparison options
+            if (tooltipItems.length > 1) {
+              tooltipItems.map((tooltipItem, index) =>
+                updateMultiChartData(
+                  index,
+                  chartData[index].prices[tooltipItem.dataIndex][1],
+                  "line"
+                )
+              );
+            }
+            // Grab index for first coin data to display on top of chart
+            const dataIndex = tooltipItems[0].dataIndex;
+            const price = chartData[0].prices[dataIndex][1];
+            const timestamp = chartData[0].prices[dataIndex][0];
+
+            //If just one tooltipitem (only 1 chart), handle data displayed for 1 chart
+            if (tooltipItems.length === 1) {
+              setPriceData(price);
+              setPriceTime(new Date(timestamp).toLocaleString());
+            }
+
+            // Display tooltip information
+            return new Date(timestamp).toLocaleString("default", {
+              month: "short",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            });
+          },
+        },
+      },
+    },
+  };
+
+  // Extra options for hovering tooltip functionality
+  const barChartOptions = {
+    ...options,
+    plugins: {
+      ...options.plugins,
+      tooltip: {
+        ...options.plugins.tooltip,
+        callbacks: {
+          ...options.plugins.tooltip.callbacks,
+          title: function (tooltipItems: TooltipItem<"bar">[]) {
+            //If more than 1 tooltipItem (more than 1 coin shown), handle comparison options
+            if (tooltipItems.length > 1) {
+              tooltipItems.map((tooltipItem, index) =>
+                updateMultiChartData(
+                  index,
+                  chartData[index].total_volumes[tooltipItem.dataIndex][1],
+                  "bar"
+                )
+              );
+            }
+            // Grab index for first coin data to display on top of chart
+            const dataIndex = tooltipItems[0].dataIndex;
+            const volume = chartData[0].total_volumes[dataIndex][1];
+            const timestamp = chartData[0].total_volumes[dataIndex][0];
+
+            //If just one tooltipitem (only 1 chart), handle data displayed for 1 chart
+            if (tooltipItems.length === 1) {
+              setVolumeData(volume);
+              setVolumeTime(new Date(timestamp).toLocaleString());
+            }
+
+            // Display tooltip information
+            return new Date(timestamp).toLocaleString("default", {
+              month: "short",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            });
+          },
+        },
+      },
+    },
+  };
 
   useEffect(() => {
     dispatch(
@@ -42,6 +166,15 @@ const ChartOverview = () => {
       })
     );
   }, [dispatch, timeFrame, currency, selectedCoins]);
+
+  useEffect(() => {
+    const newLatestPriceData = getLatestData(chartData[0]?.prices);
+    
+    if (newLatestPriceData.lastValue !== null && newLatestPriceData.lastDate !== null) {
+      setPriceData(newLatestPriceData.lastValue);
+      setPriceTime(newLatestPriceData.lastDate);
+    }
+  }, [selectedCoins, chartData]); 
 
   return (
     <div>
@@ -60,11 +193,13 @@ const ChartOverview = () => {
                   <>
                     <p className="text-2xl">
                       {formatCurrency(
-                        latestPriceData.lastValue,
+                        priceData || latestPriceData.lastValue,
                         currency as keyof typeof currencyMap
                       )}
                     </p>
-                    <p className="text-secondary">{latestPriceData.lastDate}</p>
+                    <p className="text-secondary">
+                      {priceTime || latestPriceData.lastDate}
+                    </p>
                   </>
                 ) : (
                   <p className="animate-pulse">Loading Price Data...</p>
@@ -72,10 +207,16 @@ const ChartOverview = () => {
               </div>
             )}
           </div>
-          {latestPriceData.lastValue !== null ? <Line
-            data={prepareChartData(chartData, "line", timeFrame)}
-            options={options}
-          /> : <div className="mt-auto"><ChartSkeleton /></div>}
+          {latestPriceData.lastValue !== null ? (
+            <Line
+              data={prepareChartData(chartData, "line", timeFrame)}
+              options={lineChartOptions}
+            />
+          ) : (
+            <div className="mt-auto">
+              <ChartSkeleton />
+            </div>
+          )}
           {selectedCoins.length > 1 && (
             <div className="flex space-x-3 mt-auto">
               {selectedCoins.map((selectedCoin, index) => (
@@ -84,7 +225,19 @@ const ChartOverview = () => {
                     className={`w-5 h-5`}
                     style={{ backgroundColor: borderColors[index] }}
                   />
-                  <p>{selectedCoin}</p>
+                  <p>
+                    {selectedCoin}{" "}
+                    {multiLineData[index] !== 0
+                      ? formatCurrencyCommas(
+                          multiLineData[index],
+                          currency as keyof typeof currencyMap
+                        )
+                      : formatCurrencyCommas(
+                          coins.find((obj) => obj.id === selectedCoin)
+                            ?.current_price as number,
+                          currency as keyof typeof currencyMap
+                        )}
+                  </p>
                 </div>
               ))}
             </div>
@@ -106,12 +259,12 @@ const ChartOverview = () => {
                   <>
                     <p className="text-2xl">
                       {formatCurrency(
-                        latestVolumeData.lastValue,
+                        volumeData || latestVolumeData.lastValue,
                         currency as keyof typeof currencyMap
                       )}
                     </p>
                     <p className="text-secondary">
-                      {latestVolumeData.lastDate}
+                      {volumeTime || latestVolumeData.lastDate}
                     </p>
                   </>
                 ) : (
@@ -120,10 +273,16 @@ const ChartOverview = () => {
               </div>
             )}
           </div>
-          {latestPriceData.lastValue !== null ? <Bar
-            data={prepareChartData(chartData, "bar", timeFrame)}
-            options={options}
-          /> : <div className="mt-auto"><ChartSkeleton/></div>}
+          {latestPriceData.lastValue !== null ? (
+            <Bar
+              data={prepareChartData(chartData, "bar", timeFrame)}
+              options={barChartOptions}
+            />
+          ) : (
+            <div className="mt-auto">
+              <ChartSkeleton />
+            </div>
+          )}
           {selectedCoins.length > 1 && (
             <div className="flex space-x-3 mt-auto">
               {selectedCoins.map((selectedCoin, index) => (
@@ -132,7 +291,19 @@ const ChartOverview = () => {
                     className={`w-5 h-5`}
                     style={{ backgroundColor: borderColors[index] }}
                   />
-                  <p>{selectedCoin}</p>
+                  <p>
+                    {selectedCoin}{" "}
+                    {multiBarData[index] !== 0
+                      ? formatCurrency(
+                          multiBarData[index],
+                          currency as keyof typeof currencyMap
+                        )
+                      : formatCurrency(
+                          coins.find((obj) => obj.id === selectedCoin)
+                            ?.total_volume as number,
+                          currency as keyof typeof currencyMap
+                        )}
+                  </p>
                 </div>
               ))}
             </div>
