@@ -25,14 +25,13 @@ const CoinCarousel = () => {
   const dispatch = useAppDispatch();
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const coins = useAppSelector((state) => state.coinsData);
-  const maxSlides = 6;
-  const slidesToShow = Math.max(maxSlides - selectedCoins.length, 1); // carousel length based on selected coins
+  const [maxSlides, setMaxSlides] = useState(6);
   const selectedWidthPercent = (selectedCoins.length / maxSlides) * 100; // dynamic width for selected
   const restWidthPercent = 100 - selectedWidthPercent; // dynamic width for rest
 
   const settings = {
     speed: 1000,
-    slidesToShow: slidesToShow,
+    slidesToShow: Math.max(6 - selectedCoins.length, 1),
     autoplay: true,
     arrows: false,
     infinite: false,
@@ -66,13 +65,17 @@ const CoinCarousel = () => {
     ],
   };
 
-  const selectedCoinsSliderSettings = {
-    speed: 500,
-    slidesToShow: selectedCoins.length || 1,
-    swipe: false,
-    draggable: false,
-    arrows: false,
-    infinite: false,
+  const updateMaxSlides = () => {
+    const width = window.innerWidth;
+    if (width < 550) {
+      setMaxSlides(3);
+    } else if (width < 768) {
+      setMaxSlides(4);
+    } else if (width < 1024) {
+      setMaxSlides(5);
+    } else {
+      setMaxSlides(6);
+    }
   };
 
   const handleSelectedCurrency = (coinId: string) => {
@@ -100,6 +103,13 @@ const CoinCarousel = () => {
       .then(() => setIsLoading(false))
       .catch(() => setIsLoading(false));
   }, [dispatch]);
+
+  // useEffect for calculating max # of slides for carousel based on screen resolution
+  useEffect(() => {
+    updateMaxSlides();
+    window.addEventListener("resize", updateMaxSlides);
+    return () => window.removeEventListener("resize", updateMaxSlides);
+  }, []);
 
   return (
     <div className="relative bg-[#f3f5f9] dark:bg-[#13121a] flex-col justify-center mx-auto">
@@ -130,7 +140,10 @@ const CoinCarousel = () => {
       <div className="flex relative">
         {selectedCoins.length > 0 && (
           <div style={{ width: `${selectedWidthPercent}%` }}>
-            <Slider {...selectedCoinsSliderSettings} className="mt-4 mb-4">
+            <Slider
+              slidesToShow={selectedCoins.length || 1}
+              className="mt-4 mb-4"
+            >
               {selectedCoins.map((coinId) => {
                 const coin = coins.find((c) => c.id === coinId);
                 return (
