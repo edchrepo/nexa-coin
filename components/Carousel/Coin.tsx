@@ -24,7 +24,7 @@ const Coin: React.FC<CoinProps> = ({ coin, isSelected, compare }) => {
     ((!compare && selectedCoins.length >= 1) ||
       (compare && selectedCoins.length >= 3)) &&
     !selectedCoins.includes(coin.id)
-      ? "cursor-not-allowed"
+      ? "cursor-not-allowed opacity-20"
       : "cursor-pointer";
 
   return (
