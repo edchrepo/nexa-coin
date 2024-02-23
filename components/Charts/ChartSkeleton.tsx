@@ -19,7 +19,7 @@ const ChartSkeleton = () => {
           fill="none"
           stroke="#bbb"
           strokeWidth="2"
-          strokeDasharray="5,5"
+          strokeDasharray="0"
           className="skeleton-animate"
         />
       </svg>

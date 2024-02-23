@@ -31,12 +31,19 @@ const LinkSection: React.FC<LinkSectionProps> = ({
               />
             </a>
             <p>{site.substring(0, 50)}</p>
-            <Image
-              className="h-5 w-5 cursor-pointer"
-              src={copiedLink === site ? Icons.Copied : Icons.WhiteCopy}
-              alt={copiedLink === site ? "Copied" : "Copy"}
-              onClick={() => handleCopy(site)}
-            />
+            <div className="relative">
+              <Image
+                className="h-5 w-5 cursor-pointer"
+                src={copiedLink === site ? Icons.Copied : Icons.WhiteCopy}
+                alt={copiedLink === site ? "Copied" : "Copy"}
+                onClick={() => handleCopy(site)}
+              />
+              {copiedLink === site && (
+                <div className="absolute -mt-14 p-2 bg-black text-white text-xs rounded-lg">
+                  Copied!
+                </div>
+              )}
+            </div>
           </div>
         ))}
     </div>

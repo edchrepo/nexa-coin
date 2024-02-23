@@ -24,7 +24,7 @@ const Coin: React.FC<CoinProps> = ({ coin, isSelected, compare }) => {
     ((!compare && selectedCoins.length >= 1) ||
       (compare && selectedCoins.length >= 3)) &&
     !selectedCoins.includes(coin.id)
-      ? "cursor-not-allowed"
+      ? "cursor-not-allowed opacity-20"
       : "cursor-pointer";
 
   return (
@@ -33,18 +33,18 @@ const Coin: React.FC<CoinProps> = ({ coin, isSelected, compare }) => {
     >
       <img src={coin.image} className="h-7 w-7 mx-2" alt={coin.name} />
       <div
-        className={`flex-col ml-2 ${
+        className={`flex flex-col ml-2 ${
           isSelected ? "text-white" : "text-black dark:text-white"
         }`}
       >
-        <div className="flex">
+        <div className="flex flex-wrap">
           <span className="hidden lg:inline mr-2">{coin.name} </span>
           <span className="lg:hidden">{coin.symbol.toUpperCase()}</span>
-          <span className="hidden lg:inline">
+          <span className="hidden 2xl:inline">
             ({coin.symbol.toUpperCase()})
           </span>
         </div>
-        <div className="hidden lg:flex">
+        <div className="hidden xl:flex">
           <div
             className={`mr-2 ${
               isSelected

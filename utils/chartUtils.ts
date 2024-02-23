@@ -1,7 +1,10 @@
 import { Chart as ChartJS, registerables, ChartArea } from "chart.js";
 import { ChartData } from "@/store/slices/chartDataSlice";
 import { convert } from "@/utils/converterUtils";
+import { CrosshairPlugin } from "chartjs-plugin-crosshair";
+
 ChartJS.register(...registerables);
+ChartJS.register(CrosshairPlugin);
 
 // Type for Chart.js dataset
 export interface Dataset {
@@ -18,8 +21,27 @@ export const borderColors = ["#7272ed", "#d878fa", "#5ae3fb"];
 
 // Chart.js chart option configs
 export const options = {
+  interaction: {
+    intersect: false,
+    mode: "index" as any,
+  },
   maintainAspectRatio: false,
   plugins: {
+    tooltip: {
+      backgroundColor: "rgba(0, 0, 0, 0)",
+      callbacks: {
+        label: () => {
+          return "";
+        },
+      },
+    },
+    crosshair: {
+      line: {
+        color: "#9b9b9b",
+        dashPattern: [5],
+        width: 0.5,
+      },
+    },
     legend: {
       display: false,
     },
@@ -32,6 +54,9 @@ export const options = {
   scales: {
     x: {
       stacked: true,
+      ticks: {
+        maxTicksLimit: 7,
+      },
       grid: {
         display: false,
       },
@@ -123,12 +148,15 @@ export function prepareChartData(
       let dateString;
 
       // Decide format based on timeFrame
-      if (timeFrame <= 30) {
-        // Display day only for timeFrame of 30 or less
-        dateString = date.getDate().toString();
+      if (timeFrame <= 1) {
+        // Display in 24-hour format if 1 day or less
+        dateString =
+          date.getHours().toString().padStart(2, "0") +
+          ":" +
+          date.getMinutes().toString().padStart(2, "0");
       } else {
-        // Display month name for timeFrames greater than 30
-        dateString = date.toLocaleString("default", { month: "short" });
+        // Display month name for timeFrames greater than 1
+        dateString = date.toLocaleString("default", { month: "short" }) + ' ' + date.getDate().toString();
       }
 
       return dateString;
@@ -200,12 +228,15 @@ export function prepareConverterData(
       let dateString;
 
       // Decide format based on timeFrame
-      if (timeFrame <= 30) {
-        // Display day only for timeFrame of 30 or less
-        dateString = date.getDate().toString();
+      if (timeFrame <= 1) {
+        // Display in 24-hour format if 1 day or less
+        dateString =
+          date.getHours().toString().padStart(2, "0") +
+          ":" +
+          date.getMinutes().toString().padStart(2, "0");
       } else {
-        // Display month name for timeFrames greater than 30
-        dateString = date.toLocaleString("default", { month: "short" });
+        // Display month name for timeFrames greater than 1
+        dateString = date.toLocaleString("default", { month: "short" }) + ' ' + date.getDate().toString();
       }
 
       return dateString;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CoinData } from "@/store/slices/coinsDataSlice";
 import Image from "next/image";
 import { WhiteDownArrow } from "@/icons";
@@ -17,14 +17,33 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   selectedValue,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSelect = (option: CoinData) => {
     onSelect(option);
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!dropdownRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
         {/* Display selected item */}
         <div className="flex items-center space-x-2">
@@ -46,7 +65,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           {options.map((option) => (
             <div
               key={option.id}
-              className="flex items-center space-x-2 cursor-pointer border"
+              className="flex items-center space-x-2 cursor-pointer p-1 hover:bg-[#503f92]"
               onClick={() => handleSelect(option)}
             >
               <img src={option.image} alt={option.name} className="w-5 h-5" />

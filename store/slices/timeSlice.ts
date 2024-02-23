@@ -5,7 +5,7 @@ interface Time {
 }
 
 const initialState: Time = {
-  timeFrame: 30, // Default time frame
+  timeFrame: 7, // Default time frame
 };
 
 const timeSlice = createSlice({
