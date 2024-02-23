@@ -216,10 +216,12 @@ const ChartOverview = () => {
             )}
           </div>
           {latestPriceData.lastValue !== null ? (
-            <Line
-              data={prepareChartData(chartData, "line", timeFrame)}
-              options={lineChartOptions}
-            />
+            <div className={`${selectedCoins.length > 1 ? "h-[90%]" : "h-full"}`}>
+              <Line
+                data={prepareChartData(chartData, "line", timeFrame)}
+                options={lineChartOptions}
+              />
+            </div>
           ) : (
             <div className="mt-auto">
               <ChartSkeleton />
@@ -282,10 +284,12 @@ const ChartOverview = () => {
             )}
           </div>
           {latestPriceData.lastValue !== null ? (
-            <Bar
-              data={prepareChartData(chartData, "bar", timeFrame)}
-              options={barChartOptions}
-            />
+            <div className={`${selectedCoins.length > 1 ? "h-[90%]" : "h-full"}`}>
+              <Bar
+                data={prepareChartData(chartData, "bar", timeFrame)}
+                options={barChartOptions}
+              />
+            </div>
           ) : (
             <div className="mt-auto">
               <ChartSkeleton />
