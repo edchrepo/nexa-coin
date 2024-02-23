@@ -168,13 +168,21 @@ const ChartOverview = () => {
   }, [dispatch, timeFrame, currency, selectedCoins]);
 
   useEffect(() => {
-    const newLatestPriceData = getLatestData(chartData[0]?.prices);
-    
-    if (newLatestPriceData.lastValue !== null && newLatestPriceData.lastDate !== null) {
-      setPriceData(newLatestPriceData.lastValue);
-      setPriceTime(newLatestPriceData.lastDate);
+    if (chartData.length > 0) {
+      const newLatestPriceData = getLatestData(chartData[0]?.prices);
+      const newLatestVolumeData = getLatestData(chartData[0]?.total_volumes);
+  
+      if (newLatestPriceData.lastValue !== null && newLatestPriceData.lastDate !== null) {
+        setPriceData(newLatestPriceData.lastValue);
+        setPriceTime(newLatestPriceData.lastDate);
+      }
+  
+      if (newLatestVolumeData.lastValue !== null && newLatestVolumeData.lastDate !== null) {
+        setVolumeData(newLatestVolumeData.lastValue);
+        setVolumeTime(newLatestVolumeData.lastDate);
+      }
     }
-  }, [selectedCoins, chartData]); 
+  }, [chartData]); 
 
   return (
     <div>
