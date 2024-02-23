@@ -25,10 +25,14 @@ const CoinCarousel = () => {
   const dispatch = useAppDispatch();
   const selectedCoins = useAppSelector((state) => state.selectedCoinData.coins);
   const coins = useAppSelector((state) => state.coinsData);
+  const maxSlides = 6;
+  const slidesToShow = Math.max(maxSlides - selectedCoins.length, 1); // carousel length based on selected coins
+  const selectedWidthPercent = (selectedCoins.length / maxSlides) * 100; // dynamic width for selected
+  const restWidthPercent = 100 - selectedWidthPercent; // dynamic width for rest
 
   const settings = {
     speed: 1000,
-    slidesToShow: 6,
+    slidesToShow: slidesToShow,
     autoplay: true,
     arrows: false,
     infinite: false,
@@ -44,22 +48,31 @@ const CoinCarousel = () => {
       {
         breakpoint: 550,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: Math.max(3 - selectedCoins.length, 1),
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: Math.max(4 - selectedCoins.length, 1),
         },
       },
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 5,
+          slidesToShow: Math.max(5 - selectedCoins.length, 1),
         },
       },
     ],
+  };
+
+  const selectedCoinsSliderSettings = {
+    speed: 500,
+    slidesToShow: selectedCoins.length || 1,
+    swipe: false,
+    draggable: false,
+    arrows: false,
+    infinite: false,
   };
 
   const handleSelectedCurrency = (coinId: string) => {
@@ -114,30 +127,48 @@ const CoinCarousel = () => {
           {compare ? "Exit comparison" : "Compare"}
         </button>
       </div>
-      <div className="relative">
-        <Slider
-          ref={slider}
-          {...settings}
-          key={settings.slidesToShow}
-          className="mt-4 mb-8"
-        >
-          {isLoading
-            ? Array.from({ length: settings.slidesToShow }).map((_, index) => (
-                <CoinSkeleton key={index} />
-              ))
-            : coins.map((coin) => (
-                <div
-                  key={coin.id}
-                  onClick={() => handleSelectedCurrency(coin.id)}
-                >
-                  <Coin
-                    coin={coin}
-                    isSelected={selectedCoins.includes(coin.id)}
-                    compare={compare}
-                  />
-                </div>
-              ))}
-        </Slider>
+      <div className="flex relative">
+        {selectedCoins.length > 0 && (
+          <div style={{ width: `${selectedWidthPercent}%` }}>
+            <Slider {...selectedCoinsSliderSettings} className="mt-4 mb-4">
+              {selectedCoins.map((coinId) => {
+                const coin = coins.find((c) => c.id === coinId);
+                return (
+                  coin && (
+                    <div
+                      key={coin.id}
+                      onClick={() => handleSelectedCurrency(coin.id)}
+                    >
+                      <Coin coin={coin} isSelected={true} compare={compare} />
+                    </div>
+                  )
+                );
+              })}
+            </Slider>
+          </div>
+        )}
+        <div style={{ width: `${restWidthPercent}%` }}>
+          <Slider ref={slider} {...settings} className="mt-4 mb-4">
+            {isLoading
+              ? Array.from({ length: maxSlides }).map((_, index) => (
+                  <CoinSkeleton key={index} />
+                ))
+              : coins
+                  .filter((coin) => !selectedCoins.includes(coin.id))
+                  .map((coin) => (
+                    <div
+                      key={coin.id}
+                      onClick={() => handleSelectedCurrency(coin.id)}
+                    >
+                      <Coin
+                        coin={coin}
+                        isSelected={selectedCoins.includes(coin.id)}
+                        compare={compare}
+                      />
+                    </div>
+                  ))}
+          </Slider>
+        </div>
         {coins && showPrev && (
           <button
             onClick={() => slider.current?.slickPrev()}
