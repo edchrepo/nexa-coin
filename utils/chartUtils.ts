@@ -26,7 +26,9 @@ export const options = {
     mode: "index" as any,
   },
   layout: {
-    padding: -5,
+    padding: {
+      left: -5
+    }
   },
   maintainAspectRatio: false,
   plugins: {
