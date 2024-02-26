@@ -55,6 +55,7 @@ export const options = {
     x: {
       stacked: true,
       ticks: {
+        align: "start",
         maxTicksLimit: 7,
       },
       grid: {
