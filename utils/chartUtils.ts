@@ -25,6 +25,9 @@ export const options = {
     intersect: false,
     mode: "index" as any,
   },
+  layout: {
+    padding: -5,
+  },
   maintainAspectRatio: false,
   plugins: {
     tooltip: {
