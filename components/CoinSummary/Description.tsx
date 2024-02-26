@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 
 type DescriptionProps = {
   text: string;
   maxLength: number;
-}
+};
 
 const Description: React.FC<DescriptionProps> = ({ text, maxLength }) => {
   const [isTruncated, setIsTruncated] = useState(true);
@@ -18,7 +18,7 @@ const Description: React.FC<DescriptionProps> = ({ text, maxLength }) => {
 
   return (
     <div>
-      <p>{endOfText}</p>
+      <p dangerouslySetInnerHTML={{ __html: endOfText }}></p>
       {text.length > maxLength && (
         <button className="text-[#7272ab]" onClick={toggleIsTruncated}>
           {isTruncated ? "Read more" : "Read less"}
