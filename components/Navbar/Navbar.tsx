@@ -127,7 +127,7 @@ const Navbar = () => {
   }, [pathname]);
 
   return (
-    <nav className="flex items-center justify-between p-4 w-[95%]">
+    <nav className="flex items-center justify-between p-4 w-[90%]">
       {/* Logo Section */}
       <div className="lg:hidden">
         <Image

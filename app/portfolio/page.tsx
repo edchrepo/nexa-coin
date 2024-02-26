@@ -68,7 +68,7 @@ export default function Portfolio() {
   }
 
   return (
-    <div className="bg-[#f3f5f9] dark:bg-[#13121a] w-[95%]">
+    <div className="bg-[#f3f5f9] dark:bg-[#13121a] w-[90%]">
       <div className="hidden md:flex justify-between p-4 mt-4">
         <div className="flex items-center text-[#3c3c7e] dark:text-white text-2xl">
           Portfolio
