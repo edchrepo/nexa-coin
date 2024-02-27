@@ -51,12 +51,12 @@ const CoinsTable = () => {
 
   // Reset the page number to 1 when the component mounts
   useEffect(() => {
+    setIsLoading(true); // Render skeleton when loading coins for first time
     dispatch(setPage(1));
   }, [dispatch]);
 
   // For infinite scrolling and currency changes
   useEffect(() => {
-    setIsLoading(true); // Render skeleton when loading
     dispatch(fetchCoinsData(page))
       .unwrap()
       .then(() => setIsLoading(false))

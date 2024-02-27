@@ -25,6 +25,11 @@ export const options = {
     intersect: false,
     mode: "index" as any,
   },
+  layout: {
+    padding: {
+      left: -5
+    }
+  },
   maintainAspectRatio: false,
   plugins: {
     tooltip: {
@@ -55,6 +60,7 @@ export const options = {
     x: {
       stacked: true,
       ticks: {
+        align: "start" as any,
         maxTicksLimit: 7,
       },
       grid: {

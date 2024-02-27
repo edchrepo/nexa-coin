@@ -21,7 +21,7 @@ const TimeChart = () => {
   };
 
   return (
-    <div className="flex bg-[#e4e5f9] dark:bg-[#232336] md:w-[30%] w-[100%] p-1.5 rounded-[15px] my-10 text-[#3c3c7e] dark:text-white">
+    <div className="flex bg-[#e4e5f9] dark:bg-[#232336] md:w-[30%] w-[100%] p-1.5 rounded-[15px] my-5 text-[#3c3c7e] dark:text-white">
       {timeFrameOptions.map(({ value, label }) => (
         <div
           key={value}
